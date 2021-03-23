@@ -1,3 +1,19 @@
+// 
+//  Bachelor of Software Engineering 
+//  Media Design School 
+//  Auckland 
+//  New Zealand 
+// 
+//  (c) 2019 Media Design School 
+// 
+//  File Name   :	Source.cpp
+//  Description :	Implementation for sprite class
+//  Author      :   Himanshu Chawla
+//  Mail        :   Himanshu.Cha8420@mediadesign.mail.nz 
+// 
+ // Implementation 
+
+
 #include<SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -13,8 +29,6 @@ int main()
 	//Game Loop
 	while (window.isOpen())
 	{
-
-
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -24,5 +38,6 @@ int main()
 		}
 	window.display();
 	}
-}
 
+	return 0;
+}
