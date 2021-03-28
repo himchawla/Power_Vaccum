@@ -22,6 +22,8 @@
 
 gameObject::gameObject()
 {
+	transform.m_Mass = 1.0f;
+	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 }
 
 gameObject::~gameObject()
@@ -30,7 +32,11 @@ gameObject::~gameObject()
 
 void gameObject::Update(float _dT)
 {
-	m_TempCirc->setPosition(m_2fPosition);
+	transform.m_Accelaration += transform.m_Force * _dT / transform.m_Mass;
+	transform.m_Velocity += transform.m_Accelaration * _dT;
+	transform.m_Position += transform.m_Velocity * _dT;
+
+	m_TempCirc->setPosition(transform.m_Position);
 }
 
 sf::Vector2f gameObject::GetPosition()

@@ -10,8 +10,8 @@
 // 
 //  File Name   :   gameObject.h
 //  Description :   Parent object for all gameobjects in game.
-//  Author      :   William de Beer
-//  Mail        :   William.Beer@mds.ac.nz
+//  Author      :   William de Beer | Himanshu Chawla
+//  Mail        :   William.Beer@mds.ac.nz | himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
 #include <SFML/Audio.hpp>
@@ -27,6 +27,23 @@ class gameObject
 public:
 	gameObject();
 	virtual ~gameObject();
+
+	struct Tranform
+	{
+		sf::Vector2f m_Position;
+		sf::Vector2f m_Velocity;
+		sf::Vector2f m_Accelaration;
+		sf::Vector2f m_Force;
+		
+		
+		float m_Rotation;
+		float m_Mass;
+
+
+		bool m_IsKinematic;
+	};
+
+	Tranform transform;
 
 	void Update(float _dT);
 

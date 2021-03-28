@@ -14,6 +14,7 @@
  // Library Includes 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include<iostream>
  // Local Includes 
 #include "gameObject.h"
  // This Include 
@@ -32,7 +33,10 @@ int main()
 	temp->SetCircle(new sf::CircleShape(100.0f));
 	temp->GetCircle()->setFillColor(sf::Color::Green);
 	sf::Clock clock;
-	temp->SetPosition(sf::Vector2f(800,800));
+	//temp->transform.m_Accelaration = sf::Vector2f(0.02f, 0.0f);
+	temp->transform.m_Position = (sf::Vector2f(800,800));
+
+	sf::Keyboard::Key key = sf::Keyboard::Escape;
 
 	//Game Loop
 	while (window.isOpen())
@@ -43,11 +47,67 @@ int main()
 		float deltaTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
 
+
+
 		while (window.pollEvent(event))
 		{
+			if (event.type == sf::Event::KeyPressed && event.key.code != sf::Keyboard::Space)
+			{
+				key = event.key.code;
+			}
+
+			if (event.type == sf::Event::KeyReleased && event.key.code != sf::Keyboard::Space)
+			{
+				key = sf::Keyboard::Add;
+			}
+
+			else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+			{
+				key = sf::Keyboard::Space;
+			}
 
 			if (event.type == sf::Event::Closed)
 				window.close();
+		}
+
+		
+
+
+
+
+		switch (key)
+		{
+		
+		case sf::Keyboard::A:
+		{
+			temp->transform.m_Velocity = sf::Vector2f(-100.0f, 0.0f);
+		}
+			break;
+		
+		case sf::Keyboard::D:
+			break;
+		case sf::Keyboard::E:
+			break;
+		
+		case sf::Keyboard::S:
+			break;
+		
+		case sf::Keyboard::W:
+			break;
+		
+		case sf::Keyboard::Space:
+		{
+			temp->transform.m_Force = sf::Vector2f(2.0f, 0.0f);
+		}
+			break;
+		
+		
+		
+		default:
+		{
+			temp->transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+		}
+			break;
 		}
 
 		temp->Update(deltaTime);
