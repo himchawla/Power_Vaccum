@@ -16,6 +16,7 @@
 #include <SFML/Graphics.hpp>
  // Local Includes 
 #include "gameObject.h"
+#include "gameScene.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -23,10 +24,14 @@
 
 int main()
 {
+
 	srand(static_cast<unsigned int>(time(0)));
 
 	sf::Sprite spr;
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML");
+
+	gameScene* scene = new gameScene();
+	scene->Initialise(window);
 
 	gameObject* temp = new gameObject();
 	temp->SetCircle(new sf::CircleShape(100.0f));

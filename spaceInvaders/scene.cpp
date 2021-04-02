@@ -1,5 +1,23 @@
+// 
+//  Bachelor of Software Engineering 
+//  Media Design School 
+//  Auckland 
+//  New Zealand 
+// 
+//  (c) 2021 Media Design School 
+// 
+//  File Name   :   scene.cpp
+//  Description :   Parent class to all scenes.
+//  Author      :   First Last
+//  Mail        :   First.Last@mds.ac.nz
+// 
+ // Library Includes 
+ // Local Includes 
+ // This Include 
 #include "scene.h"
-
+ // Static Variables 
+ // Static Function Prototypes 
+ // Implementation 
 scene::scene()
 {
 }
@@ -8,16 +26,11 @@ scene::~scene()
 {
 }
 
-void scene::Initialise(sf::RenderWindow& _window)
-{
-	MainLoop(_window);
-}
-
-void scene::MainLoop(sf::RenderWindow& _window)
-{
-
-}
-
+/***********************
+* Render: Calls draw functions for scene.
+* @author: William de Beer
+* @parameter: Reference to render window.
+********************/
 void scene::Render(sf::RenderWindow& _window)
 {
 	_window.clear();
