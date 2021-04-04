@@ -21,6 +21,7 @@
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
+	m_vPlayers = new std::vector<gameObject*>();
 }
 
 gameScene::~gameScene()
@@ -31,7 +32,7 @@ gameScene::~gameScene()
 	{
 		// Delete vector contents
 		delete* p_it;
-		it = m_vPlayers->erase((it));
+		p_it = m_vPlayers->erase((p_it));
 	}
 	if (m_vPlayers != nullptr)
 	{
@@ -109,7 +110,6 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 			}
 
 		}
-
 
 
 		switch (key)
