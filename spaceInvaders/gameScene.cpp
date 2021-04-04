@@ -30,7 +30,7 @@ gameScene::~gameScene()
 	while (p_it != m_vPlayers->end())
 	{
 		// Delete vector contents
-		delete* it;
+		delete* p_it;
 		it = m_vPlayers->erase((it));
 	}
 	if (m_vPlayers != nullptr)
@@ -109,6 +109,8 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 			}
 
 		}
+
+
 
 		switch (key)
 		{
