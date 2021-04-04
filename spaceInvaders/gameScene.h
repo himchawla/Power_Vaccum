@@ -35,6 +35,7 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
+	std::vector<gameObject*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
 };
 #endif
