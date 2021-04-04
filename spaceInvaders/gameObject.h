@@ -16,6 +16,7 @@
  // Library Includes 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "inputManager.h"
  // Local Includes 
  // This Include 
  // Static Variables 
@@ -27,13 +28,15 @@ class gameObject
 public:
 	gameObject();
 	virtual ~gameObject();
-
+	bool n = false;
 	struct Tranform
 	{
 		sf::Vector2f m_Position;
 		sf::Vector2f m_Velocity;
 		sf::Vector2f m_Accelaration;
 		sf::Vector2f m_Force;
+
+		sf::Vector2f m_Friction;
 		
 		
 		float m_Rotation;
@@ -42,6 +45,8 @@ public:
 
 		bool m_IsKinematic;
 	};
+
+	
 
 	Tranform transform;
 
@@ -55,7 +60,12 @@ public:
 
 	sf::CircleShape* GetCircle();
 	void SetCircle(sf::CircleShape* _circle);
+
+	float Magnitude(sf::Vector2f vec);
+	gameObject(int player);
 private:
+	float m_Bounds_X1 = 0.0f, m_Bounds_X2 = 1920.0f, m_Bounds_Y1 = 0.0f, m_Bounds_Y2 = 1080.0f;
+	inputManager* m_InputHandler;
 	sf::CircleShape* m_TempCirc;
 	sf::Sprite* m_Sprite;
 	sf::Vector2f m_2fPosition;

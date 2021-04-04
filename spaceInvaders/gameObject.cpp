@@ -8,34 +8,57 @@
 // 
 //  File Name   :   gameObject.h
 //  Description :   Parent object for all gameobjects in game.
-//  Author      :   William de Beer
-//  Mail        :   William.Beer@mds.ac.nz
+//  Author      :   William de Beer | Himanshu Chawla
+//  Mail        :   William.Beer@mds.ac.nz | himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
  // Local Includes 
  // This Include 
 #include "gameObject.h"
+#include <math.h>
+#include<iostream>
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
 
-
-gameObject::gameObject()
+float gameObject::Magnitude(sf::Vector2f vec)
 {
+	float mag = sqrt(vec.x * vec.x + vec.y * vec.y);
+	return mag;
+}
+
+gameObject::gameObject(int player)
+{
+	m_InputHandler = new inputManager(player);
 	transform.m_Mass = 1.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+	transform.m_Friction = sf::Vector2f(1.0f, 1.0f);
+	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
 }
 
 gameObject::~gameObject()
 {
 }
 
+/***********************
+* Update: Calculates the physics for the gameObject
+* @author: Himanshu Chawla
+* @parameter: deltaTime
+* @return: N/A
+********************/
 void gameObject::Update(float _dT)
 {
-	transform.m_Accelaration += transform.m_Force * _dT / transform.m_Mass;
+	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
+	
 	transform.m_Velocity += transform.m_Accelaration * _dT;
+	
+	
+//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+
+
 	transform.m_Position += transform.m_Velocity * _dT;
 
+	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	m_TempCirc->setPosition(transform.m_Position);
 }
 

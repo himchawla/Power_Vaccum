@@ -20,7 +20,7 @@
  // Static Function Prototypes 
  // Implementation 
 
-bool inputManager::usingKeyboard[4] = { false };
+bool inputManager::usingKeyboard[4] = { true };
 
 inputManager::inputManager()
 {
