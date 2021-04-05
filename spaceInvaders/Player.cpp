@@ -46,6 +46,8 @@ void Player::Update(float _dT)
 	// Temp local variables
 	float frictionMult = 1.0f;
 	float forceMult = 1.0f;
+	float maxSpeed = 100.0f;
+	float maxAcceleration = 100.0f
 
 	// Get force and acceleration
 	transform.m_Force = m_InputHandler->GetMovementVector() * forceMult;
@@ -53,9 +55,9 @@ void Player::Update(float _dT)
 
 	// Clamp acceleration
 	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
-	if (mag > 100.0f)
+	if (mag > maxAcceleration)
 	{
-		transform.m_Accelaration = (transform.m_Accelaration / mag) * 100.0f;
+		transform.m_Accelaration = (transform.m_Accelaration / mag) * maxAcceleration;
 	}
 
 	// Apply acceleration
@@ -69,9 +71,9 @@ void Player::Update(float _dT)
 
 	// Clamp velocity
 	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
-	if (mag > 100.0f)
+	if (mag > maxSpeed)
 	{
-		transform.m_Velocity = (transform.m_Velocity / mag) * 100.0f;
+		transform.m_Velocity = (transform.m_Velocity / mag) * maxSpeed;
 	}
 
 	// Apply velocity
