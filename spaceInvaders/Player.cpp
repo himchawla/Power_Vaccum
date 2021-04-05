@@ -20,6 +20,10 @@ Player::Player(int _player)
 {
 	m_InputHandler = new inputManager(_player);
 
+	m_fFrictionMult = 1.0f;
+	m_fForceMult = 5.0f;
+	m_fMaxSpeed = 400.0f;
+
 	GetTexture()->loadFromFile("Assets/Players/P1.png");
 	GetSprite()->setTexture(*GetTexture());
 }
@@ -43,13 +47,8 @@ Player::~Player()
 ********************/
 void Player::Update(float _dT)
 {
-	// Temp local variables
-	float frictionMult = 1.0f;
-	float forceMult = 5.0f;
-	float maxSpeed = 400.0f;
-
 	// Get force and acceleration
-	transform.m_Force = m_InputHandler->GetMovementVector() * forceMult;
+	transform.m_Force = m_InputHandler->GetMovementVector() * m_fForceMult;
 	transform.m_Accelaration = (transform.m_Force / transform.m_Mass);
 
 	// Apply acceleration
@@ -59,14 +58,14 @@ void Player::Update(float _dT)
 	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
 	if (mag == 0)
 	{
-		transform.m_Velocity -= (transform.m_Velocity / 1.0f) * transform.m_Mass * frictionMult * _dT;
+		transform.m_Velocity -= (transform.m_Velocity / 1.0f) * transform.m_Mass * m_fFrictionMult * _dT;
 	}
 
 	// Clamp velocity
 	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
-	if (mag > maxSpeed)
+	if (mag > m_fMaxSpeed)
 	{
-		transform.m_Velocity = (transform.m_Velocity / mag) * maxSpeed;
+		transform.m_Velocity = (transform.m_Velocity / mag) * m_fMaxSpeed;
 	}
 
 	// Apply velocity

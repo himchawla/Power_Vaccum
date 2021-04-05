@@ -30,8 +30,8 @@ public:
 
 private:
 	inputManager* m_InputHandler;
-
-
-
+	float m_fFrictionMult = 1.0f;
+	float m_fForceMult = 5.0f;
+	float m_fMaxSpeed = 400.0f;
 };
 
