@@ -38,14 +38,14 @@ Player::~Player()
 
 /***********************
 * Update: Updates Player Position.
-* @author: Himanshu Chawla
+* @author: Himanshu Chawla | William de Beer
 * @parameter: Delta time.
 ********************/
 void Player::Update(float _dT)
 {
 	// Temp local variables
-	float frictionMult = 3.0f;
-	float forceMult = 3.0f;
+	float frictionMult = 1.0f;
+	float forceMult = 5.0f;
 	float maxSpeed = 400.0f;
 
 	// Get force and acceleration
@@ -72,27 +72,4 @@ void Player::Update(float _dT)
 	// Apply velocity
 	transform.m_Position += transform.m_Velocity * _dT;
 	GetSprite()->setPosition(transform.m_Position);
-
-
-
-	//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-
-
-	//std::cout << transform.m_Velocity.x << ", " << transform.m_Velocity.y << std::endl;
-
-	//transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-
-
-
-	//transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
-
-	//transform.m_Velocity += transform.m_Accelaration * _dT;
-
-
-	////	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-
-
-	//transform.m_Position += transform.m_Velocity * _dT;
-
-	//transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 }
