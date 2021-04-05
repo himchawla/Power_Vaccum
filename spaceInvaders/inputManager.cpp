@@ -97,32 +97,30 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 ********************/
 sf::Vector2f inputManager::GetMovementVector(int _player)
 {
-	float x = 0;
-	float y = 0;
+	sf::Vector2f result(0, 0);
 
 	if (usingKeyboard[_player])
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			x -= 100;
+			result.x -= 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			x += 100;
+			result.x += 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			y += 100;
+			result.y += 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			y -= 100;
+			result.y -= 100;
 
-		if (x != 0 && y != 0)
+		float mag = sqrt(pow(result.x, 2) + pow(result.y, 2));
+		if (mag > 100.0f)
 		{
-			x *= sqrt(0.5);
-			y *= sqrt(0.5);
+			result = (result / mag) * 100.0f;
 		}
-
-		return sf::Vector2f(x, y);
+		return result;
 	}
 
-	x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
-	y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
-	return sf::Vector2f(x, y); 
+	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
+	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
+	return result;
 }
 
 /***********************
