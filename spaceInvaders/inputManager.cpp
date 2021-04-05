@@ -88,41 +88,110 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 {
 	SetUsingKeyboard(m_iPlayerIndex, _isUsing);
 }
+/***********************
+* Normalize: Normalizes a given vector
+* @author: Himanshu Chawla
+* @parameter: Vector to normalize
+* @return: N\A
+********************/
+void inputManager::Normalize(sf::Vector2f& vec)
+{
+	float mag = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+	if (mag > 100.0f)
+	{
+		vec = (vec / mag) * 100.0f;
+	}
+}
 
 /***********************
 * GetMovementVector: Obtains movement vector from joystick input.
-* @author: William de Beer
+* @author: William de Beer | Himanshu Chawla
 * @parameter: Player index
 * @return: 2D Vector
 ********************/
 sf::Vector2f inputManager::GetMovementVector(int _player)
 {
-	float x = 0;
-	float y = 0;
+
+	#pragma region Debug-Controller->Keyboard
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+	{
+		usingKeyboard[0] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+	{
+		usingKeyboard[1] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+	{
+		usingKeyboard[2] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+	{
+		usingKeyboard[3] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+	{
+		usingKeyboard[0] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+	{
+		usingKeyboard[1] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+	{
+		usingKeyboard[2] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+	{
+		usingKeyboard[3] = false;
+	}
+	#pragma endregion
+
+
+	sf::Vector2f result(0, 0);
 
 	if (usingKeyboard[_player])
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			x -= 100;
+			result.x -= 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			x += 100;
+			result.x += 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			y += 100;
+			result.y += 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			y -= 100;
+			result.y -= 100;
 
-		if (x != 0 && y != 0)
-		{
-			x *= sqrt(0.5);
-			y *= sqrt(0.5);
-		}
+		Normalize(result);
 
-		return sf::Vector2f(x, y);
+		return result;
 	}
 
-	x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
-	y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
-	return sf::Vector2f(x, y); 
+	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
+	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
+
+	if (result.x < 15.0f && result.x > -15.0f)
+	{
+		result.x = 0;
+	}
+	
+
+	if (result.y < 15.0f && result.y > -15.0f)
+	{
+		result.y = 0;
+	}
+
+	Normalize(result);
+
+
+
+	return result;
 }
 
 /***********************

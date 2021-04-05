@@ -156,6 +156,7 @@
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="inputManager.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="inputManager.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sprite.h" />
   </ItemGroup>

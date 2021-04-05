@@ -21,13 +21,13 @@
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<gameObject*>();
+	m_vPlayers = new std::vector<Player*>();
 }
 
 gameScene::~gameScene()
 {
 
-	std::vector<gameObject*>::iterator p_it = m_vPlayers->begin();
+	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		// Delete vector contents
@@ -72,11 +72,13 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	gameObject* temp = new gameObject();
-	temp->SetCircle(new sf::CircleShape(100.0f));
-	temp->GetCircle()->setFillColor(sf::Color::Green);
-	temp->SetPosition(sf::Vector2f(800, 800));
-	m_vPlayers->push_back(temp);
+	
+	for (int i = 0; i < 4; i++)
+	{
+		Player* player = new Player(i);
+		player->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		m_vPlayers->push_back(player);
+	}
 
 
 	// Start clock
@@ -94,60 +96,11 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		{
 			if (event.type == sf::Event::Closed)
 				_window.close();
-			if (event.type == sf::Event::KeyPressed && event.key.code != sf::Keyboard::Space)
-			{
-				key = event.key.code;
-			}
-
-			if (event.type == sf::Event::KeyReleased && event.key.code != sf::Keyboard::Space)
-			{
-				key = sf::Keyboard::Add;
-			}
-
-			else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
-			{
-				key = sf::Keyboard::Space;
-			}
+			
 
 		}
 
-
-		switch (key)
-		{
-
-		case sf::Keyboard::A:
-		{
-			temp->transform.m_Velocity = sf::Vector2f(-100.0f, 0.0f);
-		}
-		break;
-
-		case sf::Keyboard::D:
-			break;
-		case sf::Keyboard::E:
-			break;
-
-		case sf::Keyboard::S:
-			break;
-
-		case sf::Keyboard::W:
-			break;
-
-		case sf::Keyboard::Space:
-		{
-			temp->transform.m_Force = sf::Vector2f(2.0f, 0.0f);
-		}
-		break;
-
-
-
-		default:
-		{
-			temp->transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-		}
-		break;
-		}
-
-
+		//temp->Update(deltaTime);
 
 		Update(_window, deltaTime);
 		Render(_window);
@@ -156,7 +109,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 
 /***********************
 * Update: Updates objects in the game scene.
-* @author: William de Beer
+* @author: William de Beer | Himanshu Chawla
 * @parameter: Reference to render window, Delta time.
 ********************/
 void gameScene::Update(sf::RenderWindow& _window, float _dT)
@@ -167,6 +120,11 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	{
 		(*it)->Update(_dT);
 		it++;
+	}
+
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(_dT);
 	}
 
 }
@@ -216,7 +174,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		it++;
 	}
 
-	std::vector<gameObject*>::iterator p_it = m_vPlayers->begin();
+	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		if ((*p_it)->GetSprite() != nullptr)

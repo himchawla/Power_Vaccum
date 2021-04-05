@@ -36,6 +36,8 @@ public:
 	bool GetControllerButton(int _button);
 	void SetUsingKeyboard(bool _isUsing);
 
+	static void Normalize(sf::Vector2f& vec);
+
 	// Static Input manager functions
 	static sf::Vector2f GetMovementVector(int _player);
 	static bool GetControllerButton(int _button, int _player);
