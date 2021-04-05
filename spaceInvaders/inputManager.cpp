@@ -16,12 +16,19 @@
  // Local Includes 
  // This Include 
 #include "inputManager.h"
+#include <math.h>
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
 
 bool inputManager::usingKeyboard[4] = { true };
 
+sf::Vector2f Normalize(sf::Vector2f vec)
+{
+	vec.x = vec.x / pow((pow(vec.x, 2) + pow(vec.y, 2)), 1 / 2);
+	vec.y = vec.y / pow((pow(vec.x, 2) + pow(vec.y, 2)), 1 / 2);
+	return vec;
+}
 inputManager::inputManager()
 {
 	m_iPlayerIndex = -1;
@@ -111,18 +118,21 @@ sf::Vector2f inputManager::GetMovementVector(int _player)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			y -= 100;
 
-		if (x != 0 && y != 0)
-		{
-			x *= sqrt(0.5);
-			y *= sqrt(0.5);
-		}
 
-		return sf::Vector2f(x, y);
+		
+		return Normalize(sf::Vector2f(x, y)) * 100.0f;
 	}
+	else
+	{
 
-	x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
-	y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
-	return sf::Vector2f(x, y); 
+		x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
+		y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
+		
+		
+
+	}
+	
+	return sf::Vector2f(x, y);
 }
 
 /***********************

@@ -26,6 +26,8 @@
 class gameObject
 {
 public:
+	
+	gameObject(int player);
 	gameObject();
 	virtual ~gameObject();
 	bool n = false;
@@ -61,10 +63,10 @@ public:
 	sf::CircleShape* GetCircle();
 	void SetCircle(sf::CircleShape* _circle);
 
+
+
 	float Magnitude(sf::Vector2f vec);
-	gameObject(int player);
 private:
-	float m_Bounds_X1 = 0.0f, m_Bounds_X2 = 1920.0f, m_Bounds_Y1 = 0.0f, m_Bounds_Y2 = 1080.0f;
 	inputManager* m_InputHandler;
 	sf::CircleShape* m_TempCirc;
 	sf::Sprite* m_Sprite;

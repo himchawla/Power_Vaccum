@@ -36,6 +36,14 @@ gameObject::gameObject(int player)
 	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
 }
 
+gameObject::gameObject()
+{
+	transform.m_Mass = 1.0f;
+	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+	transform.m_Friction = sf::Vector2f(1.0f, 1.0f);
+	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
+}
+
 gameObject::~gameObject()
 {
 }
@@ -47,9 +55,7 @@ gameObject::~gameObject()
 * @return: N/A
 ********************/
 void gameObject::Update(float _dT)
-{
-	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
-	
+{	
 	transform.m_Velocity += transform.m_Accelaration * _dT;
 	
 	
