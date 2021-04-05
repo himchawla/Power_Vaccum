@@ -63,13 +63,15 @@ public:
 	sf::CircleShape* GetCircle();
 	void SetCircle(sf::CircleShape* _circle);
 
+	sf::Texture* GetTexture();
+	void setTexture(sf::Texture* _texture);
 
 
 	float Magnitude(sf::Vector2f vec);
 private:
-	inputManager* m_InputHandler;
 	sf::CircleShape* m_TempCirc;
 	sf::Sprite* m_Sprite;
+	sf::Texture* m_Texture;
 	sf::Vector2f m_2fPosition;
 	float m_fRotation;
 };

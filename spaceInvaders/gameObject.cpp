@@ -29,11 +29,13 @@ float gameObject::Magnitude(sf::Vector2f vec)
 
 gameObject::gameObject(int player)
 {
-	m_InputHandler = new inputManager(player);
 	transform.m_Mass = 1.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Friction = sf::Vector2f(1.0f, 1.0f);
 	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
+
+	m_Sprite = new sf::Sprite;
+	m_Texture = new sf::Texture;
 }
 
 gameObject::gameObject()
@@ -42,10 +44,15 @@ gameObject::gameObject()
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Friction = sf::Vector2f(1.0f, 1.0f);
 	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
+
+	m_Sprite = new sf::Sprite;
+	m_Texture = new sf::Texture;
 }
 
 gameObject::~gameObject()
 {
+	delete m_Sprite;
+	delete m_Texture;
 }
 
 /***********************
@@ -56,16 +63,19 @@ gameObject::~gameObject()
 ********************/
 void gameObject::Update(float _dT)
 {	
+
 	transform.m_Velocity += transform.m_Accelaration * _dT;
-	
-	
-//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+
+
+	//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
 
 	transform.m_Position += transform.m_Velocity * _dT;
 
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	m_TempCirc->setPosition(transform.m_Position);
+
+	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+	m_Sprite->setPosition(transform.m_Position);
 }
 
 sf::Vector2f gameObject::GetPosition()
@@ -96,4 +106,14 @@ sf::CircleShape* gameObject::GetCircle()
 void gameObject::SetCircle(sf::CircleShape* _circle)
 {
 	m_TempCirc = _circle;
+}
+
+sf::Texture* gameObject::GetTexture()
+{
+	return m_Texture;
+}
+
+void gameObject::setTexture(sf::Texture* _texture)
+{
+	m_Texture = _texture;
 }

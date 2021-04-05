@@ -88,10 +88,24 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 {
 	SetUsingKeyboard(m_iPlayerIndex, _isUsing);
 }
+/***********************
+* Normalize: Normalizes a given vector
+* @author: Himanshu Chawla
+* @parameter: Vector to normalize
+* @return: N\A
+********************/
+void inputManager::Normalize(sf::Vector2f& vec)
+{
+	float mag = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+	if (mag > 100.0f)
+	{
+		vec = (vec / mag) * 100.0f;
+	}
+}
 
 /***********************
 * GetMovementVector: Obtains movement vector from joystick input.
-* @author: William de Beer
+* @author: William de Beer | Himanshu Chawla
 * @parameter: Player index
 * @return: 2D Vector
 ********************/
@@ -110,16 +124,29 @@ sf::Vector2f inputManager::GetMovementVector(int _player)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			result.y -= 100;
 
-		float mag = sqrt(pow(result.x, 2) + pow(result.y, 2));
-		if (mag > 100.0f)
-		{
-			result = (result / mag) * 100.0f;
-		}
+		Normalize(result);
+
 		return result;
 	}
 
 	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
 	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
+
+	if (result.x < 15.0f && result.x > -15.0f)
+	{
+		result.x = 0;
+	}
+	
+
+	if (result.y < 15.0f && result.y > -15.0f)
+	{
+		result.y = 0;
+	}
+
+	Normalize(result);
+
+
+
 	return result;
 }
 

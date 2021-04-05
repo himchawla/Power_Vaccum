@@ -21,13 +21,13 @@
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<gameObject*>();
+	m_vPlayers = new std::vector<Player*>();
 }
 
 gameScene::~gameScene()
 {
 
-	std::vector<gameObject*>::iterator p_it = m_vPlayers->begin();
+	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		// Delete vector contents
@@ -72,11 +72,8 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	gameObject* temp = new gameObject(0);
-	temp->SetCircle(new sf::CircleShape(100.0f));
-	temp->GetCircle()->setFillColor(sf::Color::Green);
-	temp->SetPosition(sf::Vector2f(800, 800));
-	m_vPlayers->push_back(temp);
+	Player* player = new Player(0);
+	m_vPlayers->push_back(player);
 
 
 	// Start clock
@@ -172,7 +169,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		it++;
 	}
 
-	std::vector<gameObject*>::iterator p_it = m_vPlayers->begin();
+	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		if ((*p_it)->GetSprite() != nullptr)

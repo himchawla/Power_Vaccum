@@ -18,6 +18,7 @@
  // Local Includes 
 #include "scene.h"
 #include "gameObject.h"
+#include "Player.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -35,7 +36,7 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
-	std::vector<gameObject*>* m_vPlayers;
+	std::vector<Player*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
 };
 #endif
