@@ -16,8 +16,22 @@
 //This include
 #include "Player.h"
 
+Player::Player(int _player)
+{
+	m_InputHandler = new inputManager(_player);
+
+	GetTexture()->loadFromFile("Assets/Players/P1.png");
+	GetSprite()->setTexture(*GetTexture());
+}
+
+
 Player::~Player()
 {
+	if (m_InputHandler != nullptr)
+	{
+		delete m_InputHandler;
+		m_InputHandler = 0;
+	}
 }
 
 

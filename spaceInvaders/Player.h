@@ -24,17 +24,7 @@ class Player :
 	public gameObject
 {
 public:
-	
-	Player(int player) :gameObject(player)
-	{
-		
-		m_InputHandler = new inputManager(player);
-
-
-		GetTexture()->loadFromFile("Assets/Players/P1.png");
-		GetSprite()->setTexture(*GetTexture());
-	}
-
+	Player(int _player);
 	~Player();
 	void Update(float _dT);
 
