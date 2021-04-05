@@ -72,8 +72,13 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	Player* player = new Player(0);
-	m_vPlayers->push_back(player);
+	
+	for (int i = 0; i < 4; i++)
+	{
+		Player* player = new Player(i);
+		player->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		m_vPlayers->push_back(player);
+	}
 
 
 	// Start clock
@@ -104,7 +109,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 
 /***********************
 * Update: Updates objects in the game scene.
-* @author: William de Beer
+* @author: William de Beer | Himanshu Chawla
 * @parameter: Reference to render window, Delta time.
 ********************/
 void gameScene::Update(sf::RenderWindow& _window, float _dT)

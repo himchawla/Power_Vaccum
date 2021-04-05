@@ -111,6 +111,50 @@ void inputManager::Normalize(sf::Vector2f& vec)
 ********************/
 sf::Vector2f inputManager::GetMovementVector(int _player)
 {
+
+	#pragma region Debug-Controller->Keyboard
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+	{
+		usingKeyboard[0] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+	{
+		usingKeyboard[1] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+	{
+		usingKeyboard[2] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+	{
+		usingKeyboard[3] = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+	{
+		usingKeyboard[0] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+	{
+		usingKeyboard[1] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+	{
+		usingKeyboard[2] = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+	{
+		usingKeyboard[3] = false;
+	}
+	#pragma endregion
+
+
 	sf::Vector2f result(0, 0);
 
 	if (usingKeyboard[_player])

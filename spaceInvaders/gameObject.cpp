@@ -78,15 +78,7 @@ void gameObject::Update(float _dT)
 	m_Sprite->setPosition(transform.m_Position);
 }
 
-sf::Vector2f gameObject::GetPosition()
-{
-	return m_2fPosition;
-}
 
-void gameObject::SetPosition(sf::Vector2f _position)
-{
-	m_2fPosition = _position;
-}
 
 sf::Sprite* gameObject::GetSprite()
 {

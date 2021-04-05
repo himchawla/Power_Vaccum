@@ -1,9 +1,32 @@
+// 
+//  Bachelor of Software Engineering 
+//  Media Design School 
+//  Auckland 
+//  New Zealand 
+// 
+//  (c) 2021 Media Design School 
+// 
+//  File Name   :   Player.h
+//  Description :   Player class inherits from the gameObject class
+//  Author      :   Himanshu Chawla
+//  Mail        :   himanshu.chawla@mds.ac.nz
+// 
+ // Library Includes 
+
+//This include
 #include "Player.h"
 
 Player::~Player()
 {
 }
 
+
+
+/***********************
+* Update: Updates Player Position.
+* @author: Himanshu Chawla
+* @parameter: Delta time.
+********************/
 void Player::Update(float _dT)
 {
 	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
