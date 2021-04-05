@@ -16,19 +16,12 @@
  // Local Includes 
  // This Include 
 #include "inputManager.h"
-#include <math.h>
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
 
-bool inputManager::usingKeyboard[4] = { true };
+bool inputManager::usingKeyboard[4] = { false };
 
-sf::Vector2f Normalize(sf::Vector2f vec)
-{
-	vec.x = vec.x / pow((pow(vec.x, 2) + pow(vec.y, 2)), 1 / 2);
-	vec.y = vec.y / pow((pow(vec.x, 2) + pow(vec.y, 2)), 1 / 2);
-	return vec;
-}
 inputManager::inputManager()
 {
 	m_iPlayerIndex = -1;
@@ -104,35 +97,30 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 ********************/
 sf::Vector2f inputManager::GetMovementVector(int _player)
 {
-	float x = 0;
-	float y = 0;
+	sf::Vector2f result(0, 0);
 
 	if (usingKeyboard[_player])
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			x -= 100;
+			result.x -= 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			x += 100;
+			result.x += 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			y += 100;
+			result.y += 100;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			y -= 100;
+			result.y -= 100;
 
-
-		
-		return Normalize(sf::Vector2f(x, y)) * 100.0f;
+		float mag = sqrt(pow(result.x, 2) + pow(result.y, 2));
+		if (mag > 100.0f)
+		{
+			result = (result / mag) * 100.0f;
+		}
+		return result;
 	}
-	else
-	{
 
-		x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
-		y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
-		
-		
-
-	}
-	
-	return sf::Vector2f(x, y);
+	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
+	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
+	return result;
 }
 
 /***********************
