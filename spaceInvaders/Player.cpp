@@ -47,7 +47,7 @@ void Player::Update(float _dT)
 	float frictionMult = 1.0f;
 	float forceMult = 1.0f;
 	float maxSpeed = 100.0f;
-	float maxAcceleration = 100.0f
+	float maxAcceleration = 100.0f;
 
 	// Get force and acceleration
 	transform.m_Force = m_InputHandler->GetMovementVector() * forceMult;
