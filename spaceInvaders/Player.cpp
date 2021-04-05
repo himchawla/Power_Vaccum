@@ -43,16 +43,61 @@ Player::~Player()
 ********************/
 void Player::Update(float _dT)
 {
-	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
+	// Temp local variables
+	float frictionMult = 1.0f;
+	float forceMult = 1.0f;
 
+	// Get force and acceleration
+	transform.m_Force = m_InputHandler->GetMovementVector() * forceMult;
+	transform.m_Accelaration = (transform.m_Force / transform.m_Mass);
+
+	// Clamp acceleration
+	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
+	if (mag > 100.0f)
+	{
+		transform.m_Accelaration = (transform.m_Accelaration / mag) * 100.0f;
+	}
+
+	// Apply acceleration
 	transform.m_Velocity += transform.m_Accelaration * _dT;
+
+	// Apply friction if not applying force
+	if (mag == 0)
+	{
+		transform.m_Velocity -= (transform.m_Velocity / 1.0f) * transform.m_Mass * frictionMult * _dT;
+	}
+
+	// Clamp velocity
+	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
+	if (mag > 100.0f)
+	{
+		transform.m_Velocity = (transform.m_Velocity / mag) * 100.0f;
+	}
+
+	// Apply velocity
+	transform.m_Position += transform.m_Velocity * _dT;
+	GetSprite()->setPosition(transform.m_Position);
+
 
 
 	//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
 
-	transform.m_Position += transform.m_Velocity * _dT;
+	//std::cout << transform.m_Velocity.x << ", " << transform.m_Velocity.y << std::endl;
 
-	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	GetSprite()->setPosition(transform.m_Position);
+	//transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+
+
+
+	//transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
+
+	//transform.m_Velocity += transform.m_Accelaration * _dT;
+
+
+	////	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+
+
+	//transform.m_Position += transform.m_Velocity * _dT;
+
+	//transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 }
