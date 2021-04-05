@@ -34,6 +34,11 @@ Player::~Player()
 	}
 }
 
+void Player::addForce(sf::Vector2f dir)
+{
+	transform.m_Force = dir;
+}
+
 
 
 /***********************
@@ -43,13 +48,33 @@ Player::~Player()
 ********************/
 void Player::Update(float _dT)
 {
+
+
+	transform.m_Accelaration += transform.m_Force / transform.m_Mass;
+	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+
+	transform.m_Velocity += transform.m_Accelaration;
+
+	if (Magnitude(transform.m_Accelaration) > 0.0f)
+	{
+		if (transform.m_Accelaration.x > 0.1f || transform.m_Accelaration.x < -0.1f)
+		{
+			transform.m_Accelaration.x -= transform.m_Friction.x * (abs(transform.m_Accelaration.x) / transform.m_Accelaration.x);
+		}
+		else
+			transform.m_Accelaration.x = 0.0f;
+
+		if (transform.m_Accelaration.y > 0.1f || transform.m_Accelaration.y < -0.1f)
+		{
+			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y);
+		}
+		else
+		transform.m_Accelaration.y = 0.0f;
+	}
+
 	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
 
-	transform.m_Velocity += transform.m_Accelaration * _dT;
-
-
-	//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-
+	//transform.m_Velocity += transform.m_Accelaration * _dT;
 
 	transform.m_Position += transform.m_Velocity * _dT;
 
