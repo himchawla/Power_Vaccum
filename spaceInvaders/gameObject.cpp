@@ -21,11 +21,6 @@
  // Static Function Prototypes 
  // Implementation 
 
-float gameObject::Magnitude(sf::Vector2f vec)
-{
-	float mag = sqrt(vec.x * vec.x + vec.y * vec.y);
-	return mag;
-}
 
 gameObject::gameObject(int player)
 {
@@ -79,32 +74,37 @@ void gameObject::Update(float _dT)
 }
 
 
-
+//Get Sprite
 sf::Sprite* gameObject::GetSprite()
 {
 	return m_Sprite;
 }
 
+//Set Sprite
 void gameObject::SetSprite(sf::Sprite* _sprite)
 {
 	m_Sprite = _sprite;
 }
 
+//Get Circle
 sf::CircleShape* gameObject::GetCircle()
 {
 	return m_TempCirc;
 }
 
+//Set Circle
 void gameObject::SetCircle(sf::CircleShape* _circle)
 {
 	m_TempCirc = _circle;
 }
 
+//Get Texture
 sf::Texture* gameObject::GetTexture()
 {
 	return m_Texture;
 }
 
+//Set Texture
 void gameObject::setTexture(sf::Texture* _texture)
 {
 	m_Texture = _texture;
