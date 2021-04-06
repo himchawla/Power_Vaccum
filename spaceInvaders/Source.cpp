@@ -31,6 +31,7 @@ int main()
 	sf::Sprite spr;
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML");
 
+
 	gameScene* scene = new gameScene();
 	scene->Initialise(window);
 

@@ -21,6 +21,8 @@
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
+
+	tileManager = new tManager();
 }
 
 gameScene::~gameScene()
@@ -30,8 +32,8 @@ gameScene::~gameScene()
 	while (p_it != m_vPlayers->end())
 	{
 		// Delete vector contents
-		delete* it;
-		it = m_vPlayers->erase((it));
+		delete* p_it;
+		p_it = m_vPlayers->erase((p_it));
 	}
 	if (m_vPlayers != nullptr)
 	{
@@ -166,6 +168,8 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		(*it)->Update(_dT);
 		it++;
 	}
+
+	tileManager->Update(_window, _dT);
 
 }
 
