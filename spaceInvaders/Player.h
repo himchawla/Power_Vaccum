@@ -18,7 +18,7 @@
 
 //Local includes
 #include "gameObject.h"
-
+#include <vector>
 
 class Player :
 	public gameObject
@@ -28,12 +28,13 @@ public:
 	~Player();
 	void addForce(sf::Vector2f dir);
 	void Update(float _dT);
+	void SetPlayerVector(std::vector<Player*>* _player);
 
 	inputManager* m_InputHandler;
 
 private:
+	std::vector<Player*>* m_vPlayers;
 
-
-
+	void PlayerCollision();
 };
 
