@@ -26,10 +26,12 @@ class Player :
 public:
 	Player(int _player);
 	~Player();
+	void addForce(sf::Vector2f dir);
 	void Update(float _dT);
 
-private:
 	inputManager* m_InputHandler;
+
+private:
 
 
 

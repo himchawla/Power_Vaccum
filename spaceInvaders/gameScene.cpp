@@ -65,6 +65,8 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	MainLoop(_window);
 }
 
+bool flag = false;
+
 /***********************
 * MainLoop: Loop which calls update and render functions.
 * @author: William de Beer
@@ -98,6 +100,17 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 				_window.close();
 			
 
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !flag)
+		{
+			m_vPlayers->at(0)->addForce(m_vPlayers->at(0)->m_InputHandler->GetRightVector() * 10.0f);
+			flag = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+		{
+			flag = false;
 		}
 
 		//temp->Update(deltaTime);

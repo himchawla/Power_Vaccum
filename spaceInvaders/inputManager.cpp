@@ -63,6 +63,16 @@ sf::Vector2f inputManager::GetMovementVector()
 	return GetMovementVector(m_iPlayerIndex);
 }
 
+sf::Vector2f inputManager::GetRightVector()
+{
+	if (m_iPlayerIndex == -1)
+	{
+		std::cout << "Error: Input manager recieved no player index." << std::endl;
+		return sf::Vector2f(0, 0);
+	}
+	return GetRightVector(m_iPlayerIndex);
+}
+
 /***********************
 * GetControllerButton: Returns bool value indicating whether or not button is being pressed.
 * @author: William de Beer
@@ -175,6 +185,8 @@ sf::Vector2f inputManager::GetMovementVector(int _player)
 
 	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
 	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
+	
+	//std::cout << result.x << "\n";
 
 	if (result.x < 15.0f && result.x > -15.0f)
 	{
@@ -193,6 +205,51 @@ sf::Vector2f inputManager::GetMovementVector(int _player)
 
 	return result;
 }
+
+sf::Vector2f inputManager::GetRightVector(int _player)
+{
+
+
+	sf::Vector2f result(0, 0);
+
+	if (usingKeyboard[_player])
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			result.x -= 100;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			result.x += 100;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			result.y += 100;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			result.y -= 100;
+
+		Normalize(result);
+
+		return result;
+	}
+
+	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::U);
+	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::V);
+
+	std::cout << result.x << "\n";
+	if (result.x < 15.0f && result.x > -15.0f)
+	{
+		result.x = 0;
+	}
+
+
+	if (result.y < 15.0f && result.y > -15.0f)
+	{
+		result.y = 0;
+	}
+
+	Normalize(result);
+
+
+
+	return result;
+}
+
 
 /***********************
 * GetControllerButton: Returns bool value indicating whether or not button is being pressed.
