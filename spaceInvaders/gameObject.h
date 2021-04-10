@@ -54,9 +54,7 @@ public:
 
 	void Update(float _dT);
 
-	sf::Vector2f GetPosition();
-	void SetPosition(sf::Vector2f _position);
-
+	
 	sf::Sprite* GetSprite();
 	void SetSprite(sf::Sprite* _sprite);
 
@@ -72,7 +70,7 @@ private:
 	sf::CircleShape* m_TempCirc;
 	sf::Sprite* m_Sprite;
 	sf::Texture* m_Texture;
-	sf::Vector2f m_2fPosition;
-	float m_fRotation;
+//	sf::Vector2f m_2fPosition;
+//	float m_fRotation;
 };
 #endif

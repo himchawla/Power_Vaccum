@@ -29,6 +29,7 @@ public:
 	void addForce(sf::Vector2f dir);
 	void Update(float _dT);
 
+	//This needs to go in private variable once collisions are applied
 	inputManager* m_InputHandler;
 
 private:
