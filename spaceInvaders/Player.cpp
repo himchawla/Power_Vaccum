@@ -15,17 +15,15 @@
 
 //This include
 #include "Player.h"
+#include <iostream>
 
 Player::Player(int _player)
 {
 	m_InputHandler = new inputManager(_player);
 
-	m_fFrictionMult = 1.0f;
-	m_fForceMult = 5.0f;
-	m_fMaxSpeed = 400.0f;
-
 	GetTexture()->loadFromFile("Assets/Players/P1.png");
 	GetSprite()->setTexture(*GetTexture());
+	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
 }
 
 
@@ -38,37 +36,80 @@ Player::~Player()
 	}
 }
 
+void Player::addForce(sf::Vector2f dir)
+{
+	transform.m_Force = dir;
+}
+
 
 
 /***********************
 * Update: Updates Player Position.
-* @author: Himanshu Chawla | William de Beer
+* @author: Himanshu Chawla
 * @parameter: Delta time.
 ********************/
 void Player::Update(float _dT)
 {
-	// Get force and acceleration
-	transform.m_Force = m_InputHandler->GetMovementVector() * m_fForceMult;
-	transform.m_Accelaration = (transform.m_Force / transform.m_Mass);
+	PlayerCollision();
+	
+	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+	transform.m_Accelaration += transform.m_Force / transform.m_Mass;
+	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
-	// Apply acceleration
-	transform.m_Velocity += transform.m_Accelaration * _dT;
+	transform.m_Velocity += transform.m_Accelaration;
 
-	// Apply friction if not applying force
-	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
-	if (mag == 0)
+	if (Magnitude(transform.m_Accelaration) > 0.0f)
 	{
-		transform.m_Velocity -= (transform.m_Velocity / 1.0f) * transform.m_Mass * m_fFrictionMult * _dT;
+		if (transform.m_Accelaration.x > 0.1f || transform.m_Accelaration.x < -0.1f)
+		{
+			transform.m_Accelaration.x -= transform.m_Friction.x * (abs(transform.m_Accelaration.x) / transform.m_Accelaration.x);
+		}
+		else
+			transform.m_Accelaration.x = 0.0f;
+
+		if (transform.m_Accelaration.y > 0.1f || transform.m_Accelaration.y < -0.1f)
+		{
+			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y) ;
+		}
+		else
+		transform.m_Accelaration.y = 0.0f;
 	}
 
-	// Clamp velocity
-	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
-	if (mag > m_fMaxSpeed)
-	{
-		transform.m_Velocity = (transform.m_Velocity / mag) * m_fMaxSpeed;
-	}
+	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
 
-	// Apply velocity
+	//transform.m_Velocity += transform.m_Accelaration * _dT;
+
 	transform.m_Position += transform.m_Velocity * _dT;
+
 	GetSprite()->setPosition(transform.m_Position);
+}
+
+void Player::SetPlayerVector(std::vector<Player*>* _player)
+{
+	m_vPlayers = _player;
+}
+
+void Player::PlayerCollision()
+{
+	float selfSpeed = Magnitude(transform.m_Velocity);
+	std::cout << selfSpeed << std::endl;
+	for (auto i : *m_vPlayers)
+	{
+		if(i != this)
+		{
+			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;
+
+			sf::Vector2f DistanceCalc = i->transform.m_Position - transform.m_Position;
+			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
+
+
+			float collSpeed = Magnitude(i->transform.m_Velocity);
+			if (Distance <= MinDistance)
+			{	
+				DistanceCalc = DistanceCalc / Distance;
+
+				i->addForce(transform.m_Velocity * 1.0f + DistanceCalc * selfSpeed * 1.0f - i->transform.m_Velocity * 1.0f);
+			}
+		}
+	}
 }

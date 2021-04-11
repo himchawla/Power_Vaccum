@@ -18,7 +18,7 @@
 
 //Local includes
 #include "gameObject.h"
-
+#include <vector>
 
 class Player :
 	public gameObject
@@ -26,12 +26,15 @@ class Player :
 public:
 	Player(int _player);
 	~Player();
+	void addForce(sf::Vector2f dir);
 	void Update(float _dT);
+	void SetPlayerVector(std::vector<Player*>* _player);
+
+	inputManager* m_InputHandler;
 
 private:
-	inputManager* m_InputHandler;
-	float m_fFrictionMult = 1.0f;
-	float m_fForceMult = 5.0f;
-	float m_fMaxSpeed = 400.0f;
+	std::vector<Player*>* m_vPlayers;
+
+	void PlayerCollision();
 };
 

@@ -21,6 +21,10 @@
  // Static Function Prototypes 
  // Implementation 
 
+float gameObject::Magnitude(sf::Vector2f vec)
+{
+	return sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+}
 
 gameObject::gameObject(int player)
 {
