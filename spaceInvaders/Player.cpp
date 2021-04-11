@@ -102,7 +102,7 @@ void Player::PlayerCollision()
 			std::cout << transform.m_Force.x << std::endl;
 			if (Distance <= MinDistance)
 			{	
-				i->transform.m_Velocity = transform.m_Velocity;
+				addForce(i->transform.m_Velocity);
 				std::cout << "Bump\n";
 				//yeet
 			}
