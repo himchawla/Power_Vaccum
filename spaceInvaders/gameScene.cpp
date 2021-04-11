@@ -75,10 +75,11 @@ bool flag = false;
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
 	
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		Player* player = new Player(i);
 		player->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		player->SetPlayerVector(m_vPlayers);
 		m_vPlayers->push_back(player);
 	}
 

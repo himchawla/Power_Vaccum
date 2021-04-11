@@ -15,6 +15,7 @@
 
 //This include
 #include "Player.h"
+#include <iostream>
 
 Player::Player(int _player)
 {
@@ -22,6 +23,7 @@ Player::Player(int _player)
 
 	GetTexture()->loadFromFile("Assets/Players/P1.png");
 	GetSprite()->setTexture(*GetTexture());
+	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
 }
 
 
@@ -49,7 +51,6 @@ void Player::addForce(sf::Vector2f dir)
 void Player::Update(float _dT)
 {
 
-
 	transform.m_Accelaration += transform.m_Force / transform.m_Mass;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
@@ -74,10 +75,37 @@ void Player::Update(float _dT)
 
 	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
 
+	PlayerCollision();
 	//transform.m_Velocity += transform.m_Accelaration * _dT;
 
 	transform.m_Position += transform.m_Velocity * _dT;
 
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	GetSprite()->setPosition(transform.m_Position);
+}
+
+void Player::SetPlayerVector(std::vector<Player*>* _player)
+{
+	m_vPlayers = _player;
+}
+
+void Player::PlayerCollision()
+{
+	for (auto i : *m_vPlayers)
+	{
+		if(i != this)
+		{
+			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;
+
+			sf::Vector2f DistanceCalc = transform.m_Position - i->transform.m_Position;
+			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
+			std::cout << transform.m_Force.x << std::endl;
+			if (Distance <= MinDistance)
+			{	
+				addForce(i->transform.m_Velocity);
+				std::cout << "Bump\n";
+				//yeet
+			}
+		}
+	}
 }
