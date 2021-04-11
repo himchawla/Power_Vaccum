@@ -1,3 +1,5 @@
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
 // 
 //  Bachelor of Software Engineering 
 //  Media Design School 
@@ -14,28 +16,28 @@
  // Library Includes 
 
 
-#pragma once
+
 
 //Local includes
 #include "gameObject.h"
 #include <vector>
 
-class Player :
+class player :
 	public gameObject
 {
 public:
-	Player(int _player);
-	~Player();
+	player(int _player);
+	~player();
 	void addForce(sf::Vector2f dir);
 	void Update(float _dT);
-	void SetPlayerVector(std::vector<Player*>* _player);
+	void SetPlayerVector(std::vector<player*>* _player);
 
 	//This needs to go in private variable once collisions are applied
 	inputManager* m_InputHandler;
 
 private:
-	std::vector<Player*>* m_vPlayers;
-
 	void PlayerCollision();
+	std::vector<player*>* m_vPlayers;
 };
 
+#endif
