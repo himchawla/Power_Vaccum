@@ -99,9 +99,7 @@ void Player::Update(float _dT)
 		transform.m_Accelaration = (transform.m_Accelaration / mag) * 800.0f;
 	}
 
-
 	transform.m_Velocity += transform.m_Accelaration;
-
 	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
 
 	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
