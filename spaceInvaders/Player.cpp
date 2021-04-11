@@ -17,8 +17,9 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(int _player)
+player::player(int _player)
 {
+	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
 
 	GetTexture()->loadFromFile("Assets/Players/Roomba.png");
@@ -46,7 +47,7 @@ Player::Player(int _player)
 }
 
 
-Player::~Player()
+player::~player()
 {
 	if (m_InputHandler != nullptr)
 	{
@@ -55,19 +56,17 @@ Player::~Player()
 	}
 }
 
-void Player::addForce(sf::Vector2f dir)
+void player::addForce(sf::Vector2f dir)
 {
 	transform.m_Force = dir;
 }
-
-
 
 /***********************
 * Update: Updates Player Position.
 * @author: Himanshu Chawla
 * @parameter: Delta time.
 ********************/
-void Player::Update(float _dT)
+void player::Update(float _dT)
 {
 	PlayerCollision();
 
@@ -113,12 +112,12 @@ void Player::Update(float _dT)
 	GetSprite()->setPosition(transform.m_Position);
 }
 
-void Player::SetPlayerVector(std::vector<Player*>* _player)
+void player::SetPlayerVector(std::vector<player*>* _player)
 {
 	m_vPlayers = _player;
 }
 
-void Player::PlayerCollision()
+void player::PlayerCollision()
 {
 	float selfSpeed = Magnitude(transform.m_Velocity);
 	std::cout << selfSpeed << std::endl;

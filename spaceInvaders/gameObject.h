@@ -28,12 +28,10 @@
 class gameObject
 {
 public:
-	
-	gameObject(int player);
 	gameObject();
 	virtual ~gameObject();
 	bool n = false;
-	struct Tranform
+	struct Transform
 	{
 		sf::Vector2f m_Position;
 		sf::Vector2f m_Velocity;
@@ -49,32 +47,19 @@ public:
 
 		bool m_IsKinematic;
 	};
-
-	
-
-	Tranform transform;
+	Transform transform;
 
 	void Update(float _dT);
-
-	sf::Vector2f GetPosition();
-	void SetPosition(sf::Vector2f _position);
 
 	sf::Sprite* GetSprite();
 	void SetSprite(sf::Sprite* _sprite);
 
-	sf::CircleShape* GetCircle();
-	void SetCircle(sf::CircleShape* _circle);
-
 	sf::Texture* GetTexture();
 	void setTexture(sf::Texture* _texture);
 
-
-	float Magnitude(sf::Vector2f vec);
+	float Magnitude(sf::Vector2f _vec);
 private:
-	sf::CircleShape* m_TempCirc;
 	sf::Sprite* m_Sprite;
 	sf::Texture* m_Texture;
-	sf::Vector2f m_2fPosition;
-	float m_fRotation;
 };
 #endif

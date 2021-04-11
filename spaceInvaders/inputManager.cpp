@@ -98,6 +98,7 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 {
 	SetUsingKeyboard(m_iPlayerIndex, _isUsing);
 }
+
 /***********************
 * Normalize: Normalizes a given vector
 * @author: Himanshu Chawla

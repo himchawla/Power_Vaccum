@@ -21,7 +21,7 @@
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<Player*>();
+	m_vPlayers = new std::vector<player*>();
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 }
@@ -29,7 +29,7 @@ gameScene::gameScene()
 gameScene::~gameScene()
 {
 
-	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
+	std::vector<player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		// Delete vector contents
@@ -90,12 +90,12 @@ bool flag = false;
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
 	
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		Player* player = new Player(i);
-		player->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		player->SetPlayerVector(m_vPlayers);
-		m_vPlayers->push_back(player);
+		player* newPlayer = new player(i);
+		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		newPlayer->SetPlayerVector(m_vPlayers);
+		m_vPlayers->push_back(newPlayer);
 	}
 
 
@@ -185,23 +185,15 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		{
 			_window.draw(*(*it)->GetSprite());
 		}
-		else if ((*it)->GetCircle() != nullptr) // Debug circle
-		{
-			_window.draw(*(*it)->GetCircle());
-		}
 		it++;
 	}
 
-	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
+	std::vector<player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		if ((*p_it)->GetSprite() != nullptr)
 		{
 			_window.draw(*(*p_it)->GetSprite());
-		}
-		else if ((*p_it)->GetCircle() != nullptr) // Debug circle
-		{
-			_window.draw(*(*p_it)->GetCircle());
 		}
 		p_it++;
 	}
