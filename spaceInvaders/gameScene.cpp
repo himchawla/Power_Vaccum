@@ -22,6 +22,8 @@ gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
 	m_vPlayers = new std::vector<Player*>();
+	m_texBackground = new sf::Texture();
+	m_sprBackground = new sf::Sprite();
 }
 
 gameScene::~gameScene()
@@ -52,6 +54,17 @@ gameScene::~gameScene()
 		delete m_vObjects;
 		m_vObjects = 0;
 	}
+
+	if (m_texBackground != nullptr)
+	{
+		delete m_texBackground;
+		m_texBackground = 0;
+	}
+	if (m_sprBackground != nullptr)
+	{
+		delete m_sprBackground;
+		m_sprBackground = 0;
+	}
 }
 
 /***********************
@@ -61,7 +74,9 @@ gameScene::~gameScene()
 ********************/
 void gameScene::Initialise(sf::RenderWindow& _window)
 {
-
+	m_texBackground->loadFromFile("Assets/BG.png");
+	m_sprBackground->setTexture(*m_texBackground);
+	m_sprBackground->setPosition(0, 0);
 	MainLoop(_window);
 }
 
@@ -75,7 +90,7 @@ bool flag = false;
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
 	
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		Player* player = new Player(i);
 		player->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
@@ -150,20 +165,9 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 ********************/
 void gameScene::DrawBackground(sf::RenderWindow& _window)
 {
-	//// Vector of background objects 
-	//std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	//while (it != m_vObjects->end())
-	//{
-	//	if ((*it)->GetSprite() != nullptr)
-	//	{
-	//		_window.draw(*(*it)->GetSprite());
-	//	}
-	//	else if ((*it)->GetCircle() != nullptr) // Debug circle
-	//	{
-	//		_window.draw(*(*it)->GetCircle());
-	//	}
-	//	it++;
-	//}
+	_window.draw(*m_sprBackground);
+	//// Vector of background objects (if any) 
+
 }
 
 /***********************

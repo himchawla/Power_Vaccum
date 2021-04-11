@@ -38,5 +38,7 @@ private:
 
 	std::vector<Player*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
+	sf::Texture* m_texBackground;
+	sf::Sprite* m_sprBackground;
 };
 #endif

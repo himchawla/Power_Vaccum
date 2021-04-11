@@ -24,6 +24,7 @@
  // Static Function Prototypes 
  // Implementation 
 
+#define PI 3.14159265
 class gameObject
 {
 public:
