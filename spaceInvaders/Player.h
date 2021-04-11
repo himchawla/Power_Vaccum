@@ -28,7 +28,7 @@ class player :
 public:
 	player(int _player);
 	~player();
-	void addForce(sf::Vector2f dir);
+	void AddForce(sf::Vector2f _dir);
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
 

@@ -120,7 +120,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !flag)
 		{
-			m_vPlayers->at(0)->addForce(m_vPlayers->at(0)->m_InputHandler->GetRightVector() * 10.0f);
+			m_vPlayers->at(0)->AddForce(m_vPlayers->at(0)->m_InputHandler->GetRightVector() * 10.0f);
 			flag = true;
 		}
 

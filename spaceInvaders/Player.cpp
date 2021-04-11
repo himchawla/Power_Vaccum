@@ -21,7 +21,7 @@ player::player(int _player)
 {
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
-
+	transform.m_Mass = 15.0f;
 	GetTexture()->loadFromFile("Assets/Players/Roomba.png");
 	GetSprite()->setTexture(*GetTexture());
 	GetSprite()->setScale(64.0f / GetTexture()->getSize().x, 64.0f / GetTexture()->getSize().y);
@@ -56,9 +56,15 @@ player::~player()
 	}
 }
 
-void player::addForce(sf::Vector2f dir)
+
+/***********************
+* Update: AddForce
+* @author: Himanshu Chawla
+* @parameter: direction
+********************/
+void player::AddForce(sf::Vector2f _dir)
 {
-	transform.m_Force = dir;
+	transform.m_Force = _dir;
 }
 
 /***********************
@@ -74,6 +80,8 @@ void player::Update(float _dT)
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Accelaration += (transform.m_Force / transform.m_Mass);
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
+
+
 
 	if (Magnitude(transform.m_Accelaration) > 0.0f)
 	{
@@ -91,6 +99,7 @@ void player::Update(float _dT)
 		else
 			transform.m_Accelaration.y = 0.0f;
 	}
+
 
 	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
 	if (mag > 800.0f)
@@ -136,7 +145,7 @@ void player::PlayerCollision()
 			{
 				DistanceCalc = DistanceCalc / Distance;
 
-				i->addForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);
+				i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);
 			}
 		}
 	}

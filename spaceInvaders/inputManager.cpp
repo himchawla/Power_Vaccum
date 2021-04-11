@@ -105,12 +105,12 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 * @parameter: Vector to normalize
 * @return: N\A
 ********************/
-void inputManager::Normalize(sf::Vector2f& vec)
+void inputManager::Normalize(sf::Vector2f& _vec)
 {
-	float mag = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+	float mag = sqrt(pow(_vec.x, 2) + pow(_vec.y, 2));
 	if (mag > 100.0f)
 	{
-		vec = (vec / mag) * 100.0f;
+		_vec = (_vec / mag) * 100.0f;
 	}
 }
 
