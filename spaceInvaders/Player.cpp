@@ -50,7 +50,6 @@ void Player::addForce(sf::Vector2f dir)
 ********************/
 void Player::Update(float _dT)
 {
-
 	PlayerCollision();
 	
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
@@ -70,7 +69,7 @@ void Player::Update(float _dT)
 
 		if (transform.m_Accelaration.y > 0.1f || transform.m_Accelaration.y < -0.1f)
 		{
-			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y);
+			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y) ;
 		}
 		else
 		transform.m_Accelaration.y = 0.0f;
@@ -92,21 +91,24 @@ void Player::SetPlayerVector(std::vector<Player*>* _player)
 
 void Player::PlayerCollision()
 {
+	float selfSpeed = Magnitude(transform.m_Velocity);
+	std::cout << selfSpeed << std::endl;
 	for (auto i : *m_vPlayers)
 	{
 		if(i != this)
 		{
 			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;
 
-			sf::Vector2f DistanceCalc = transform.m_Position - i->transform.m_Position;
+			sf::Vector2f DistanceCalc = i->transform.m_Position - transform.m_Position;
 			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
-			
+
+
+			float collSpeed = Magnitude(i->transform.m_Velocity);
 			if (Distance <= MinDistance)
 			{	
-				addForce(i->transform.m_Velocity);
-				addForce(-transform.m_Velocity * 2.0f);
-				std::cout << "Bump\n";
-				//yeet
+				DistanceCalc = DistanceCalc / Distance;
+
+				i->addForce(transform.m_Velocity * 1.0f + DistanceCalc * selfSpeed * 1.0f - i->transform.m_Velocity * 1.0f);
 			}
 		}
 	}
