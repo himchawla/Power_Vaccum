@@ -20,6 +20,7 @@
 
 //Local includes
 #include "gameObject.h"
+#include "battery.h"
 #include <vector>
 
 class player :
@@ -31,13 +32,20 @@ public:
 	void AddForce(sf::Vector2f _dir);
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
+	void SetBatteryVector(std::vector<battery*>* _player);
 
-	//This needs to go in private variable once collisions are applied
-	inputManager* m_InputHandler;
+
+	battery::ability m_ability;
 
 private:
+	
+	float m_abilityTimer;
+	inputManager* m_InputHandler;
 	void PlayerCollision();
+	void BatteryCollision();
 	std::vector<player*>* m_vPlayers;
+	std::vector<battery*>* m_vBatteries;
+
 };
 
 #endif

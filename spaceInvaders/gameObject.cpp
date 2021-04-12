@@ -28,7 +28,7 @@ gameObject::gameObject()
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Friction = sf::Vector2f(10.0f, 10.0f);
 	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
-
+	enabled = true;
 	m_Sprite = new sf::Sprite;
 	m_Texture = new sf::Texture;
 }
@@ -57,6 +57,15 @@ void gameObject::Update(float _dT)
 	m_Sprite->setPosition(transform.m_Position);
 }
 
+void gameObject::Draw(sf::RenderWindow& _window)
+{
+	if (enabled && m_Sprite != nullptr)
+	{
+		_window.draw(*m_Sprite);
+		
+	}
+}
+
 // Get magnitude
 float gameObject::Magnitude(sf::Vector2f _vec)
 {
@@ -82,7 +91,27 @@ sf::Texture* gameObject::GetTexture()
 }
 
 //Set Texture
-void gameObject::setTexture(sf::Texture* _texture)
+void gameObject::SetTexture(sf::Texture* _texture)
 {
 	m_Texture = _texture;
+}
+
+
+/***********************
+* Update: Sets the sprite and Texture
+* @author: Himanshu Chawla
+* @parameter: address
+* @return: N/A
+********************/
+void gameObject::SetSpriteFromFile(std::string _address)
+{
+	GetTexture()->loadFromFile(_address);
+	GetSprite()->setTexture(*GetTexture());
+	GetSprite()->setScale(64.0f / GetTexture()->getSize().x, 64.0f / GetTexture()->getSize().y);
+	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
+}
+
+void gameObject::Destroy()
+{
+	enabled = false;
 }

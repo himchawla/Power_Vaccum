@@ -22,10 +22,9 @@ player::player(int _player)
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
 	transform.m_Mass = 1.0f;
-	GetTexture()->loadFromFile("Assets/Players/Roomba.png");
-	GetSprite()->setTexture(*GetTexture());
-	GetSprite()->setScale(64.0f / GetTexture()->getSize().x, 64.0f / GetTexture()->getSize().y);
-	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
+	SetSpriteFromFile("Assets/Players/Roomba.png");
+	m_ability = battery::ability::none;
+	m_abilityTimer = 0.0f;
 
 	switch (_player)
 	{
@@ -75,6 +74,9 @@ void player::AddForce(sf::Vector2f _dir)
 void player::Update(float _dT)
 {
 	PlayerCollision();
+	BatteryCollision();
+
+	
 
 	float accelMult = 400.0f;
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
@@ -126,6 +128,11 @@ void player::SetPlayerVector(std::vector<player*>* _player)
 	m_vPlayers = _player;
 }
 
+void player::SetBatteryVector(std::vector<battery*>* _battery)
+{
+	m_vBatteries = _battery;
+}
+
 void player::PlayerCollision()
 {
 	float selfSpeed = Magnitude(transform.m_Velocity);
@@ -148,4 +155,34 @@ void player::PlayerCollision()
 			}
 		}
 	}
+}
+
+
+
+void player::BatteryCollision()
+{
+	float selfSpeed = Magnitude(transform.m_Velocity);
+	std::cout << selfSpeed << std::endl;
+	std::vector<battery*>::iterator it = m_vBatteries->begin();
+	while (it != m_vBatteries->end())
+	{
+		float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;
+
+		sf::Vector2f DistanceCalc = (*it)->transform.m_Position - transform.m_Position;
+		float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
+		
+
+		float collSpeed = Magnitude((*it)->transform.m_Velocity);
+		if (Distance <= MinDistance)
+		{
+			m_abilityTimer = (*it)->GetAbilityTimer();
+			m_ability = (*it)->m_ability;
+			delete (*it);
+			m_vBatteries->erase(it);
+			break;
+		}
+
+		it++;
+	}
+	
 }

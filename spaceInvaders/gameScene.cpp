@@ -24,6 +24,7 @@ gameScene::gameScene()
 	m_vPlayers = new std::vector<player*>();
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+	m_vBatteries = new std::vector<battery*>();
 }
 
 gameScene::~gameScene()
@@ -95,8 +96,14 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		player* newPlayer = new player(i);
 		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
 		newPlayer->SetPlayerVector(m_vPlayers);
+		newPlayer->SetBatteryVector(m_vBatteries);
 		m_vPlayers->push_back(newPlayer);
+		
 	}
+
+	battery* bat = new battery();
+	bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
+	m_vBatteries->push_back(bat);
 
 
 	// Start clock
@@ -118,16 +125,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !flag)
-		{
-			m_vPlayers->at(0)->AddForce(m_vPlayers->at(0)->m_InputHandler->GetRightVector() * 10.0f);
-			flag = true;
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-		{
-			flag = false;
-		}
+		
 
 		//temp->Update(deltaTime);
 
@@ -152,6 +150,11 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	}
 
 	for (auto i : *m_vPlayers)
+	{
+		i->Update(_dT);
+	}
+
+	for (auto i : *m_vBatteries)
 	{
 		i->Update(_dT);
 	}
@@ -183,7 +186,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 	{
 		if ((*it)->GetSprite() != nullptr)
 		{
-			_window.draw(*(*it)->GetSprite());
+			(*it)->Draw(_window);
 		}
 		it++;
 	}
@@ -191,11 +194,13 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 	std::vector<player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
-		if ((*p_it)->GetSprite() != nullptr)
-		{
-			_window.draw(*(*p_it)->GetSprite());
-		}
+		(*p_it)->Draw(_window);
 		p_it++;
+	}
+
+	for (auto b_it : *m_vBatteries)
+	{
+		b_it->Draw(_window);
 	}
 }
 
