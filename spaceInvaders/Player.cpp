@@ -12,23 +12,21 @@
 //  Mail        :   himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
-#include <iostream>
- // This include
+
+//This include
 #include "Player.h"
+#include <iostream>
 
 player::player(int _player)
 {
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
 	transform.m_Mass = 5.0f;
-
-	// Load texture and set up sprite
 	GetTexture()->loadFromFile("Assets/Players/Roomba.png");
 	GetSprite()->setTexture(*GetTexture());
 	GetSprite()->setScale(64.0f / GetTexture()->getSize().x, 64.0f / GetTexture()->getSize().y);
 	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
 
-	// Set sprite colour
 	switch (_player)
 	{
 	case 0:
@@ -76,81 +74,87 @@ void player::AddForce(sf::Vector2f _dir)
 ********************/
 void player::Update(float _dT)
 {
+
+	//Check Collisions
 	PlayerCollision();
 
+	//Reset Velocity
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	transform.m_Accelaration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
+	
+	//Calculate Accekaration from force
+	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
+	
+	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
-	if (Magnitude(transform.m_Accelaration) > 0.0f)
-	{
-		if (transform.m_Accelaration.x > 0.1f || transform.m_Accelaration.x < -0.1f)
-		{
-			transform.m_Accelaration.x -= transform.m_Friction.x * (abs(transform.m_Accelaration.x) / transform.m_Accelaration.x) * _dT * 500.0f;
-		}
-		else
-			transform.m_Accelaration.x = 0.0f;
 
-		if (transform.m_Accelaration.y > 0.1f || transform.m_Accelaration.y < -0.1f)
+	//Retardation
+	if (Magnitude(transform.m_Acceleration) > 0.0f)
+	{
+		if (transform.m_Acceleration.x > 0.1f || transform.m_Acceleration.x < -0.1f)
 		{
-			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y) * _dT * 500.0f;
+			transform.m_Acceleration.x -= transform.m_Friction.x * (abs(transform.m_Acceleration.x) / transform.m_Acceleration.x) * _dT * 500.0f;
 		}
 		else
-			transform.m_Accelaration.y = 0.0f;
+			transform.m_Acceleration.x = 0.0f;
+
+		if (transform.m_Acceleration.y > 0.1f || transform.m_Acceleration.y < -0.1f)
+		{
+			transform.m_Acceleration.y -= transform.m_Friction.y * (abs(transform.m_Acceleration.y) / transform.m_Acceleration.y) * _dT * 500.0f;
+		}
+		else
+			transform.m_Acceleration.y = 0.0f;
 	}
 
-	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
+	//Clamp Acceleration
+	float mag = sqrt(pow(transform.m_Acceleration.x, 2) + pow(transform.m_Acceleration.y, 2));
 	if (mag > 800.0f)
 	{
-		transform.m_Accelaration = (transform.m_Accelaration / mag) * 800.0f;
+		transform.m_Acceleration = (transform.m_Acceleration / mag) * 800.0f;
 	}
 
-	transform.m_Velocity += transform.m_Accelaration;
+	transform.m_Velocity += transform.m_Acceleration;
 	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
 
+	//Clamp Velocity
 	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
 	if (mag > 500.0f)
 	{
 		transform.m_Velocity = (transform.m_Velocity / mag) * 500.0f;
 	}
 
+	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;
 
+	//Update sprite position
 	GetSprite()->setPosition(transform.m_Position);
 }
 
-/***********************
-* Update: creates a Vector of all the players
-* @author: Neel Kolhe
-* parameters: Vector
-********************/
 void player::SetPlayerVector(std::vector<player*>* _player)
 {
-	m_vPlayers = _player;			//pushes the players onto a vector for checking the player collision
+	m_vPlayers = _player;
 }
 
-/***********************
-* Update: Checks Player Collision
-* @author: Neel Kolhe
-********************/
 void player::PlayerCollision()
 {
-	float selfSpeed = Magnitude(transform.m_Velocity);		//sets the speed of the player
-	std::cout << selfSpeed << std::endl;					//writes the speed in the console
-	for (auto i : *m_vPlayers)								//logs the opposing player
+	float selfSpeed = Magnitude(transform.m_Velocity);
+	std::cout << selfSpeed << std::endl;
+	for (auto i : *m_vPlayers)
 	{
-		if (i != this)										//checks if the player is not the opposing
+		if (i != this)
 		{
-			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;		//calculates the minimum distance needed for collision between the two units
+			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;
 
-			sf::Vector2f DistanceCalc = i->transform.m_Position - transform.m_Position;		//calculates the distance between the two positions
-			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));			//gets the magnitude of the two positions
+			sf::Vector2f DistanceCalc = i->transform.m_Position - transform.m_Position;
+			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
 
-			float collSpeed = Magnitude(i->transform.m_Velocity);							//makes a float for the collspeed
-			if (Distance <= MinDistance)					//if the two objects are colliding
+
+			float collSpeed = Magnitude(i->transform.m_Velocity);
+			if (Distance <= MinDistance)
 			{
-				DistanceCalc = DistanceCalc / Distance;		//gets the distance between the two units
-				i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
+				DistanceCalc = DistanceCalc / Distance;
+
+				i->AddForce(transform.m_Velocity * 0.4f + DistanceCalc * selfSpeed * 0.4f - i->transform.m_Velocity * 0.25f);
 			}
 		}
 	}
