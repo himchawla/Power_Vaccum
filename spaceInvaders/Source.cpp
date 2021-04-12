@@ -7,9 +7,9 @@
 //  (c) 2021 Media Design School 
 // 
 //  File Name   :   Source.cpp
-//  Description :   Main cpp
-//  Author      :   Himanshu Chawala
-//  Mail        :   *email here
+//  Description :   Main 
+//  Author      :   William de Beer
+//  Mail        :   William.Beer@mds.ac.nz 
 // 
  // Library Includes 
 #include <SFML/System.hpp>
@@ -25,16 +25,16 @@
 
 int main()
 {
-
+	// Seed rng
 	srand(static_cast<unsigned int>(time(0)));
 
-	sf::Sprite spr;
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML");
+	// Create window
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!");
 
-
+	// Create initial scene
 	gameScene* scene = new gameScene();
 	scene->Initialise(window);
+	delete scene;
 
-	
 	return 0;
 }

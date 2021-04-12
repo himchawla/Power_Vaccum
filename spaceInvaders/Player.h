@@ -14,14 +14,9 @@
 //  Mail        :   himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
-
-
-
-
-//Local includes
-#include "gameObject.h"
-#include "battery.h"
 #include <vector>
+ //Local includes
+#include "gameObject.h"
 
 class player :
 	public gameObject
