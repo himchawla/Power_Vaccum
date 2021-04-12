@@ -14,13 +14,9 @@
 //  Mail        :   himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
-
-
-
-
-//Local includes
-#include "gameObject.h"
 #include <vector>
+ //Local includes
+#include "gameObject.h"
 
 class player :
 	public gameObject
@@ -32,12 +28,10 @@ public:
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
 
-	//This needs to go in private variable once collisions are applied
-	inputManager* m_InputHandler;
-
 private:
 	void PlayerCollision();
 	std::vector<player*>* m_vPlayers;
+	inputManager* m_InputHandler;
 };
 
 #endif

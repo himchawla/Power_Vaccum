@@ -28,7 +28,6 @@ gameScene::gameScene()
 
 gameScene::~gameScene()
 {
-
 	std::vector<player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
@@ -36,7 +35,7 @@ gameScene::~gameScene()
 		delete* p_it;
 		p_it = m_vPlayers->erase((p_it));
 	}
-	if (m_vPlayers != nullptr)
+	if (m_vPlayers != nullptr) // Delete vector
 	{
 		delete m_vPlayers;
 		m_vPlayers = 0;
@@ -49,12 +48,13 @@ gameScene::~gameScene()
 		delete* it;
 		it = m_vObjects->erase((it));
 	}
-	if (m_vObjects != nullptr)
+	if (m_vObjects != nullptr) // Delete vector
 	{
 		delete m_vObjects;
 		m_vObjects = 0;
 	}
 
+	// Delete background 
 	if (m_texBackground != nullptr)
 	{
 		delete m_texBackground;
@@ -74,13 +74,13 @@ gameScene::~gameScene()
 ********************/
 void gameScene::Initialise(sf::RenderWindow& _window)
 {
+	// Create background
 	m_texBackground->loadFromFile("Assets/BG.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
+
 	MainLoop(_window);
 }
-
-bool flag = false;
 
 /***********************
 * MainLoop: Loop which calls update and render functions.
@@ -89,7 +89,7 @@ bool flag = false;
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	
+	// Create all players
 	for (int i = 0; i < 4; i++)
 	{
 		player* newPlayer = new player(i);
@@ -114,22 +114,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		{
 			if (event.type == sf::Event::Closed)
 				_window.close();
-			
-
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !flag)
-		{
-			m_vPlayers->at(0)->AddForce(m_vPlayers->at(0)->m_InputHandler->GetRightVector() * 10.0f);
-			flag = true;
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-		{
-			flag = false;
-		}
-
-		//temp->Update(deltaTime);
 
 		Update(_window, deltaTime);
 		Render(_window);
@@ -143,19 +128,17 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void gameScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
-	{
-		(*it)->Update(_dT);
-		it++;
-	}
-
-	for (auto i : *m_vPlayers)
+	// Update objects
+	for (auto i : *m_vObjects)
 	{
 		i->Update(_dT);
 	}
 
+	// Update players
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(_dT);
+	}
 }
 
 /***********************
@@ -165,9 +148,9 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 ********************/
 void gameScene::DrawBackground(sf::RenderWindow& _window)
 {
+	// Draw background
 	_window.draw(*m_sprBackground);
 	//// Vector of background objects (if any) 
-
 }
 
 /***********************
@@ -177,25 +160,22 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
-	// Vector of objects
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
+	// Draw objects
+	for (auto i : *m_vObjects)
 	{
-		if ((*it)->GetSprite() != nullptr)
+		if (i->GetSprite() != nullptr)
 		{
-			_window.draw(*(*it)->GetSprite());
+			_window.draw(*(i)->GetSprite());
 		}
-		it++;
 	}
 
-	std::vector<player*>::iterator p_it = m_vPlayers->begin();
-	while (p_it != m_vPlayers->end())
+	// Draw players
+	for (auto i : *m_vPlayers)
 	{
-		if ((*p_it)->GetSprite() != nullptr)
+		if (i->GetSprite() != nullptr)
 		{
-			_window.draw(*(*p_it)->GetSprite());
+			_window.draw(*(i)->GetSprite());
 		}
-		p_it++;
 	}
 }
 
@@ -206,5 +186,5 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Vector of UI elements
+	// Draw UI elements
 }
