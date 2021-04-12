@@ -47,7 +47,7 @@ gameObject::~gameObject()
 ********************/
 void gameObject::Update(float _dT)
 {	
-	transform.m_Velocity += transform.m_Accelaration * _dT;
+	transform.m_Velocity += transform.m_Acceleration * _dT;
 
 	transform.m_Position += transform.m_Velocity * _dT;
 

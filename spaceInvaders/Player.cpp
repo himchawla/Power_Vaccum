@@ -74,50 +74,59 @@ void player::AddForce(sf::Vector2f _dir)
 ********************/
 void player::Update(float _dT)
 {
+
+	//Check Collisions
 	PlayerCollision();
 
-	float accelMult = 400.0f;
+	//Reset Velocity
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	transform.m_Accelaration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
+	
+	//Calculate Accekaration from force
+	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
+	
+	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
 
-
-	if (Magnitude(transform.m_Accelaration) > 0.0f)
+	//Retardation
+	if (Magnitude(transform.m_Acceleration) > 0.0f)
 	{
-		if (transform.m_Accelaration.x > 0.1f || transform.m_Accelaration.x < -0.1f)
+		if (transform.m_Acceleration.x > 0.1f || transform.m_Acceleration.x < -0.1f)
 		{
-			transform.m_Accelaration.x -= transform.m_Friction.x * (abs(transform.m_Accelaration.x) / transform.m_Accelaration.x) * _dT * 500.0f;
+			transform.m_Acceleration.x -= transform.m_Friction.x * (abs(transform.m_Acceleration.x) / transform.m_Acceleration.x) * _dT * 500.0f;
 		}
 		else
-			transform.m_Accelaration.x = 0.0f;
+			transform.m_Acceleration.x = 0.0f;
 
-		if (transform.m_Accelaration.y > 0.1f || transform.m_Accelaration.y < -0.1f)
+		if (transform.m_Acceleration.y > 0.1f || transform.m_Acceleration.y < -0.1f)
 		{
-			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y) * _dT * 500.0f;
+			transform.m_Acceleration.y -= transform.m_Friction.y * (abs(transform.m_Acceleration.y) / transform.m_Acceleration.y) * _dT * 500.0f;
 		}
 		else
-			transform.m_Accelaration.y = 0.0f;
+			transform.m_Acceleration.y = 0.0f;
 	}
 
-
-	float mag = sqrt(pow(transform.m_Accelaration.x, 2) + pow(transform.m_Accelaration.y, 2));
+	//Clamp Acceleration
+	float mag = sqrt(pow(transform.m_Acceleration.x, 2) + pow(transform.m_Acceleration.y, 2));
 	if (mag > 800.0f)
 	{
-		transform.m_Accelaration = (transform.m_Accelaration / mag) * 800.0f;
+		transform.m_Acceleration = (transform.m_Acceleration / mag) * 800.0f;
 	}
 
-	transform.m_Velocity += transform.m_Accelaration;
+	transform.m_Velocity += transform.m_Acceleration;
 	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
 
+	//Clamp Velocity
 	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
 	if (mag > 500.0f)
 	{
 		transform.m_Velocity = (transform.m_Velocity / mag) * 500.0f;
 	}
 
+	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;
 
+	//Update sprite position
 	GetSprite()->setPosition(transform.m_Position);
 }
 
