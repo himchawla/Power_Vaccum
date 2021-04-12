@@ -36,12 +36,12 @@ public:
 	bool GetControllerButton(int _button);
 	void SetUsingKeyboard(bool _isUsing);
 
+	static void NormalizeClamp(sf::Vector2f& _vec);
+
 	// Static Input manager functions
 	static sf::Vector2f GetMovementVector(int _player);
 	static bool GetControllerButton(int _button, int _player);
 	static void SetUsingKeyboard(int _player, bool _isUsing);
-
-	static void NormalizeClamp(sf::Vector2f& _vec);
 private: 
 	int m_iPlayerIndex;
 	static bool usingKeyboard[4];
