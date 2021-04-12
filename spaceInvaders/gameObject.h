@@ -40,10 +40,8 @@ public:
 
 		sf::Vector2f m_Friction;
 		
-		
 		float m_Rotation;
 		float m_Mass;
-
 
 		bool m_IsKinematic;
 	};

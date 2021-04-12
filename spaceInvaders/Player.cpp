@@ -152,7 +152,6 @@ void player::SetPlayerVector(std::vector<player*>* _player)
 void player::PlayerCollision()
 {
 	float selfSpeed = Magnitude(transform.m_Velocity);		//sets the speed of the player
-	std::cout << selfSpeed << std::endl;					//writes the speed in the console
 	for (auto i : *m_vPlayers)								//logs the opposing player
 	{
 		if (i != this)										//checks if the player is not the opposing
