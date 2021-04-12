@@ -121,31 +121,40 @@ void player::Update(float _dT)
 	GetSprite()->setPosition(transform.m_Position);
 }
 
-void player::SetPlayerVector(std::vector<player*>* _player)
+/***********************
+* Update: creates a Vector of all the players
+* @author: Neel Kolhe
+* parameters: Vector
+********************/
+void player::SetPlayerVector(std::vector<player*>* _player)	
 {
-	m_vPlayers = _player;
+	m_vPlayers = _player;			//pushes the players onto a vector for checking the player collision
 }
 
+/***********************
+* Update: Checks Player Collision
+* @author: Neel Kolhe
+********************/
 void player::PlayerCollision()
 {
-	float selfSpeed = Magnitude(transform.m_Velocity);
-	std::cout << selfSpeed << std::endl;
-	for (auto i : *m_vPlayers)
+	float selfSpeed = Magnitude(transform.m_Velocity);		//sets the speed of the player
+	std::cout << selfSpeed << std::endl;					//writes the speed in the console
+	for (auto i : *m_vPlayers)								//logs the opposing player
 	{
-		if (i != this)
+		if (i != this)										//checks if the player is not the opposing
 		{
-			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;
+			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;		//calculates the minimum distance needed for collision between the two units
+		
+			sf::Vector2f DistanceCalc = i->transform.m_Position - transform.m_Position;		//calculates the distance between the two positions
+			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));			//gets the magnitude of the two positions
 
-			sf::Vector2f DistanceCalc = i->transform.m_Position - transform.m_Position;
-			float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
 
-
-			float collSpeed = Magnitude(i->transform.m_Velocity);
-			if (Distance <= MinDistance)
+			float collSpeed = Magnitude(i->transform.m_Velocity);							//makes a float for the collspeed
+			if (Distance <= MinDistance)					//if the two objects are colliding
 			{
-				DistanceCalc = DistanceCalc / Distance;
+				DistanceCalc = DistanceCalc / Distance;		//gets the distance between the two units
 
-				i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);
+				i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
 			}
 		}
 	}
