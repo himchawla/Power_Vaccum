@@ -21,7 +21,7 @@ player::player(int _player)
 {
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
-	transform.m_Mass = 15.0f;
+	transform.m_Mass = 5.0f;
 	GetTexture()->loadFromFile("Assets/Players/Roomba.png");
 	GetSprite()->setTexture(*GetTexture());
 	GetSprite()->setScale(64.0f / GetTexture()->getSize().x, 64.0f / GetTexture()->getSize().y);
@@ -78,7 +78,7 @@ void player::Update(float _dT)
 
 	float accelMult = 400.0f;
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	transform.m_Accelaration += (transform.m_Force / transform.m_Mass);
+	transform.m_Accelaration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 
 
@@ -87,14 +87,14 @@ void player::Update(float _dT)
 	{
 		if (transform.m_Accelaration.x > 0.1f || transform.m_Accelaration.x < -0.1f)
 		{
-			transform.m_Accelaration.x -= transform.m_Friction.x * (abs(transform.m_Accelaration.x) / transform.m_Accelaration.x);
+			transform.m_Accelaration.x -= transform.m_Friction.x * (abs(transform.m_Accelaration.x) / transform.m_Accelaration.x) * _dT * 500.0f;
 		}
 		else
 			transform.m_Accelaration.x = 0.0f;
 
 		if (transform.m_Accelaration.y > 0.1f || transform.m_Accelaration.y < -0.1f)
 		{
-			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y);
+			transform.m_Accelaration.y -= transform.m_Friction.y * (abs(transform.m_Accelaration.y) / transform.m_Accelaration.y) * _dT * 500.0f;
 		}
 		else
 			transform.m_Accelaration.y = 0.0f;
@@ -145,7 +145,7 @@ void player::PlayerCollision()
 			{
 				DistanceCalc = DistanceCalc / Distance;
 
-				i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);
+				i->AddForce(transform.m_Velocity * 0.4f + DistanceCalc * selfSpeed * 0.4f - i->transform.m_Velocity * 0.25f);
 			}
 		}
 	}
