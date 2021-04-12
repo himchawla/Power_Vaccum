@@ -174,19 +174,16 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
 	// Draw objects
-	for (auto i : *m_vObjects)
+	for (auto it : *m_vObjects)
 	{
-		if (i->GetSprite() != nullptr)
-		{
-			(*it)->Draw(_window);
-		}
+		it->Draw(_window);
 	}
 
 	// Draw players
-	for (auto i : *m_vPlayers)
+	for (auto p_it : *m_vPlayers)
 	{
-		(*p_it)->Draw(_window);
-		p_it++;
+		p_it->Draw(_window);
+		
 	}
 
 	for (auto b_it : *m_vBatteries)

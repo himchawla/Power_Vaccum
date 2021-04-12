@@ -78,7 +78,7 @@ void player::Update(float _dT)
 	//Check Collisions
 	PlayerCollision();
 	BatteryCollision();
-
+	BatteryImplementation();
 	
 
 	//Reset Velocity
@@ -96,14 +96,14 @@ void player::Update(float _dT)
 	{
 		if (transform.m_Acceleration.x > 0.1f || transform.m_Acceleration.x < -0.1f)
 		{
-			transform.m_Acceleration.x -= transform.m_Friction.x * (abs(transform.m_Acceleration.x) / transform.m_Acceleration.x) * _dT * 500.0f;
+			transform.m_Acceleration.x -= transform.m_Friction.x * (abs(transform.m_Acceleration.x) / transform.m_Acceleration.x) * _dT * 100.0f;
 		}
 		else
 			transform.m_Acceleration.x = 0.0f;
 
 		if (transform.m_Acceleration.y > 0.1f || transform.m_Acceleration.y < -0.1f)
 		{
-			transform.m_Acceleration.y -= transform.m_Friction.y * (abs(transform.m_Acceleration.y) / transform.m_Acceleration.y) * _dT * 500.0f;
+			transform.m_Acceleration.y -= transform.m_Friction.y * (abs(transform.m_Acceleration.y) / transform.m_Acceleration.y) * _dT * 100.0f;
 		}
 		else
 			transform.m_Acceleration.y = 0.0f;
@@ -169,9 +169,15 @@ void player::PlayerCollision()
 			if (Distance <= MinDistance)					//if the two objects are colliding
 			{
 				DistanceCalc = DistanceCalc / Distance;		//gets the distance between the two units
+				if(m_ability!=battery::ability::turtle)
+					i->AddForce(transform.m_Velocity * 0.8f  + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
+				else
+					i->AddForce(transform.m_Velocity/Magnitude(transform.m_Velocity) * 10000.0f + DistanceCalc * selfSpeed * 2000.0f);		//Adds the bounce back effect on the two units
 
-				i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
+			
 			}
+			std::cout << i->transform.m_Position.x << "\n";
+
 		}
 	}
 }
@@ -181,7 +187,6 @@ void player::PlayerCollision()
 void player::BatteryCollision()
 {
 	float selfSpeed = Magnitude(transform.m_Velocity);
-	std::cout << selfSpeed << std::endl;
 	std::vector<battery*>::iterator it = m_vBatteries->begin();
 	while (it != m_vBatteries->end())
 	{
@@ -204,4 +209,27 @@ void player::BatteryCollision()
 		it++;
 	}
 	
+}
+
+void player::BatteryImplementation()
+{
+	switch (m_ability)
+	{
+	case battery::none:
+		break;
+	case battery::turtle:
+	{
+		transform.m_Mass *= 10.0f;
+	}
+		break;
+	case battery::magnetic:
+	{
+
+	}
+		break;
+	case battery::leaking:
+		break;
+	default:
+		break;
+	}
 }

@@ -17,6 +17,7 @@
 #include <vector>
  //Local includes
 #include "gameObject.h"
+#include "battery.h"
 
 class player :
 	public gameObject
@@ -38,6 +39,7 @@ private:
 	inputManager* m_InputHandler;
 	void PlayerCollision();
 	void BatteryCollision();
+	void BatteryImplementation();
 	std::vector<player*>* m_vPlayers;
 	std::vector<battery*>* m_vBatteries;
 
