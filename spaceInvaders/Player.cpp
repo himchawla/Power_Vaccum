@@ -64,7 +64,7 @@ player::~player()
 ********************/
 void player::AddForce(sf::Vector2f _dir)
 {
-	transform.m_Force = _dir;
+	transform.m_Force += _dir;
 }
 
 /***********************
@@ -78,7 +78,7 @@ void player::Update(float _dT)
 	//Check Collisions
 	PlayerCollision();
 	BatteryCollision();
-	BatteryImplementation();
+	BatteryImplementation(_dT);
 	
 
 	//Reset Velocity
@@ -87,44 +87,42 @@ void player::Update(float _dT)
 	//Calculate Accekaration from force
 	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
 	
+	m_externVel += transform.m_Acceleration * _dT * 200.0f;
 	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-
+	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 
 	//Retardation
-	if (Magnitude(transform.m_Acceleration) > 0.0f)
+	if (Magnitude(m_externVel) > 0.0f)
 	{
-		if (transform.m_Acceleration.x > 0.1f || transform.m_Acceleration.x < -0.1f)
+		if (m_externVel.x > 10.0f || m_externVel.x < -10.0f)
 		{
-			transform.m_Acceleration.x -= transform.m_Friction.x * (abs(transform.m_Acceleration.x) / transform.m_Acceleration.x) * _dT * 100.0f;
+			m_externVel.x -= transform.m_Friction.x * (abs(m_externVel.x) / m_externVel.x) * _dT * 100.0f;
 		}
 		else
-			transform.m_Acceleration.x = 0.0f;
+			m_externVel.x = 0.0f;
 
-		if (transform.m_Acceleration.y > 0.1f || transform.m_Acceleration.y < -0.1f)
+		if (m_externVel.y > 10.0f || m_externVel.y < -10.0f)
 		{
-			transform.m_Acceleration.y -= transform.m_Friction.y * (abs(transform.m_Acceleration.y) / transform.m_Acceleration.y) * _dT * 100.0f;
+			m_externVel.y -= transform.m_Friction.y * (abs(m_externVel.y) / m_externVel.y) * _dT * 100.0f;
 		}
 		else
-			transform.m_Acceleration.y = 0.0f;
+			m_externVel.y = 0.0f;
 	}
+
+
 
 	//Clamp Acceleration
-	float mag = sqrt(pow(transform.m_Acceleration.x, 2) + pow(transform.m_Acceleration.y, 2));
-	if (mag > 800.0f)
+	float mag = sqrt(pow(m_externVel.x, 2) + pow(m_externVel.y, 2));
+	if (mag > 600.0f)
 	{
-		transform.m_Acceleration = (transform.m_Acceleration / mag) * 800.0f;
+		m_externVel = (m_externVel / mag) * 600.0f;
 	}
 
-	transform.m_Velocity += transform.m_Acceleration;
-	transform.m_Velocity += m_InputHandler->GetMovementVector() * 5.0f;
+	transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel;
 
 	//Clamp Velocity
-	mag = sqrt(pow(transform.m_Velocity.x, 2) + pow(transform.m_Velocity.y, 2));
-	if (mag > 500.0f)
-	{
-		transform.m_Velocity = (transform.m_Velocity / mag) * 500.0f;
-	}
+	
 
 	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;
@@ -169,10 +167,12 @@ void player::PlayerCollision()
 			if (Distance <= MinDistance)					//if the two objects are colliding
 			{
 				DistanceCalc = DistanceCalc / Distance;		//gets the distance between the two units
-				if(m_ability!=battery::ability::turtle)
-					i->AddForce(transform.m_Velocity * 0.8f  + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
-				else
+				if(m_ability==battery::ability::turtle)
 					i->AddForce(transform.m_Velocity/Magnitude(transform.m_Velocity) * 10000.0f + DistanceCalc * selfSpeed * 2000.0f);		//Adds the bounce back effect on the two units
+				//else if(m_ability == battery::ability::magnetic)
+					//i->AddForce(transform.m_Velocity / Magnitude(transform.m_Velocity) * 10000.0f + DistanceCalc * selfSpeed * 2000.0f);		//Adds the bounce back effect on the two units
+				else
+					i->AddForce(transform.m_Velocity * 0.8f  +  DistanceCalc * selfSpeed * 0.8f);		//Adds the bounce back effect on the two units
 
 			
 			}
@@ -211,7 +211,7 @@ void player::BatteryCollision()
 	
 }
 
-void player::BatteryImplementation()
+void player::BatteryImplementation(float _dt)
 {
 	switch (m_ability)
 	{
@@ -224,7 +224,15 @@ void player::BatteryImplementation()
 		break;
 	case battery::magnetic:
 	{
-
+		for (auto it : *m_vPlayers)
+		{
+			if (it != this)
+			{
+				float mag = Magnitude(transform.m_Position - it->transform.m_Position);
+				it->AddForce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
+				
+			}
+		}
 	}
 		break;
 	case battery::leaking:

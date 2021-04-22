@@ -14,7 +14,7 @@ battery::battery()
 {
 	SetSpriteFromFile("Assets/Batteries/Base.png");
 	transform.m_Position = sf::Vector2f(300.0f, 500.0f);
-	m_ability = turtle;
+	m_ability = magnetic;
 	m_abilityTimer = 5.0f;
 }
 

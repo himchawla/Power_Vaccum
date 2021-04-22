@@ -35,11 +35,14 @@ public:
 
 private:
 	
+	sf::Vector2f m_externVel = sf::Vector2f(0.0f, 0.0f);
+	sf::Vector2f m_forceVel = sf::Vector2f(0.0f, 0.0f);
+
 	float m_abilityTimer;
 	inputManager* m_InputHandler;
 	void PlayerCollision();
 	void BatteryCollision();
-	void BatteryImplementation();
+	void BatteryImplementation(float _dt);
 	std::vector<player*>* m_vPlayers;
 	std::vector<battery*>* m_vBatteries;
 
