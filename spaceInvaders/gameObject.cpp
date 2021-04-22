@@ -22,7 +22,7 @@
  // Implementation 
 
 
-gameObject::gameObject()
+gameObject::gameObject(b2World& _world)
 {
 	transform.m_Mass = 1.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
@@ -31,6 +31,23 @@ gameObject::gameObject()
 	enabled = true;
 	m_Sprite = new sf::Sprite;
 	m_Texture = new sf::Texture;
+	
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+
+	bodyDef.position.Set(100.0f, 100.0f);
+	m_body = _world.CreateBody(&bodyDef);
+
+	b2CircleShape circleShape;
+	circleShape.m_p.Set(100.0f, 100.0f);
+	circleShape.m_radius = 0.1f;
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &circleShape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	m_fixture = m_body->CreateFixture(&fixtureDef);
 }
 
 gameObject::~gameObject()
@@ -39,6 +56,15 @@ gameObject::~gameObject()
 	delete m_Texture;
 }
 
+b2Body* gameObject::GetBody()
+{
+	return m_body;
+}
+
+b2Fixture* gameObject::GetFixture()
+{
+	return m_fixture;
+}
 /***********************
 * Update: Calculates the physics for the gameObject
 * @author: Himanshu Chawla

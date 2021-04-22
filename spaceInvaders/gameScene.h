@@ -37,6 +37,8 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
+	b2World* m_world;
+
 	std::vector<player*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;

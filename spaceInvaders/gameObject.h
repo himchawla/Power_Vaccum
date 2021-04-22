@@ -16,9 +16,10 @@
  // Library Includes 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "inputManager.h"
+#include <box2d/box2d.h>
 
  // Local Includes 
+#include "inputManager.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -28,7 +29,7 @@
 class gameObject
 {
 public:
-	gameObject();
+	gameObject(b2World& _world);
 	virtual ~gameObject();
 	bool n = false;
 	struct Transform
@@ -45,6 +46,9 @@ public:
 
 		bool m_IsKinematic;
 	};
+
+	b2Body* GetBody();
+	b2Fixture* GetFixture();
 	Transform transform;
 
 	void Update(float _dT);
@@ -62,9 +66,13 @@ public:
 	void Destroy();
 
 	float Magnitude(sf::Vector2f _vec);
+
 private:
 	bool enabled;
 	sf::Sprite* m_Sprite;
 	sf::Texture* m_Texture;
+	b2Body* m_body;
+	b2Fixture* m_fixture;
+
 };
 #endif

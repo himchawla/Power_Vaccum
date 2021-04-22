@@ -14,7 +14,7 @@ public:
 	leaking,
 }m_ability;
 
-	battery();
+	battery(b2World& world);
 	void Destroy();
 	~battery();
 	

@@ -17,7 +17,7 @@
 #include "Player.h"
 #include <iostream>
 
-player::player(int _player)
+player::player(int _player, b2World& _world): gameObject(_world)
 {
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
@@ -76,59 +76,14 @@ void player::Update(float _dT)
 {
 
 	//Check Collisions
-	PlayerCollision();
+	/*PlayerCollision();
 	BatteryCollision();
-	BatteryImplementation(_dT);
+	BatteryImplementation(_dT);*/
 	
-
-	//Reset Velocity
-	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	
-	//Calculate Accekaration from force
-	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
-	
-	m_externVel += transform.m_Acceleration * _dT * 200.0f;
-	//Reset Force
-	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
-
-	//Retardation
-	if (Magnitude(m_externVel) > 0.0f)
-	{
-		if (m_externVel.x > 10.0f || m_externVel.x < -10.0f)
-		{
-			m_externVel.x -= transform.m_Friction.x * (abs(m_externVel.x) / m_externVel.x) * _dT * 100.0f;
-		}
-		else
-			m_externVel.x = 0.0f;
-
-		if (m_externVel.y > 10.0f || m_externVel.y < -10.0f)
-		{
-			m_externVel.y -= transform.m_Friction.y * (abs(m_externVel.y) / m_externVel.y) * _dT * 100.0f;
-		}
-		else
-			m_externVel.y = 0.0f;
-	}
-
-
-
-	//Clamp Acceleration
-	float mag = sqrt(pow(m_externVel.x, 2) + pow(m_externVel.y, 2));
-	if (mag > 600.0f)
-	{
-		m_externVel = (m_externVel / mag) * 600.0f;
-	}
-
-	transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel;
-
-	//Clamp Velocity
-	
-
-	//Update Position from velocity
-	transform.m_Position += transform.m_Velocity * _dT;
-
+	GetBody()->SetLinearVelocity(b2Vec2((m_InputHandler->GetMovementVector() * 50.0f).x, (m_InputHandler->GetMovementVector() * 5.0f).y));
+	std::cout << GetBody()->GetPosition().x<<"\n";
 	//Update sprite position
-	GetSprite()->setPosition(transform.m_Position);
+	GetSprite()->setPosition(sf::Vector2f(GetBody()->GetPosition().x, GetBody()->GetPosition().y));
 }
 
 /***********************
@@ -172,11 +127,11 @@ void player::PlayerCollision()
 				//else if(m_ability == battery::ability::magnetic)
 					//i->AddForce(transform.m_Velocity / Magnitude(transform.m_Velocity) * 10000.0f + DistanceCalc * selfSpeed * 2000.0f);		//Adds the bounce back effect on the two units
 				else
-					i->AddForce(transform.m_Velocity * 0.8f  +  DistanceCalc * selfSpeed * 0.8f);		//Adds the bounce back effect on the two units
+					i->AddForce(transform.m_Velocity * 0.8f  + DistanceCalc * selfSpeed * 0.8f);		//Adds the bounce back effect on the two units
 
 			
 			}
-			std::cout << i->transform.m_Position.x << "\n";
+			//std::cout << i->transform.m_Position.x << "\n";
 
 		}
 	}

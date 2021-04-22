@@ -80,6 +80,8 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
+	m_world = new b2World(b2Vec2(0.0f, 0.0f));
+
 	MainLoop(_window);
 }
 
@@ -93,15 +95,15 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 	// Create all players
 	for (int i = 0; i < 4; i++)
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		player* newPlayer = new player(i, *m_world);
+		newPlayer->GetBody()->SetTransform(b2Vec2(100.0f * i, 100.0f), 0.0f);
 		newPlayer->SetPlayerVector(m_vPlayers);
 		newPlayer->SetBatteryVector(m_vBatteries);
 		m_vPlayers->push_back(newPlayer);
 		
 	}
 
-	battery* bat = new battery();
+	battery* bat = new battery(*m_world);
 	bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
 	m_vBatteries->push_back(bat);
 

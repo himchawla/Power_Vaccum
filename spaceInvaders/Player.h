@@ -23,7 +23,7 @@ class player :
 	public gameObject
 {
 public:
-	player(int _player);
+	player(int _player, b2World& _world);
 	~player();
 	void AddForce(sf::Vector2f _dir);
 	void Update(float _dT);
