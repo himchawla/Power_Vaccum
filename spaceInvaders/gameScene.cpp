@@ -85,6 +85,27 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	MainLoop(_window);
 }
 
+void gameScene::Step(float dt)
+{
+	dt *= 1000.0f;
+	static double UPDATE_INTERVAL = 1.0f / 60.0f;
+	static double MAX_CYCLES_PER_FRAME = 5;
+	static double timeAccumulator = 0;
+
+	timeAccumulator = std::min(dt + timeAccumulator, MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL);
+
+	int32 velocityIterations = 3;
+	int32 positionIterations = 2;
+	while (timeAccumulator >= UPDATE_INTERVAL)
+	{
+		timeAccumulator -= UPDATE_INTERVAL;
+		m_world->Step(UPDATE_INTERVAL,
+			velocityIterations, positionIterations);
+		m_world->ClearForces();
+	}
+}
+
+
 /***********************
 * MainLoop: Loop which calls update and render functions.
 * @author: William de Beer
@@ -99,13 +120,17 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		newPlayer->GetBody()->SetTransform(b2Vec2(100.0f * i, 100.0f), 0.0f);
 		newPlayer->SetPlayerVector(m_vPlayers);
 		newPlayer->SetBatteryVector(m_vBatteries);
+
 		m_vPlayers->push_back(newPlayer);
+
 		
 	}
 
 	battery* bat = new battery(*m_world);
-	bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
+	bat->GetBody()->SetTransform(b2Vec2(50.0f, 50.0f), 0.0f);
 	m_vBatteries->push_back(bat);
+
+	m_world->SetContactListener(&m_contactListener);
 
 
 	// Start clock
@@ -127,6 +152,9 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 
 		Update(_window, deltaTime);
 		Render(_window);
+	
+	
+		Step(deltaTime);
 	}
 }
 

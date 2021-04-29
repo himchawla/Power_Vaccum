@@ -25,7 +25,7 @@
 
 #include "b2_types.h"
 #include "b2_api.h"
-
+#include<string>
 /// @file
 /// Settings that can be overriden for your application
 ///
@@ -38,10 +38,8 @@
 #include "b2_user_settings.h"
 
 #else
-
 #include <stdarg.h>
 #include <stdint.h>
-
 // Tunable Constants
 
 /// You can use this to change the length scale used by your game.
@@ -59,9 +57,11 @@ struct B2_API b2BodyUserData
 {
 	b2BodyUserData()
 	{
+		//data = 0;
 		pointer = 0;
 	}
-
+	char* data;
+	void* point;
 	/// For legacy compatibility
 	uintptr_t pointer;
 };

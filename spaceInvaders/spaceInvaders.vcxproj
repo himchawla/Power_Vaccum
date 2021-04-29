@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="battery.cpp" />
+    <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="inputManager.cpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battery.h" />
+    <ClInclude Include="ContactListener.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="inputManager.h" />

@@ -32,7 +32,6 @@ gameObject::gameObject(b2World& _world)
 	m_Sprite = new sf::Sprite;
 	m_Texture = new sf::Texture;
 	
-
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 
@@ -40,14 +39,21 @@ gameObject::gameObject(b2World& _world)
 	m_body = _world.CreateBody(&bodyDef);
 
 	b2CircleShape circleShape;
-	circleShape.m_p.Set(100.0f, 100.0f);
-	circleShape.m_radius = 0.1f;
+	circleShape.m_p.Set(0.0f, 0.0f);
+	circleShape.m_radius = 7.0f;
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circleShape;
+
+	//fixtureDef.restitution = 1.0f;
+
 	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
+	fixtureDef.friction = 0.6f;
+	b2BodyUserData b;
+	m_body->GetUserData().data = (char*)"object";
+	m_body->GetUserData().point = this;
 
 	m_fixture = m_body->CreateFixture(&fixtureDef);
+	//m_body->SetLinearVelocity(b2Vec2(10000.0f, 0.0f));
 }
 
 gameObject::~gameObject()
@@ -73,13 +79,9 @@ b2Fixture* gameObject::GetFixture()
 ********************/
 void gameObject::Update(float _dT)
 {	
-	transform.m_Velocity += transform.m_Acceleration * _dT;
+	m_Sprite->setPosition(sf::Vector2f(m_body->GetPosition().x * 4.0f, m_body->GetPosition().y*4.0f));
 
-	transform.m_Position += transform.m_Velocity * _dT;
 
-	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-
-	m_Sprite->setPosition(transform.m_Position);
 }
 
 void gameObject::Draw(sf::RenderWindow& _window)
@@ -120,7 +122,7 @@ void gameObject::SetTexture(sf::Texture* _texture)
 {
 	m_Texture = _texture;
 }
-
+ 
 
 /***********************
 * Update: Sets the sprite and Texture

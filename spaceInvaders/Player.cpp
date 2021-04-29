@@ -26,6 +26,10 @@ player::player(int _player, b2World& _world): gameObject(_world)
 	m_ability = battery::ability::none;
 	m_abilityTimer = 0.0f;
 
+	GetBody()->GetUserData().data = (char*)"player";
+	GetBody()->GetUserData().point = this;
+	
+
 	// Set sprite colour
 	switch (_player)
 	{
@@ -80,10 +84,11 @@ void player::Update(float _dT)
 	BatteryCollision();
 	BatteryImplementation(_dT);*/
 	
-	GetBody()->SetLinearVelocity(b2Vec2((m_InputHandler->GetMovementVector() * 50.0f).x, (m_InputHandler->GetMovementVector() * 5.0f).y));
+	GetBody()->SetLinearVelocity(b2Vec2(m_InputHandler->GetMovementVector().x * m_speed / 100.0f, m_InputHandler->GetMovementVector().y * m_speed / 100.0f));
+	
 	std::cout << GetBody()->GetPosition().x<<"\n";
 	//Update sprite position
-	GetSprite()->setPosition(sf::Vector2f(GetBody()->GetPosition().x, GetBody()->GetPosition().y));
+	GetSprite()->setPosition(sf::Vector2f(GetBody()->GetPosition().x * 4.0f, GetBody()->GetPosition().y * 4.0f));
 }
 
 /***********************

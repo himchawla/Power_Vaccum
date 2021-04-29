@@ -378,6 +378,9 @@ public:
 	/// Get the user data pointer that was provided in the body definition.
 	b2BodyUserData& GetUserData();
 
+	void SetUserData(b2BodyUserData* data);
+
+
 	/// Get the parent world of this body.
 	b2World* GetWorld();
 	const b2World* GetWorld() const;
@@ -732,6 +735,7 @@ inline b2BodyUserData& b2Body::GetUserData()
 {
 	return m_userData;
 }
+
 
 inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake)
 {

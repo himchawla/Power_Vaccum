@@ -17,6 +17,7 @@
 #include <vector>
  // Local Includes 
 #include "scene.h"
+#include "ContactListener.h"
 #include "gameObject.h"
 #include "Player.h"
 #include"battery.h"
@@ -30,7 +31,9 @@ public:
 	gameScene();
 	~gameScene();
 	virtual void Initialise(sf::RenderWindow& _window);
+	void Step(float dt);
 private:
+	ContactListener m_contactListener;
 	virtual void MainLoop(sf::RenderWindow& _window);
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
