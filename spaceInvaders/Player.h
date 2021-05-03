@@ -31,10 +31,14 @@ public:
 	void SetBatteryVector(std::vector<battery*>* _player);
 
 
+
 	battery::ability m_ability;
 
 private:
 	
+	float m_disableTimer = 0.0f;
+	bool m_disableControl;
+	sf::Vector2f m_powerForce;
 	sf::Vector2f m_externVel = sf::Vector2f(0.0f, 0.0f);
 	sf::Vector2f m_forceVel = sf::Vector2f(0.0f, 0.0f);
 

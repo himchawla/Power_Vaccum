@@ -16,7 +16,14 @@
 //This include
 #include "Player.h"
 #include <iostream>
+sf::Vector2f Normalize(sf::Vector2f _v)
+{
+	float mag = sqrt(_v.x * _v.x + _v.y * _v.y);
+	if (abs(mag) < 0.001f)	return sf::Vector2f(0.0f, 0.0f);
 
+	_v /= mag;
+	return _v;
+}
 player::player(int _player)
 {
 	m_vPlayers = 0;
@@ -74,6 +81,11 @@ void player::AddForce(sf::Vector2f _dir)
 ********************/
 void player::Update(float _dT)
 {
+	m_disableTimer -= _dT;
+	if (m_disableControl && m_disableTimer < 0.0f)
+	{
+		m_disableControl = false;
+	}
 
 	//Check Collisions
 	PlayerCollision();
@@ -82,8 +94,8 @@ void player::Update(float _dT)
 	
 
 	//Reset Velocity
-	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	
+	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	//Calculate Accekaration from force
 	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
 	
@@ -119,13 +131,18 @@ void player::Update(float _dT)
 		m_externVel = (m_externVel / mag) * 600.0f;
 	}
 
-	transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel;
-
+	if (!m_disableControl)
+		transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel;
+	else
+		transform.m_Velocity = m_externVel;
 	//Clamp Velocity
 	
 
 	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;
+
+//	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+
 
 	//Update sprite position
 	GetSprite()->setPosition(transform.m_Position);
@@ -167,14 +184,29 @@ void player::PlayerCollision()
 			if (Distance <= MinDistance)					//if the two objects are colliding
 			{
 				DistanceCalc = DistanceCalc / Distance;		//gets the distance between the two units
-				if(m_ability==battery::ability::turtle)
-					i->AddForce(transform.m_Velocity/Magnitude(transform.m_Velocity) * 10000.0f + DistanceCalc * selfSpeed * 2000.0f);		//Adds the bounce back effect on the two units
-				//else if(m_ability == battery::ability::magnetic)
-					//i->AddForce(transform.m_Velocity / Magnitude(transform.m_Velocity) * 10000.0f + DistanceCalc * selfSpeed * 2000.0f);		//Adds the bounce back effect on the two units
-				else
-					i->AddForce(transform.m_Velocity * 0.8f  +  DistanceCalc * selfSpeed * 0.8f);		//Adds the bounce back effect on the two units
+				
+				if (i->m_ability == battery::ability::turtle)
+				{
 
-			
+					if (m_ability != battery::ability::turtle)
+						i->AddForce(Normalize(transform.m_Velocity) * 0.8f + DistanceCalc * selfSpeed * 0.8f - Normalize(i->transform.m_Velocity) * 0.8f);		//Adds the bounce back effect on the two units
+
+					else
+						i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f);		//Adds the bounce back effect on the two units
+				}
+				else
+				{
+					if (m_ability != battery::ability::turtle)
+						i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f);		//Adds the bounce back effect on the two units
+					else
+						i->AddForce(Normalize(transform.m_Velocity) * 800.0f + DistanceCalc * selfSpeed * 800.0f - Normalize(i->transform.m_Velocity) * 8.0f);		//Adds the bounce back effect on the two units
+					
+				}
+				if (!m_disableControl)
+				{
+					i->m_disableControl = true;
+					i->m_disableTimer = 0.8f;
+				}
 			}
 			std::cout << i->transform.m_Position.x << "\n";
 
@@ -213,13 +245,18 @@ void player::BatteryCollision()
 
 void player::BatteryImplementation(float _dt)
 {
+	m_abilityTimer -= _dt;
+	if (m_abilityTimer < 0.0f && m_ability != battery::ability::none)
+	{
+		m_ability = battery::ability::none;
+	}
 	switch (m_ability)
 	{
 	case battery::none:
 		break;
 	case battery::turtle:
 	{
-		transform.m_Mass *= 10.0f;
+		//transform.m_Mass *= 10.0f;
 	}
 		break;
 	case battery::magnetic:
