@@ -24,6 +24,9 @@ gameScene::gameScene()
 	m_vPlayers = new std::vector<player*>();
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+
+
+	temp = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
 }
 
 gameScene::~gameScene()
@@ -156,6 +159,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
+	temp->Update(_dT);
 }
 
 /***********************
@@ -206,5 +210,6 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Vector of UI elements
+	// Draw UI elements
+	_window.draw(*temp->GetSprite());
 }
