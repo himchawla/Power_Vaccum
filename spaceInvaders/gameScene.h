@@ -30,8 +30,8 @@ public:
 	gameScene();
 	~gameScene();
 	virtual void Initialise(sf::RenderWindow& _window);
-private:
 	virtual void MainLoop(sf::RenderWindow& _window);
+private:
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
 	virtual void DrawObjects(sf::RenderWindow& _window);

@@ -18,6 +18,7 @@
  // Local Includes 
 #include "gameObject.h"
 #include "gameScene.h"
+#include "sceneManager.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -32,9 +33,9 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!");
 
 	// Create initial scene
-	gameScene* scene = new gameScene();
-	scene->Initialise(window);
-	delete scene;
+	sceneManager::SetScene(new gameScene());
+	sceneManager::Update(window);
+	sceneManager::Shutdown();
 
 	return 0;
 }

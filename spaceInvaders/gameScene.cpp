@@ -13,6 +13,7 @@
 // 
  // Library Includes 
  // Local Includes 
+#include "sceneManager.h"
  // This Include 
 #include "gameScene.h"
  // Static Variables 
@@ -68,6 +69,14 @@ gameScene::~gameScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
+
+	// temp
+
+	if (temp != nullptr)
+	{
+		delete temp;
+		temp = 0;
+	}
 }
 
 /***********************
@@ -82,7 +91,14 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	MainLoop(_window);
+	// Create all players
+	for (int i = 0; i < 4; i++)
+	{
+		player* newPlayer = new player(i);
+		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		newPlayer->SetPlayerVector(m_vPlayers);
+		m_vPlayers->push_back(newPlayer);
+	}
 }
 
 /***********************
@@ -92,36 +108,20 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	// Create all players
-	for (int i = 0; i < 4; i++)
+	sf::Event event;
+
+	// Getting delta time
+	float deltaTime = m_Clock.getElapsedTime().asSeconds();
+	m_Clock.restart();
+
+	while (_window.pollEvent(event))
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		m_vPlayers->push_back(newPlayer);
+		if (event.type == sf::Event::Closed)
+			_window.close();
 	}
 
-
-	// Start clock
-	sf::Clock clock;
-	sf::Keyboard::Key key = sf::Keyboard::Escape;
-	while (_window.isOpen())
-	{
-		sf::Event event;
-
-		// Getting delta time
-		float deltaTime = clock.getElapsedTime().asSeconds();
-		clock.restart(); 
-
-		while (_window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				_window.close();
-		}
-
-		Update(_window, deltaTime);
-		Render(_window);
-	}
+	Update(_window, deltaTime);
+	Render(_window);
 }
 
 /***********************
@@ -144,6 +144,11 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	}
 
 	temp->Update(_dT);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		sceneManager::SetScene(new gameScene());
+	}
 }
 
 /***********************

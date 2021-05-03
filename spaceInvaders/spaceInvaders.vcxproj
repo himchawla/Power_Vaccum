@@ -163,6 +163,7 @@
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tManager.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="sceneManager.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tManager.h" />
     <ClInclude Include="uiImage.h" />

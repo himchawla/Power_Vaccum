@@ -9,8 +9,6 @@ uiImage::uiImage(sf::Vector2f _pos, std::string _texLoc)
 
 	// Configure sprite
 	GetSprite()->setTexture(*GetTexture());
-	GetSprite()->setScale(-1.0f, 1.0f);
-
 	transform.m_Mass = 0.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Friction = sf::Vector2f(0.0f, 0.0f);
@@ -25,7 +23,7 @@ uiImage::~uiImage()
 void uiImage::Update(float _dt)
 {
 	tempClock += _dt;
-	SetPercentageDrawn(50 * (1 + sin(2 * PI * 0.5f * tempClock)), false);
+	SetPercentageDrawn(50 * (1 + sin(2 * PI * 0.5f * tempClock)), true);
 
 	GetSprite()->setPosition(transform.m_Position);
 }

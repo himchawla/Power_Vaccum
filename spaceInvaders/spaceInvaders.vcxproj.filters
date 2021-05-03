@@ -35,6 +35,12 @@
     <ClCompile Include="tManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="uiImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject.h">
@@ -56,6 +62,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uiImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

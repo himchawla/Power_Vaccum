@@ -35,8 +35,16 @@ gameObject::gameObject()
 
 gameObject::~gameObject()
 {
-	delete m_Sprite;
-	delete m_Texture;
+	if (m_Sprite != nullptr)
+	{
+		delete m_Sprite;
+		m_Sprite = 0;
+	}
+	if (m_Texture != nullptr)
+	{
+		delete m_Texture;
+		m_Texture = 0;
+	}
 }
 
 /***********************
