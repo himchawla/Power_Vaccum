@@ -12,11 +12,11 @@
 //  Mail        :   William.Beer@mds.ac.nz | himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
+#include <math.h>
+#include <iostream>
  // Local Includes 
  // This Include 
 #include "gameObject.h"
-#include <math.h>
-#include<iostream>
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
@@ -47,13 +47,12 @@ gameObject::~gameObject()
 ********************/
 void gameObject::Update(float _dT)
 {	
-	transform.m_Velocity += transform.m_Accelaration * _dT;
+	transform.m_Velocity += transform.m_Acceleration * _dT;
 
 	transform.m_Position += transform.m_Velocity * _dT;
 
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 
-	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	m_Sprite->setPosition(transform.m_Position);
 }
 

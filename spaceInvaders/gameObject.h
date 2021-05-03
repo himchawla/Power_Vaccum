@@ -35,15 +35,13 @@ public:
 	{
 		sf::Vector2f m_Position;
 		sf::Vector2f m_Velocity;
-		sf::Vector2f m_Accelaration;
+		sf::Vector2f m_Acceleration;
 		sf::Vector2f m_Force;
 
 		sf::Vector2f m_Friction;
 		
-		
 		float m_Rotation;
 		float m_Mass;
-
 
 		bool m_IsKinematic;
 	};
