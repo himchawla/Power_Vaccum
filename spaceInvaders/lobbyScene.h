@@ -1,5 +1,5 @@
-#ifndef __GAME_SCENE_H__
-#define __GAME_SCENE_H__
+#ifndef __LOBBY_SCENE_H__
+#define __LOBBY_SCENE_H__
 // 
 //  Bachelor of Software Engineering 
 //  Media Design School 
@@ -8,27 +8,25 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   gameScene.h
-//  Description :   A class holds all relevant objects in the game world.
+//  File Name   :   lobbyScene.h
+//  Description :   A lobby scene where players tag in and out of the game before playing.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
-#include <vector>
  // Local Includes 
 #include "scene.h"
-#include "gameObject.h"
-#include "Player.h"
 #include "uiImage.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-class gameScene : public scene
+
+class lobbyScene : public scene
 {
 public:
-	gameScene();
-	virtual ~gameScene();
+	lobbyScene();
+	virtual ~lobbyScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
 private:
@@ -37,10 +35,10 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
-	std::vector<player*>* m_vPlayers;
-	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
 
+	uiImage* temp1;
+	uiImage* temp2;
 };
 #endif
