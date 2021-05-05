@@ -41,7 +41,7 @@ private:
 	sf::RectangleShape* m_TempRect;
 	sf::Vector2f m_2fPosition;
 	float m_fRotation;
-
+	
 	sf::Vector2f m_v2TileSize = sf::Vector2f(75, 75);
 };
 #endif

@@ -6,8 +6,8 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   gameObject.h
-//  Description :   Tile Manager controller for all Tiles that will fall.
+//  File Name   :   tManager.h
+//  Description :   [WIP] Tile Manager controller for all Tiles that will fall.
 //  Author      :   Gervince Michael Go
 //  Mail        :   Gervince.Go@mds.ac.nz
 // 
@@ -32,8 +32,6 @@ tManager::tManager()
 
 
 		}
-
-
 	}
 }
 

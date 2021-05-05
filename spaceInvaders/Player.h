@@ -1,3 +1,5 @@
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
 // 
 //  Bachelor of Software Engineering 
 //  Media Design School 
@@ -12,26 +14,24 @@
 //  Mail        :   himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
-
-
-#pragma once
-
-//Local includes
+#include <vector>
+ //Local includes
 #include "gameObject.h"
 
-
-class Player :
+class player :
 	public gameObject
 {
 public:
-	Player(int _player);
-	~Player();
+	player(int _player);
+	~player();
+	void AddForce(sf::Vector2f _dir);
 	void Update(float _dT);
+	void SetPlayerVector(std::vector<player*>* _player);
 
 private:
+	void PlayerCollision();
+	std::vector<player*>* m_vPlayers;
 	inputManager* m_InputHandler;
-
-
-
 };
 
+#endif

@@ -12,26 +12,15 @@
 //  Mail        :   William.Beer@mds.ac.nz | himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
+#include <math.h>
+#include <iostream>
  // Local Includes 
  // This Include 
 #include "gameObject.h"
-#include <math.h>
-#include<iostream>
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
 
-
-gameObject::gameObject(int player)
-{
-	transform.m_Mass = 1.0f;
-	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-	transform.m_Friction = sf::Vector2f(1.0f, 1.0f);
-	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
-
-	m_Sprite = new sf::Sprite;
-	m_Texture = new sf::Texture;
-}
 
 gameObject::gameObject()
 {
@@ -58,21 +47,20 @@ gameObject::~gameObject()
 ********************/
 void gameObject::Update(float _dT)
 {	
-
-	transform.m_Velocity += transform.m_Accelaration * _dT;
-
-
-	//	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
-
+	transform.m_Velocity += transform.m_Acceleration * _dT;
 
 	transform.m_Position += transform.m_Velocity * _dT;
 
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 
-	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	m_Sprite->setPosition(transform.m_Position);
 }
 
+// Get magnitude
+float gameObject::Magnitude(sf::Vector2f _vec)
+{
+	return sqrt(pow(_vec.x, 2) + pow(_vec.y, 2));
+}
 
 //Get Sprite
 sf::Sprite* gameObject::GetSprite()
@@ -84,18 +72,6 @@ sf::Sprite* gameObject::GetSprite()
 void gameObject::SetSprite(sf::Sprite* _sprite)
 {
 	m_Sprite = _sprite;
-}
-
-//Get Circle
-sf::CircleShape* gameObject::GetCircle()
-{
-	return m_TempCirc;
-}
-
-//Set Circle
-void gameObject::SetCircle(sf::CircleShape* _circle)
-{
-	m_TempCirc = _circle;
 }
 
 //Get Texture

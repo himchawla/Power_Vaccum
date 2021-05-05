@@ -21,21 +21,21 @@
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<Player*>();
-	tileManager = new tManager();
+	m_vPlayers = new std::vector<player*>();
+	m_texBackground = new sf::Texture();
+	m_sprBackground = new sf::Sprite();
 }
 
 gameScene::~gameScene()
 {
-
-	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
+	std::vector<player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
 		// Delete vector contents
 		delete* p_it;
 		p_it = m_vPlayers->erase((p_it));
 	}
-	if (m_vPlayers != nullptr)
+	if (m_vPlayers != nullptr) // Delete vector
 	{
 		delete m_vPlayers;
 		m_vPlayers = 0;
@@ -48,10 +48,22 @@ gameScene::~gameScene()
 		delete* it;
 		it = m_vObjects->erase((it));
 	}
-	if (m_vObjects != nullptr)
+	if (m_vObjects != nullptr) // Delete vector
 	{
 		delete m_vObjects;
 		m_vObjects = 0;
+	}
+
+	// Delete background 
+	if (m_texBackground != nullptr)
+	{
+		delete m_texBackground;
+		m_texBackground = 0;
+	}
+	if (m_sprBackground != nullptr)
+	{
+		delete m_sprBackground;
+		m_sprBackground = 0;
 	}
 }
 
@@ -62,6 +74,10 @@ gameScene::~gameScene()
 ********************/
 void gameScene::Initialise(sf::RenderWindow& _window)
 {
+	// Create background
+	m_texBackground->loadFromFile("Assets/BG.png");
+	m_sprBackground->setTexture(*m_texBackground);
+	m_sprBackground->setPosition(0, 0);
 
 	MainLoop(_window);
 }
@@ -73,12 +89,13 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	
+	// Create all players
 	for (int i = 0; i < 4; i++)
 	{
-		Player* player = new Player(i);
-		player->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		m_vPlayers->push_back(player);
+		player* newPlayer = new player(i);
+		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		newPlayer->SetPlayerVector(m_vPlayers);
+		m_vPlayers->push_back(newPlayer);
 	}
 
 
@@ -97,11 +114,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		{
 			if (event.type == sf::Event::Closed)
 				_window.close();
-			
-
 		}
-
-		//temp->Update(deltaTime);
 
 		Update(_window, deltaTime);
 		Render(_window);
@@ -115,19 +128,17 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void gameScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
-	{
-		(*it)->Update(_dT);
-		it++;
-	}
-
-	for (auto i : *m_vPlayers)
+	// Update objects
+	for (auto i : *m_vObjects)
 	{
 		i->Update(_dT);
 	}
 
+	// Update players
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(_dT);
+	}
 }
 
 /***********************
@@ -137,20 +148,9 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 ********************/
 void gameScene::DrawBackground(sf::RenderWindow& _window)
 {
-	//// Vector of background objects 
-	//std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	//while (it != m_vObjects->end())
-	//{
-	//	if ((*it)->GetSprite() != nullptr)
-	//	{
-	//		_window.draw(*(*it)->GetSprite());
-	//	}
-	//	else if ((*it)->GetCircle() != nullptr) // Debug circle
-	//	{
-	//		_window.draw(*(*it)->GetCircle());
-	//	}
-	//	it++;
-	//}
+	// Draw background
+	_window.draw(*m_sprBackground);
+	//// Vector of background objects (if any) 
 }
 
 /***********************
@@ -160,33 +160,22 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
-	// Vector of objects
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
+	// Draw objects
+	for (auto i : *m_vObjects)
 	{
-		if ((*it)->GetSprite() != nullptr)
+		if (i->GetSprite() != nullptr)
 		{
-			_window.draw(*(*it)->GetSprite());
+			_window.draw(*(i)->GetSprite());
 		}
-		else if ((*it)->GetCircle() != nullptr) // Debug circle
-		{
-			_window.draw(*(*it)->GetCircle());
-		}
-		it++;
 	}
 
-	std::vector<Player*>::iterator p_it = m_vPlayers->begin();
-	while (p_it != m_vPlayers->end())
+	// Draw players
+	for (auto i : *m_vPlayers)
 	{
-		if ((*p_it)->GetSprite() != nullptr)
+		if (i->GetSprite() != nullptr)
 		{
-			_window.draw(*(*p_it)->GetSprite());
+			_window.draw(*(i)->GetSprite());
 		}
-		else if ((*p_it)->GetCircle() != nullptr) // Debug circle
-		{
-			_window.draw(*(*p_it)->GetCircle());
-		}
-		p_it++;
 	}
 
 	tileManager->Draw(_window);
@@ -199,5 +188,5 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Vector of UI elements
+	// Draw UI elements
 }

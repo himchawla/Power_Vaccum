@@ -47,7 +47,6 @@ void inputManager::BindPlayer(int _player)
 	m_iPlayerIndex = _player;
 }
 
-
 /***********************
 * GetMovementVector: Obtains movement vector from joystick input.
 * @author: William de Beer
@@ -88,18 +87,19 @@ void inputManager::SetUsingKeyboard(bool _isUsing)
 {
 	SetUsingKeyboard(m_iPlayerIndex, _isUsing);
 }
+
 /***********************
 * Normalize: Normalizes a given vector
 * @author: Himanshu Chawla
 * @parameter: Vector to normalize
 * @return: N\A
 ********************/
-void inputManager::Normalize(sf::Vector2f& vec)
+void inputManager::NormalizeClamp(sf::Vector2f& _vec)
 {
-	float mag = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+	float mag = sqrt(pow(_vec.x, 2) + pow(_vec.y, 2));
 	if (mag > 100.0f)
 	{
-		vec = (vec / mag) * 100.0f;
+		_vec = (_vec / mag) * 100.0f;
 	}
 }
 
@@ -111,53 +111,33 @@ void inputManager::Normalize(sf::Vector2f& vec)
 ********************/
 sf::Vector2f inputManager::GetMovementVector(int _player)
 {
-
+	// For using keyboard controls while debugging
 	#pragma region Debug-Controller->Keyboard
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 	{
-		usingKeyboard[0] = true;
+		SetUsingKeyboard(0, true);
 	}
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 	{
-		usingKeyboard[1] = true;
+		SetUsingKeyboard(1, true);
 	}
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 	{
-		usingKeyboard[2] = true;
+		SetUsingKeyboard(2, true);
 	}
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
 	{
-		usingKeyboard[3] = true;
+		SetUsingKeyboard(3, true);
 	}
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
 	{
-		usingKeyboard[0] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-	{
-		usingKeyboard[1] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
-	{
-		usingKeyboard[2] = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-	{
-		usingKeyboard[3] = false;
+		SetUsingKeyboard(3, false);
 	}
 	#pragma endregion
 
-
 	sf::Vector2f result(0, 0);
 
-	if (usingKeyboard[_player])
+	if (usingKeyboard[_player]) // Keyboard inputs
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			result.x -= 100;
@@ -168,28 +148,26 @@ sf::Vector2f inputManager::GetMovementVector(int _player)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			result.y -= 100;
 
-		Normalize(result);
+		NormalizeClamp(result);
 
 		return result;
 	}
 
+	// Controller inputs
 	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::X);
 	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::Y);
-
-	if (result.x < 15.0f && result.x > -15.0f)
+	
+	// Deadzone fix
+	if (abs(result.x) < 15.0f)
 	{
 		result.x = 0;
 	}
-	
-
-	if (result.y < 15.0f && result.y > -15.0f)
+	if (abs(result.y) < 15.0f)
 	{
 		result.y = 0;
 	}
 
-	Normalize(result);
-
-
+	NormalizeClamp(result);
 
 	return result;
 }

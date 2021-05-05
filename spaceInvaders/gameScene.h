@@ -37,8 +37,9 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
-	std::vector<Player*>* m_vPlayers;
+	std::vector<player*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
-	tManager* tileManager;
+	sf::Texture* m_texBackground;
+	sf::Sprite* m_sprBackground;
 };
 #endif
