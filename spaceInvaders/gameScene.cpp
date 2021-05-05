@@ -13,6 +13,7 @@
 // 
  // Library Includes 
  // Local Includes 
+#include "sceneManager.h"
  // This Include 
 #include "gameScene.h"
  // Static Variables 
@@ -69,10 +70,11 @@ gameScene::~gameScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
+
 }
 
 /***********************
-* Initialise: Initialise scene and call MainLoop.
+* Initialise: Initialise scene.
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
@@ -87,7 +89,16 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
 	m_vBatteries->push_back(bat);
 
-	MainLoop(_window);
+
+	// Create all players
+	for (int i = 0; i < 4; i++)
+	{
+		player* newPlayer = new player(i);
+		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+		newPlayer->SetPlayerVector(m_vPlayers);
+		m_vPlayers->push_back(newPlayer);
+	}
+
 }
 
 /***********************
@@ -97,25 +108,10 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	// Create all players
-	for (int i = 0; i < 4; i++)
+
+	while (_window.pollEvent(event))
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		newPlayer->SetBatteryVector(m_vBatteries);
-		m_vPlayers->push_back(newPlayer);
-		
-	}
 
-	
-
-
-	// Start clock
-	sf::Clock clock;
-	sf::Keyboard::Key key = sf::Keyboard::Escape;
-	while (_window.isOpen())
-	{
 		sf::Event event;
 
 		// Getting delta time
@@ -142,7 +138,12 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		
 		Update(_window, deltaTime);
 		Render(_window);
+		if (event.type == sf::Event::Closed)
+			_window.close();
 	}
+
+	Update(_window, deltaTime);
+	Render(_window);
 }
 
 /***********************
@@ -167,6 +168,12 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	for (auto i : *m_vBatteries)
 	{
 		i->Update(_dT);
+	}
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		sceneManager::SetScene(new gameScene());
 	}
 
 }
@@ -207,6 +214,8 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 	{
 		b_it->Draw(_window);
 	}
+
+	//tileManager->Draw(_window);
 }
 
 /***********************
@@ -216,5 +225,4 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Draw UI elements
 }

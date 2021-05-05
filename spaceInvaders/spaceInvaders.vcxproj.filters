@@ -36,6 +36,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="battery.cpp">
+
+    <ClCompile Include="uiImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lobbyScene.cpp">
+
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,7 +70,17 @@
     <ClInclude Include="tManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+
     <ClInclude Include="battery.h">
+
+    <ClInclude Include="uiImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lobbyScene.h">
+
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
