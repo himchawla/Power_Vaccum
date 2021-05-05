@@ -96,6 +96,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 		player* newPlayer = new player(i);
 		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
 		newPlayer->SetPlayerVector(m_vPlayers);
+		newPlayer->SetBatteryVector(m_vBatteries);
 		m_vPlayers->push_back(newPlayer);
 	}
 
@@ -108,38 +109,26 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
+	sf::Event event;
+
+	// Getting delta time
+	float deltaTime = m_Clock.getElapsedTime().asSeconds();
+	m_Clock.restart();
 
 	while (_window.pollEvent(event))
 	{
-
-		sf::Event event;
-
-		// Getting delta time
-		float deltaTime = clock.getElapsedTime().asSeconds();
-		clock.restart(); 
-
-		while (_window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				_window.close();
-		
-			//Just to check the death function/ Delete Later
-			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
-			{
-				for (auto p_it : *m_vPlayers)
-				{
-					p_it->death();
-					break;
-				}
-			}
-		}
-		
-			
-		
-		Update(_window, deltaTime);
-		Render(_window);
 		if (event.type == sf::Event::Closed)
 			_window.close();
+
+		//Just to check the death function/ Delete Later
+		if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
+		{
+			for (auto p_it : *m_vPlayers)
+			{
+				p_it->death();
+				break;
+			}
+		}
 	}
 
 	Update(_window, deltaTime);
