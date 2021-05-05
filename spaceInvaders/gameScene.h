@@ -18,6 +18,7 @@
  // Local Includes 
 #include "scene.h"
 #include "gameObject.h"
+#include "tManager.h"
 #include "Player.h"
  // This Include 
  // Static Variables 
@@ -38,5 +39,6 @@ private:
 
 	std::vector<Player*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
+	tManager* tileManager;
 };
 #endif

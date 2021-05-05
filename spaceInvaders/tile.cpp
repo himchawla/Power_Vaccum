@@ -24,7 +24,7 @@ tile::tile()
 {
 	m_TempRect = new sf::RectangleShape;
 
-	m_TempRect->setSize(sf::Vector2f(50, 50));
+	m_TempRect->setSize(sf::Vector2f(m_v2TileSize));
 	m_TempRect->setFillColor(sf::Color::White);
 	m_TempRect->setOutlineThickness(2);
 	m_TempRect->setOutlineColor(sf::Color::Black);
@@ -35,7 +35,7 @@ tile::tile(float x_pos, float y_pos)
 {
 	m_TempRect = new sf::RectangleShape;
 
-	m_TempRect->setSize(sf::Vector2f(50, 50));
+	m_TempRect->setSize(sf::Vector2f(m_v2TileSize));
 	m_TempRect->setFillColor(sf::Color::White);
 	m_TempRect->setOutlineThickness(2);
 	m_TempRect->setOutlineColor(sf::Color::Black);

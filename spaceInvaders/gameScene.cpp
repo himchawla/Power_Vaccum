@@ -22,6 +22,7 @@ gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
 	m_vPlayers = new std::vector<Player*>();
+	tileManager = new tManager();
 }
 
 gameScene::~gameScene()
@@ -187,6 +188,8 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		}
 		p_it++;
 	}
+
+	tileManager->Draw(_window);
 }
 
 /***********************
