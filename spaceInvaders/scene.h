@@ -26,12 +26,13 @@ public:
 	scene();
 	virtual ~scene();
 	virtual void Initialise(sf::RenderWindow& _window) = 0;
-protected:
 	virtual void MainLoop(sf::RenderWindow& _window) = 0;
+protected:
 	virtual void Render(sf::RenderWindow& _window);
 	virtual void Update(sf::RenderWindow& _window, float _dT) = 0;
 	virtual void DrawBackground(sf::RenderWindow& _window) = 0;
 	virtual void DrawObjects(sf::RenderWindow& _window) = 0;
 	virtual void DrawUI(sf::RenderWindow& _window) = 0;
+	sf::Clock m_Clock;
 };
 #endif

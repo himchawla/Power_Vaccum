@@ -6,55 +6,32 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   gameScene.cpp
-//  Description :   A class holds all relevant objects in the game world.
+//  File Name   :   lobbyScene.cpp
+//  Description :   A lobby scene where players tag in and out of the game before playing.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
  // Local Includes 
+#include "gameScene.h"
 #include "sceneManager.h"
  // This Include 
-#include "gameScene.h"
+#include "lobbyScene.h"
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-gameScene::gameScene()
+
+lobbyScene::lobbyScene()
 {
-	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<player*>();
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+
+	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
+	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png");
 }
 
-gameScene::~gameScene()
+lobbyScene::~lobbyScene()
 {
-	std::vector<player*>::iterator p_it = m_vPlayers->begin();
-	while (p_it != m_vPlayers->end())
-	{
-		// Delete vector contents
-		delete* p_it;
-		p_it = m_vPlayers->erase((p_it));
-	}
-	if (m_vPlayers != nullptr) // Delete vector
-	{
-		delete m_vPlayers;
-		m_vPlayers = 0;
-	}
-
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
-	{
-		// Delete vector contents
-		delete* it;
-		it = m_vObjects->erase((it));
-	}
-	if (m_vObjects != nullptr) // Delete vector
-	{
-		delete m_vObjects;
-		m_vObjects = 0;
-	}
-
 	// Delete background 
 	if (m_texBackground != nullptr)
 	{
@@ -67,6 +44,12 @@ gameScene::~gameScene()
 		m_sprBackground = 0;
 	}
 
+	// temp
+	if (temp1 != nullptr)
+	{
+		delete temp1;
+		temp1 = 0;
+	}
 }
 
 /***********************
@@ -74,21 +57,19 @@ gameScene::~gameScene()
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void gameScene::Initialise(sf::RenderWindow& _window)
+void lobbyScene::Initialise(sf::RenderWindow& _window)
 {
 	// Create background
-	m_texBackground->loadFromFile("Assets/BG.png");
+	m_texBackground->loadFromFile("Assets/lobbyBG.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	// Create all players
-	for (int i = 0; i < 4; i++)
-	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		m_vPlayers->push_back(newPlayer);
-	}
+	// Set up demo images
+	temp1->GetSprite()->setColor(sf::Color::Red);
+	temp1->GetSprite()->setScale(sf::Vector2f(4.0f, 4.0f));
+
+	temp2->GetSprite()->setColor(sf::Color::Blue);
+	temp2->GetSprite()->setScale(sf::Vector2f(-4.0f, 4.0f));
 }
 
 /***********************
@@ -96,7 +77,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void gameScene::MainLoop(sf::RenderWindow& _window)
+void lobbyScene::MainLoop(sf::RenderWindow& _window)
 {
 	sf::Event event;
 
@@ -116,24 +97,16 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 
 /***********************
 * Update: Updates objects in the game scene.
-* @author: William de Beer | Himanshu Chawla
+* @author: William de Beer
 * @parameter: Reference to render window, Delta time.
 ********************/
-void gameScene::Update(sf::RenderWindow& _window, float _dT)
+void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	// Update objects
-	for (auto i : *m_vObjects)
-	{
-		i->Update(_dT);
-	}
+	temp1->Update(_dT);
+	temp2->Update(_dT);
 
-	// Update players
-	for (auto i : *m_vPlayers)
-	{
-		i->Update(_dT);
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	// Start game
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		sceneManager::SetScene(new gameScene());
 	}
@@ -144,11 +117,10 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void gameScene::DrawBackground(sf::RenderWindow& _window)
+void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 {
 	// Draw background
 	_window.draw(*m_sprBackground);
-	//// Vector of background objects (if any) 
 }
 
 /***********************
@@ -156,27 +128,8 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void gameScene::DrawObjects(sf::RenderWindow& _window)
+void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 {
-	// Draw objects
-	for (auto i : *m_vObjects)
-	{
-		if (i->GetSprite() != nullptr)
-		{
-			_window.draw(*(i)->GetSprite());
-		}
-	}
-
-	// Draw players
-	for (auto i : *m_vPlayers)
-	{
-		if (i->GetSprite() != nullptr)
-		{
-			_window.draw(*(i)->GetSprite());
-		}
-	}
-
-	//tileManager->Draw(_window);
 }
 
 /***********************
@@ -184,6 +137,9 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void gameScene::DrawUI(sf::RenderWindow& _window)
+void lobbyScene::DrawUI(sf::RenderWindow& _window)
 {
+	// Draw UI elements
+	_window.draw(*temp1->GetSprite());
+	_window.draw(*temp2->GetSprite());
 }
