@@ -178,7 +178,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		}
 	}
 
-	tileManager->Draw(_window);
+	//tileManager->Draw(_window);
 }
 
 /***********************
