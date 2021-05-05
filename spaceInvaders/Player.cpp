@@ -107,7 +107,7 @@ void player::AddPowerForrce(sf::Vector2f dir)
 void player::Update(float _dT)
 {
 	m_disableTimer -= _dT;
-	if (m_disableControl && m_disableTimer < 0.0f)
+	if (Magnitude(m_externVel) < 0.01f)
 	{
 		m_disableControl = false;
 	}

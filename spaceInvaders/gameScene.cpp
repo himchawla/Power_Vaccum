@@ -85,7 +85,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	battery* bat = new battery(1, sf::Vector2f(500.0f, 200.0f));
+	battery* bat = new battery(2, sf::Vector2f(500.0f, 200.0f));
 	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
 	m_vBatteries->push_back(bat);
 
