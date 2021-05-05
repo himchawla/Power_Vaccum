@@ -53,6 +53,20 @@ player::player(int _player)
 	}
 }
 
+void player::death()
+{
+	std::vector<player*>::iterator it = m_vPlayers->begin();
+	while (it != m_vPlayers->end())
+	{
+		if (*it == this)
+		{
+  			m_vPlayers->erase(it);
+			delete this;
+			break;
+		}
+		it++;
+	}
+}
 
 player::~player()
 {
@@ -72,6 +86,17 @@ player::~player()
 void player::AddForce(sf::Vector2f _dir)
 {
 	transform.m_Force += _dir;
+}
+
+
+/***********************
+* AddPowerForce: AddForce
+* @author: Himanshu Chawla
+* @parameter: direction
+********************/
+void player::AddPowerForrce(sf::Vector2f dir)
+{
+	m_powerForce += dir;
 }
 
 /***********************
@@ -104,6 +129,13 @@ void player::Update(float _dT)
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 
+	transform.m_Acceleration += (m_powerForce / transform.m_Mass) * _dT * 200.0f;
+
+	m_forceVel += transform.m_Acceleration * _dT * 200.0f;
+
+	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
+	m_powerForce = sf::Vector2f(0.0f, 0.0f);
+
 	//Retardation
 	if (Magnitude(m_externVel) > 0.0f)
 	{
@@ -122,6 +154,23 @@ void player::Update(float _dT)
 			m_externVel.y = 0.0f;
 	}
 
+	if (Magnitude(m_forceVel) > 0.0f)
+	{
+		if (m_forceVel.x > 10.0f || m_forceVel.x < -10.0f)
+		{
+			m_forceVel.x -= transform.m_Friction.x * (abs(m_forceVel.x) / m_forceVel.x) * _dT * 100.0f;
+		}
+		else
+			m_forceVel.x = 0.0f;
+
+		if (m_forceVel.y > 10.0f || m_forceVel.y < -10.0f)
+		{
+			m_forceVel.y -= transform.m_Friction.y * (abs(m_forceVel.y) / m_forceVel.y) * _dT * 100.0f;
+		}
+		else
+			m_forceVel.y = 0.0f;
+	}
+
 
 
 	//Clamp Acceleration
@@ -131,10 +180,17 @@ void player::Update(float _dT)
 		m_externVel = (m_externVel / mag) * 600.0f;
 	}
 
+	//Clamp magnetic Speed
+	mag = sqrt(pow(m_forceVel.x, 2) + pow(m_forceVel.y, 2));
+	if (mag > 300.0f)
+	{
+		m_forceVel = (m_forceVel / mag) * 300.0f;
+	}
+
 	if (!m_disableControl)
-		transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel;
+		transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel + m_forceVel;
 	else
-		transform.m_Velocity = m_externVel;
+		transform.m_Velocity = m_externVel + m_forceVel;
 	//Clamp Velocity
 	
 
@@ -189,7 +245,7 @@ void player::PlayerCollision()
 				{
 
 					if (m_ability != battery::ability::turtle)
-						i->AddForce(Normalize(transform.m_Velocity) * 0.8f + DistanceCalc * selfSpeed * 0.8f - Normalize(i->transform.m_Velocity) * 0.8f);		//Adds the bounce back effect on the two units
+						i->AddForce((transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f)/10.0f);		//Adds the bounce back effect on the two units
 
 					else
 						i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f);		//Adds the bounce back effect on the two units
@@ -199,7 +255,7 @@ void player::PlayerCollision()
 					if (m_ability != battery::ability::turtle)
 						i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f);		//Adds the bounce back effect on the two units
 					else
-						i->AddForce(Normalize(transform.m_Velocity) * 800.0f + DistanceCalc * selfSpeed * 800.0f - Normalize(i->transform.m_Velocity) * 8.0f);		//Adds the bounce back effect on the two units
+						i->AddForce((transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f) * 10.0f);		//Adds the bounce back effect on the two units
 					
 				}
 				if (!m_disableControl)
@@ -266,7 +322,7 @@ void player::BatteryImplementation(float _dt)
 			if (it != this)
 			{
 				float mag = Magnitude(transform.m_Position - it->transform.m_Position);
-				it->AddForce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
+				it->AddPowerForrce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
 				
 			}
 		}

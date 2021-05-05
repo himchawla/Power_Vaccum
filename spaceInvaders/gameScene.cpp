@@ -18,6 +18,9 @@
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
+
+bool isDebug = false;
+
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
@@ -80,6 +83,10 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
+	battery* bat = new battery(1, sf::Vector2f(500.0f, 200.0f));
+	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
+	m_vBatteries->push_back(bat);
+
 	MainLoop(_window);
 }
 
@@ -101,9 +108,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		
 	}
 
-	battery* bat = new battery();
-	bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
-	m_vBatteries->push_back(bat);
+	
 
 
 	// Start clock
@@ -121,8 +126,20 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		{
 			if (event.type == sf::Event::Closed)
 				_window.close();
+		
+			//Just to check the death function/ Delete Later
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
+			{
+				for (auto p_it : *m_vPlayers)
+				{
+					p_it->death();
+					break;
+				}
+			}
 		}
-
+		
+			
+		
 		Update(_window, deltaTime);
 		Render(_window);
 	}

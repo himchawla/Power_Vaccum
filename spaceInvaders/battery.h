@@ -15,6 +15,7 @@ public:
 }m_ability;
 
 	battery();
+	battery(int ch, sf::Vector2f _position);
 	void Destroy();
 	~battery();
 	
