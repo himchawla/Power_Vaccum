@@ -20,7 +20,11 @@
 #include "gameObject.h"
 #include "tManager.h"
 #include "Player.h"
+
+#include"battery.h"
+
 #include "uiImage.h"
+
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -42,6 +46,10 @@ private:
 	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
+
+	std::vector<battery*>* m_vBatteries;
+
+
 
 };
 #endif

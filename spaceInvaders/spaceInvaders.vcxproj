@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="battery.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="inputManager.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="uiImage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="battery.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="inputManager.h" />

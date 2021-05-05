@@ -19,12 +19,16 @@
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
+
+bool isDebug = false;
+
 gameScene::gameScene()
 {
 	m_vObjects = new std::vector<gameObject*>();
 	m_vPlayers = new std::vector<player*>();
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+	m_vBatteries = new std::vector<battery*>();
 }
 
 gameScene::~gameScene()
@@ -81,6 +85,11 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
+	battery* bat = new battery(1, sf::Vector2f(500.0f, 200.0f));
+	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
+	m_vBatteries->push_back(bat);
+
+
 	// Create all players
 	for (int i = 0; i < 4; i++)
 	{
@@ -89,6 +98,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 		newPlayer->SetPlayerVector(m_vPlayers);
 		m_vPlayers->push_back(newPlayer);
 	}
+
 }
 
 /***********************
@@ -98,14 +108,36 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	sf::Event event;
-
-	// Getting delta time
-	float deltaTime = m_Clock.getElapsedTime().asSeconds();
-	m_Clock.restart();
 
 	while (_window.pollEvent(event))
 	{
+
+		sf::Event event;
+
+		// Getting delta time
+		float deltaTime = clock.getElapsedTime().asSeconds();
+		clock.restart(); 
+
+		while (_window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				_window.close();
+		
+			//Just to check the death function/ Delete Later
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
+			{
+				for (auto p_it : *m_vPlayers)
+				{
+					p_it->death();
+					break;
+				}
+			}
+		}
+		
+			
+		
+		Update(_window, deltaTime);
+		Render(_window);
 		if (event.type == sf::Event::Closed)
 			_window.close();
 	}
@@ -133,10 +165,17 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
+	for (auto i : *m_vBatteries)
+	{
+		i->Update(_dT);
+	}
+
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		sceneManager::SetScene(new gameScene());
 	}
+
 }
 
 /***********************
@@ -159,21 +198,21 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
 	// Draw objects
-	for (auto i : *m_vObjects)
+	for (auto it : *m_vObjects)
 	{
-		if (i->GetSprite() != nullptr)
-		{
-			_window.draw(*(i)->GetSprite());
-		}
+		it->Draw(_window);
 	}
 
 	// Draw players
-	for (auto i : *m_vPlayers)
+	for (auto p_it : *m_vPlayers)
 	{
-		if (i->GetSprite() != nullptr)
-		{
-			_window.draw(*(i)->GetSprite());
-		}
+		p_it->Draw(_window);
+		
+	}
+
+	for (auto b_it : *m_vBatteries)
+	{
+		b_it->Draw(_window);
 	}
 
 	//tileManager->Draw(_window);
