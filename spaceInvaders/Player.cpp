@@ -373,7 +373,8 @@ void player::BatteryImplementation(float _dt)
 			if (it != this)
 			{
 				float mag = Magnitude(transform.m_Position - it->transform.m_Position);
-				it->AddPowerForrce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
+				//if(abs(transform.m_Position.x - it->transform.m_Position.x) < 500.0f && abs(transform.m_Position.y - it->transform.m_Position.y) < 500.0f)
+					it->AddPowerForrce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
 				
 			}
 		}

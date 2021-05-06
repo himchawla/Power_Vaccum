@@ -89,6 +89,9 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
 	m_vBatteries->push_back(bat);
 
+	bat = new battery(2, sf::Vector2f(200.0f, 800.0f));
+	m_vBatteries->push_back(bat);
+
 
 	// Create all players
 	for (int i = 0; i < 4; i++)
