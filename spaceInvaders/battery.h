@@ -6,7 +6,7 @@ class battery :
 	
 public:
 	
-	enum ability
+	enum eAbility
 {
 	none,
 	turtle,

@@ -18,20 +18,21 @@ battery::battery()
 	m_abilityTimer = 50.0f;
 }
 
-
+//Constuctor
+//Assigns Battery type
 battery::battery(int ch, sf::Vector2f _position)
 {
 	switch (ch)
 	{
-	case 1:
+	case 1:	//Turtle Battery
 	{
 		SetSpriteFromFile("Assets/Batteries/Turtle.png");
 	}break;
-	case 2:
+	case 2:	//Magnetic Battery
 	{
 		SetSpriteFromFile("Assets/Batteries/Magnetic.png");
 	}break;
-	case 3:
+	case 3:	//Leaking Battery
 	{
 
 	}break;
@@ -39,7 +40,7 @@ battery::battery(int ch, sf::Vector2f _position)
 		break;
 	}
 	transform.m_Position = _position;
-	m_ability = (ability)ch;
+	m_ability = (eAbility)ch;
 	m_abilityTimer = 5.0f;
 
 }
