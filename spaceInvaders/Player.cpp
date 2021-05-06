@@ -16,6 +16,14 @@
 //This include
 #include "Player.h"
 #include <iostream>
+
+
+/***********************
+* Normalize: Checks Battery Collision
+* @author: Himanshu Chawla
+* Parameter: Vector
+* Return: Normalized Vector
+********************/
 sf::Vector2f Normalize(sf::Vector2f _v)
 {
 	float mag = sqrt(_v.x * _v.x + _v.y * _v.y);
@@ -24,13 +32,15 @@ sf::Vector2f Normalize(sf::Vector2f _v)
 	_v /= mag;
 	return _v;
 }
+
+
 player::player(int _player)
 {
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
 	transform.m_Mass = 1.0f;
 	SetSpriteFromFile("Assets/Players/Roomba.png");
-	m_ability = battery::ability::none;
+	m_ability = battery::eAbility::none;
 	m_abilityTimer = 0.0f;
 
 	// Set sprite colour
@@ -53,6 +63,12 @@ player::player(int _player)
 	}
 }
 
+
+/***********************
+* death: Kills a current player
+* @author: Himanshu Chawla
+* @parameter: N/A
+********************/
 void player::death()
 {
 	std::vector<player*>::iterator it = m_vPlayers->begin();
@@ -119,22 +135,34 @@ void player::Update(float _dT)
 	
 
 	//Reset Velocity
-	
+
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-	//Calculate Accekaration from force
-	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * 200.0f;
+
+	#pragma region CollisionPhysics
+
+
+	//Calculate Accekaration from force for Collision
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass);
 	
 	m_externVel += transform.m_Acceleration * _dT * 200.0f;
+
 	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 
-	transform.m_Acceleration += (m_powerForce / transform.m_Mass) * 200.0f;
+#pragma endregion
+	
+	#pragma region PowerupPhysics
+
+	//Calculate Accekaration from force for PoweUps
+	transform.m_Acceleration = (m_powerForce / transform.m_Mass);
 
 	m_forceVel += transform.m_Acceleration * _dT * 200.0f;
 
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
+#pragma endregion
+
 
 	//Retardation
 	if (Magnitude(m_externVel) > 0.0f)
@@ -182,15 +210,19 @@ void player::Update(float _dT)
 
 	//Clamp magnetic Speed
 	mag = sqrt(pow(m_forceVel.x, 2) + pow(m_forceVel.y, 2));
-	if (mag > 300.0f)
+	if (mag > 600.0f)
 	{
-		m_forceVel = (m_forceVel / mag) * 300.0f;
+		m_forceVel = (m_forceVel / mag) * 600.0f;
 	}
 
 	if (!m_disableControl)
-		transform.m_Velocity = m_InputHandler->GetMovementVector() * 5.0f + m_externVel + m_forceVel;
+		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + m_externVel + m_forceVel;
 	else
+	{
+		transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 		transform.m_Velocity = m_externVel + m_forceVel;
+
+	}
 	//Clamp Velocity
 	
 
@@ -205,7 +237,7 @@ void player::Update(float _dT)
 }
 
 /***********************
-* Update: creates a Vector of all the players
+* SetPlayerVector: creates a Vector of all the players
 * @author: Neel Kolhe
 * parameters: Vector
 ********************/
@@ -214,13 +246,20 @@ void player::SetPlayerVector(std::vector<player*>* _player)
 	m_vPlayers = _player;			//pushes the players onto a vector for checking the player collision
 }
 
+
+
+/***********************
+* SetBatteryVector: creates a Vector of all the Batteries
+* @author: Himanshu Chawla
+* parameters: Vector
+********************/
 void player::SetBatteryVector(std::vector<battery*>* _battery)
 {
 	m_vBatteries = _battery;
 }
 
 /***********************
-* Update: Checks Player Collision
+* PlayerCollision: Checks Player Collision
 * @author: Neel Kolhe
 ********************/
 void player::PlayerCollision()
@@ -241,21 +280,21 @@ void player::PlayerCollision()
 			{
 				DistanceCalc = DistanceCalc / Distance;		//gets the distance between the two units
 				
-				if (i->m_ability == battery::ability::turtle)
+				if (i->m_ability == battery::eAbility::turtle)
 				{
 
-					if (m_ability != battery::ability::turtle)
-						i->AddForce((transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f)/10.0f);		//Adds the bounce back effect on the two units
-
+					if (m_ability != battery::eAbility::turtle)
+						//i->AddForce((transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f)/10.0f);		
+						std::cout << "";
 					else
-						i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f);		//Adds the bounce back effect on the two units
+						i->AddForce(transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units Both are Turtle
 				}
 				else
 				{
-					if (m_ability != battery::ability::turtle)
-						i->AddForce(transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f);		//Adds the bounce back effect on the two units
+					if (m_ability != battery::eAbility::turtle)
+						i->AddForce(transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
 					else
-						i->AddForce((transform.m_Velocity * 0.8f + DistanceCalc * selfSpeed * 0.8f - i->transform.m_Velocity * 0.8f) * 10.0f);		//Adds the bounce back effect on the two units
+						i->AddForce((transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.1f) * 10.0f);		//Adds the bounce back effect on the two units one is Turtle
 					
 				}
 				if (!m_disableControl)
@@ -272,6 +311,10 @@ void player::PlayerCollision()
 
 
 
+/***********************
+* PlayerCollision: Checks Battery Collision
+* @author: Himanshu Chawla
+********************/
 void player::BatteryCollision()
 {
 	float selfSpeed = Magnitude(transform.m_Velocity);
@@ -299,12 +342,19 @@ void player::BatteryCollision()
 	
 }
 
+
+/***********************
+* BatteryImplementation: Implement Battery Function
+* @author: Himanshu Chawla
+* Parameters: deltaTimer
+********************/
 void player::BatteryImplementation(float _dt)
 {
 	m_abilityTimer -= _dt;
-	if (m_abilityTimer < 0.0f && m_ability != battery::ability::none)
+	if (m_abilityTimer < 0.0f && m_ability != battery::eAbility::none)
 	{
-		m_ability = battery::ability::none;
+		m_ability = battery::eAbility::none;
+		m_speed = 5.0f;
 	}
 	switch (m_ability)
 	{
@@ -312,11 +362,12 @@ void player::BatteryImplementation(float _dt)
 		break;
 	case battery::turtle:
 	{
-		//transform.m_Mass *= 10.0f;
+		m_speed = 2.5f;
 	}
 		break;
 	case battery::magnetic:
 	{
+		//Magnetic Pull
 		for (auto it : *m_vPlayers)
 		{
 			if (it != this)

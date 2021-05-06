@@ -34,7 +34,7 @@ public:
 
 
 
-	battery::ability m_ability;
+	battery::eAbility m_ability;
 
 private:
 	
@@ -43,7 +43,7 @@ private:
 	sf::Vector2f m_powerForce = sf::Vector2f(0.0f,0.0f);
 	sf::Vector2f m_externVel = sf::Vector2f(0.0f, 0.0f);
 	sf::Vector2f m_forceVel = sf::Vector2f(0.0f, 0.0f);
-
+	float m_speed = 5.0f;
 	float m_abilityTimer;
 	inputManager* m_InputHandler;
 	void PlayerCollision();
