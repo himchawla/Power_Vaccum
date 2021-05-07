@@ -122,6 +122,7 @@ void player::AddPowerForrce(sf::Vector2f dir)
 ********************/
 void player::Update(float _dT)
 {
+	m_delay -= _dT;
 	m_disableTimer -= _dT;
 	if (Magnitude(m_externVel) < 0.01f)
 	{
@@ -130,9 +131,22 @@ void player::Update(float _dT)
 
 	//Check Collisions
 	PlayerCollision();
-	BatteryCollision();
+	if(m_vBatteries!=nullptr)
+		BatteryCollision();
 	BatteryImplementation(_dT);
-	
+
+	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
+	{
+		m_ready = !m_ready;
+		std::cout << "Player is " << m_ready;
+		m_delay = 1.0f;
+	}
+
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	if (m_InputHandler->GetControllerButton(i))
+	//		exit(i);
+	//}
 
 	//Reset Velocity
 
@@ -256,6 +270,16 @@ void player::SetPlayerVector(std::vector<player*>* _player)
 void player::SetBatteryVector(std::vector<battery*>* _battery)
 {
 	m_vBatteries = _battery;
+}
+
+bool player::IsReady()
+{
+	return m_ready;
+}
+
+void player::SetReady(bool _ready)
+{
+	m_ready = _ready;
 }
 
 /***********************

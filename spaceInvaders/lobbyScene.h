@@ -35,8 +35,14 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
+	bool m_hasJoined[4];
+	int m_numPlayers = 0;
+	bool m_canStart;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
+
+	std::vector<player*>* m_vPlayers;
+
 
 	uiImage* temp1;
 	uiImage* temp2;

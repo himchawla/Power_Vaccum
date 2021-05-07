@@ -22,10 +22,10 @@
 
 bool isDebug = false;
 
-gameScene::gameScene()
+gameScene::gameScene(std::vector<player*>* _player)
 {
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<player*>();
+	m_vPlayers = _player;
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
@@ -90,14 +90,9 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_vBatteries->push_back(bat);
 
 
-	// Create all players
-	for (int i = 0; i < 4; i++)
+	for (auto i : *m_vPlayers)
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		newPlayer->SetBatteryVector(m_vBatteries);
-		m_vPlayers->push_back(newPlayer);
+		i->SetBatteryVector(m_vBatteries);
 	}
 
 }
@@ -162,7 +157,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		sceneManager::SetScene(new gameScene());
+		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
 
 }

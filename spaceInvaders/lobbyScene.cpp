@@ -12,6 +12,7 @@
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
+#include<iostream>
  // Local Includes 
 #include "gameScene.h"
 #include "sceneManager.h"
@@ -25,6 +26,8 @@ lobbyScene::lobbyScene()
 {
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+
+	m_vPlayers = new std::vector<player*>();
 
 	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
 	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png");
@@ -60,7 +63,7 @@ lobbyScene::~lobbyScene()
 void lobbyScene::Initialise(sf::RenderWindow& _window)
 {
 	// Create background
-	m_texBackground->loadFromFile("Assets/lobbyBG.png");
+	m_texBackground->loadFromFile("Assets/lobby.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
@@ -105,10 +108,41 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	temp1->Update(_dT);
 	temp2->Update(_dT);
 
-	// Start game
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	for (int i = 0; i < 4; i++)
 	{
-		sceneManager::SetScene(new gameScene());
+		if (inputManager::GetControllerButton(3, i) && !m_hasJoined[i])
+		{
+			m_numPlayers++;
+			if (m_numPlayers > 1 && !m_canStart)
+			{
+				m_canStart = true;
+				m_texBackground->loadFromFile("Assets/lobbyBG.png");
+			}
+			m_hasJoined[i] = true;
+			std::cout << "Player " << i << " has joined the game";
+			player* newPlayer = new player(i);
+			newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+			newPlayer->SetPlayerVector(m_vPlayers);
+			m_vPlayers->push_back(newPlayer);
+		}
+	}
+	// Start game
+	
+
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(_dT);
+		if (!i->IsReady())
+		{
+			m_canStart = false;
+			break;
+		}
+		else m_canStart = true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_canStart)
+	{
+		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
 }
 

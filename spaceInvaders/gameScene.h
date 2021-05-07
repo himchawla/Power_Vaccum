@@ -32,7 +32,8 @@
 class gameScene : public scene
 {
 public:
-	gameScene();
+	
+	gameScene(std::vector<player*>* _player);
 	virtual ~gameScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
