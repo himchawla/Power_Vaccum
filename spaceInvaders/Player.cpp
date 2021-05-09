@@ -51,6 +51,18 @@ player::player(int _player)
 	default:
 		break;
 	}
+
+	// Leaking battery variables
+	m_bExphit = false;
+	m_bWillDie = false;
+	m_fDeathTimer = 0.0f;
+	m_fDeathDelay = 2.0f;
+
+	m_circleIndicator = sf::CircleShape(m_fExpRange);
+	m_circleIndicator.setOrigin(sf::Vector2f(m_fExpRange, m_fExpRange));
+	m_circleIndicator.setFillColor(sf::Color(200, 170, 130, 160));
+	m_circleIndicator.setOutlineColor(sf::Color(255, 255, 255, 160));
+	m_circleIndicator.setOutlineThickness(5.0f);
 }
 
 void player::death()
@@ -113,13 +125,15 @@ void player::Update(float _dT)
 	}
 
 	//Check Collisions
-	PlayerCollision();
-	BatteryCollision();
+	if (!m_bWillDie)
+	{
+		PlayerCollision();
+		BatteryCollision();
+	}
 	BatteryImplementation(_dT);
 	
 
 	//Reset Velocity
-	
 	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 	//Calculate Accekaration from force
 	transform.m_Acceleration += (transform.m_Force / transform.m_Mass) * 200.0f;
@@ -135,6 +149,14 @@ void player::Update(float _dT)
 
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
+
+	if (m_bExphit) // If player has been hit with explosion.
+	{
+		transform.m_Velocity = m_externVel + m_forceVel;
+		transform.m_Position += transform.m_Velocity * _dT;
+		GetSprite()->setPosition(transform.m_Position);
+		return; // Return before applying retardation and clamping.
+	}
 
 	//Retardation
 	if (Magnitude(m_externVel) > 0.0f)
@@ -196,12 +218,12 @@ void player::Update(float _dT)
 
 	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;
-
+	//Update sprite position
+	GetSprite()->setPosition(transform.m_Position);
+	m_circleIndicator.setPosition(transform.m_Position);
 //	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 
 
-	//Update sprite position
-	GetSprite()->setPosition(transform.m_Position);
 }
 
 /***********************
@@ -228,7 +250,7 @@ void player::PlayerCollision()
 	float selfSpeed = Magnitude(transform.m_Velocity);		//sets the speed of the player
 	for (auto i : *m_vPlayers)								//logs the opposing player
 	{
-		if (i != this)										//checks if the player is not the opposing
+		if (i != this && !i->GetWillDie())										//checks if the player is not the opposing
 		{
 			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;		//calculates the minimum distance needed for collision between the two units
 
@@ -302,10 +324,7 @@ void player::BatteryCollision()
 void player::BatteryImplementation(float _dt)
 {
 	m_abilityTimer -= _dt;
-	if (m_abilityTimer < 0.0f && m_ability != battery::ability::none)
-	{
-		m_ability = battery::ability::none;
-	}
+
 	switch (m_ability)
 	{
 	case battery::none:
@@ -329,8 +348,77 @@ void player::BatteryImplementation(float _dt)
 	}
 		break;
 	case battery::leaking:
+		if (m_abilityTimer < 0.0f)
+		{
+			LeakingBattery();
+		}
 		break;
 	default:
 		break;
+	}
+
+	if (m_abilityTimer < 0.0f && m_ability != battery::ability::none)
+	{
+		m_ability = battery::ability::none;
+	}
+}
+
+/***********************
+* LeakingBattery: Starts explosion process of leaking battery player.
+* @author: William de Beer
+********************/
+void player::LeakingBattery()
+{
+	// Apply large force to all players in range.
+	for (auto it : *m_vPlayers)
+	{
+		if (it != this)
+		{
+			float distance = Magnitude(transform.m_Position - it->transform.m_Position);
+			if (distance < m_fExpRange)
+			{
+				it->AddForce(((it->transform.m_Position - transform.m_Position) / distance) * 10.0f);
+				it->m_disableControl = true;
+				it->m_disableTimer = 0.8f;
+				it->m_bExphit = true;
+			}
+		}
+	}
+
+	// Make sprite invisible
+	GetSprite()->setColor(sf::Color(0, 0, 0, 0));
+
+	// Cease player control and movement
+	m_disableControl = true;
+	m_disableTimer = m_fDeathDelay;
+	m_powerForce = sf::Vector2f(0.0f, 0.0f);
+	m_externVel = sf::Vector2f(0.0f, 0.0f);
+	m_forceVel = sf::Vector2f(0.0f, 0.0f);
+
+	m_bWillDie = true;
+}
+
+/***********************
+* DelayedDeathUpdate: When in use will delay death for a set time. 
+* @author: William de Beer
+* @parameter: Delta time
+********************/
+void player::DelayedDeathUpdate(float _dT)
+{
+	if (m_bWillDie)
+	{
+		m_fDeathTimer += _dT;
+		if (m_fDeathTimer >= m_fDeathDelay)
+		{
+			death();
+		}
+	}
+}
+
+void player::DrawCircleIndicator(sf::RenderWindow& _window)
+{
+	if (m_ability == battery::ability::leaking)
+	{
+		_window.draw(m_circleIndicator);
 	}
 }

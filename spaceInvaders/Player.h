@@ -32,7 +32,10 @@ public:
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
 
-
+	void LeakingBattery();
+	void DelayedDeathUpdate(float _dT);
+	bool GetWillDie() { return m_bWillDie; };
+	void DrawCircleIndicator(sf::RenderWindow& _window);
 
 	battery::ability m_ability;
 
@@ -52,6 +55,13 @@ private:
 	std::vector<player*>* m_vPlayers;
 	std::vector<battery*>* m_vBatteries;
 
+	// Leaking battery variables
+	bool m_bExphit; // Explosion hit player.
+	bool m_bWillDie; // Player marked to die after time.
+	float m_fDeathTimer; // Death timer.
+	float m_fDeathDelay; // Amount of delay in death.
+	float m_fExpRange = 150.0f;
+	sf::CircleShape m_circleIndicator;
 };
 
 #endif
