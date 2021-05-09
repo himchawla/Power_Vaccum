@@ -282,6 +282,7 @@ void player::PlayerCollision()
 				}
 				if (!m_disableControl)
 				{
+					m_disableControl = true;
 					i->m_disableControl = true;
 					i->m_disableTimer = 0.8f;
 				}
@@ -415,8 +416,14 @@ void player::DelayedDeathUpdate(float _dT)
 	}
 }
 
+/***********************
+* DrawCircleIndicator: Draw area of effect indicator for leaking battery explosion.
+* @author: William de Beer
+* @parameter: Reference to render window
+********************/
 void player::DrawCircleIndicator(sf::RenderWindow& _window)
 {
+	// Only draw while leaking battery is in use.
 	if (m_ability == battery::ability::leaking)
 	{
 		_window.draw(m_circleIndicator);

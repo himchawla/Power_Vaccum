@@ -34,7 +34,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!");
 
 	// Create initial scene
-	sceneManager::SetScene(new lobbyScene());
+	sceneManager::SetScene(new gameScene());
 	sceneManager::Update(window);
 	sceneManager::Shutdown();
 
