@@ -16,6 +16,7 @@
 #include "sceneManager.h"
  // This Include 
 #include "gameScene.h"
+
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
@@ -24,8 +25,19 @@ bool isDebug = false;
 
 gameScene::gameScene(std::vector<player*>* _player)
 {
+
 	m_vObjects = new std::vector<gameObject*>();
+	
 	m_vPlayers = _player;
+	if (m_vPlayers == nullptr)
+	{
+		m_vPlayers = new std::vector<player*>();
+
+		for (int i = 0; i < 4; i++)
+		{
+
+		}
+	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
@@ -157,7 +169,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		sceneManager::SetScene(new gameScene(m_vPlayers));
+		sceneManager::SetScene(new ());
 	}
 
 }
