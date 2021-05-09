@@ -164,7 +164,7 @@ void player::Update(float _dT)
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 
-#pragma endregion
+	#pragma endregion
 	
 	#pragma region PowerupPhysics
 
@@ -175,7 +175,7 @@ void player::Update(float _dT)
 
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
-#pragma endregion
+	#pragma endregion
 
 
 	//Retardation
@@ -323,11 +323,12 @@ void player::PlayerCollision()
 				}
 				if (!m_disableControl)
 				{
+					m_disableControl = true;
 					i->m_disableControl = true;
 					i->m_disableTimer = 0.8f;
 				}
 			}
-			std::cout << i->transform.m_Position.x << "\n";
+			//std::cout << i->transform.m_Position.x << "\n";
 
 		}
 	}

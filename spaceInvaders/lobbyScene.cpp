@@ -98,6 +98,25 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 	Render(_window);
 }
 
+void lobbyScene::Render(sf::RenderWindow& _window)
+{
+	_window.clear();
+
+	DrawBackground(_window);
+	DrawObjects(_window);
+	DrawUI(_window);
+
+	for (auto i : *m_vPlayers)
+	{
+		i->Draw(_window);
+	}
+
+	_window.display();
+
+
+}
+
+
 /***********************
 * Update: Updates objects in the game scene.
 * @author: William de Beer
@@ -116,22 +135,47 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 			if (m_numPlayers > 1 && !m_canStart)
 			{
 				m_canStart = true;
-				m_texBackground->loadFromFile("Assets/lobbyBG.png");
 			}
 			m_hasJoined[i] = true;
 			std::cout << "Player " << i << " has joined the game";
 			player* newPlayer = new player(i);
-			newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+
+			switch (m_numPlayers)
+			{
+			case 0:
+				newPlayer->transform.m_Position = (sf::Vector2f(275.0f, 275.0f));
+				break;
+			case 1:
+				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				break;
+			case 2:
+				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
+				break;
+			case 3:
+				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 797.0f));
+				break;
+			case 4:
+				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 797.0f));
+				break;
+			default:
+				break;
+			}
+			
+
 			newPlayer->SetPlayerVector(m_vPlayers);
 			m_vPlayers->push_back(newPlayer);
 		}
 	}
 	// Start game
 	
-
 	for (auto i : *m_vPlayers)
 	{
 		i->Update(_dT);
+	}
+
+	for (auto i : *m_vPlayers)
+	{
+		
 		if (!i->IsReady())
 		{
 			m_canStart = false;
@@ -144,6 +188,13 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	{
 		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		std::cout << m_vPlayers->at(0)->GetSprite()->getPosition().x << " " << m_vPlayers->at(0)->GetSprite()->getPosition().y << "\n";
+	}
+
+	
+		
 }
 
 /***********************

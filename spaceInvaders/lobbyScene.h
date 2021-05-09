@@ -29,6 +29,7 @@ public:
 	virtual ~lobbyScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
+	void Render(sf::RenderWindow& _window);
 private:
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
