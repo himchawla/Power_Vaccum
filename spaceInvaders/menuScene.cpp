@@ -6,31 +6,29 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   lobbyScene.cpp
+//  File Name   :   menuScene.cpp
 //  Description :   A lobby scene where players tag in and out of the game before playing.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
  // Local Includes 
-#include "gameScene.h"
+#include "lobbyScene.h"
 #include "sceneManager.h"
  // This Include 
-#include "lobbyScene.h"
+#include "menuScene.h"
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
 
-lobbyScene::lobbyScene()
+menuScene::menuScene()
 {
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
-
-	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", true);
-	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", true);
+	m_imgLogo = new uiImage(sf::Vector2f(960, 200), "Assets/Menu/TempLogo.png", false);
 }
 
-lobbyScene::~lobbyScene()
+menuScene::~menuScene()
 {
 	// Delete background 
 	if (m_texBackground != nullptr)
@@ -43,12 +41,10 @@ lobbyScene::~lobbyScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
-
-	// temp
-	if (temp1 != nullptr)
+	if (m_imgLogo != nullptr)
 	{
-		delete temp1;
-		temp1 = 0;
+		delete m_imgLogo;
+		m_imgLogo = 0;
 	}
 }
 
@@ -57,19 +53,12 @@ lobbyScene::~lobbyScene()
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void lobbyScene::Initialise(sf::RenderWindow& _window)
+void menuScene::Initialise(sf::RenderWindow& _window)
 {
 	// Create background
-	m_texBackground->loadFromFile("Assets/lobbyBG.png");
+	m_texBackground->loadFromFile("Assets/mainmenuBG.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
-
-	// Set up demo images
-	temp1->GetSprite()->setColor(sf::Color::Red);
-	temp1->GetSprite()->setScale(sf::Vector2f(4.0f, 4.0f));
-
-	temp2->GetSprite()->setColor(sf::Color::Blue);
-	temp2->GetSprite()->setScale(sf::Vector2f(-4.0f, 4.0f));
 }
 
 /***********************
@@ -77,7 +66,7 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void lobbyScene::MainLoop(sf::RenderWindow& _window)
+void menuScene::MainLoop(sf::RenderWindow& _window)
 {
 	sf::Event event;
 
@@ -100,15 +89,14 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 * @author: William de Beer
 * @parameter: Reference to render window, Delta time.
 ********************/
-void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
+void menuScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	temp1->Update(_dT);
-	temp2->Update(_dT);
+	m_imgLogo->Update(_dT);
 
-	// Start game
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	// Go to lobby
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
-		sceneManager::SetScene(new gameScene());
+		sceneManager::SetScene(new lobbyScene());
 	}
 }
 
@@ -117,19 +105,20 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void lobbyScene::DrawBackground(sf::RenderWindow& _window)
+void menuScene::DrawBackground(sf::RenderWindow& _window)
 {
 	// Draw background
 	_window.draw(*m_sprBackground);
 }
 
 /***********************
-* DrawObjects: Draws all objects that are not in the background or UI.
+* DrawObjects: Draws all objects that are not in the background or UI. 
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void lobbyScene::DrawObjects(sf::RenderWindow& _window)
+void menuScene::DrawObjects(sf::RenderWindow& _window)
 {
+	m_imgLogo->Draw(_window);
 }
 
 /***********************
@@ -137,9 +126,8 @@ void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
-void lobbyScene::DrawUI(sf::RenderWindow& _window)
+void menuScene::DrawUI(sf::RenderWindow& _window)
 {
 	// Draw UI elements
-	_window.draw(*temp1->GetSprite());
-	_window.draw(*temp2->GetSprite());
+
 }

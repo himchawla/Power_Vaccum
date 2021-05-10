@@ -1,87 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
+    <ClCompile Include="battery.cpp" />
+    <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="gameScene.cpp" />
+    <ClCompile Include="inputManager.cpp" />
+    <ClCompile Include="lobbyScene.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="sceneManager.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="tile.cpp" />
+    <ClCompile Include="tManager.cpp" />
+    <ClCompile Include="uiImage.cpp" />
+    <ClCompile Include="menuScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="inputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="battery.cpp">
-
-    <ClCompile Include="uiImage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lobbyScene.cpp">
-
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="gameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-
-    <ClInclude Include="battery.h">
-
-    <ClInclude Include="uiImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="lobbyScene.h">
-
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="battery.h" />
+    <ClInclude Include="gameObject.h" />
+    <ClInclude Include="gameScene.h" />
+    <ClInclude Include="inputManager.h" />
+    <ClInclude Include="lobbyScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="sceneManager.h" />
+    <ClInclude Include="tile.h" />
+    <ClInclude Include="tManager.h" />
+    <ClInclude Include="uiImage.h" />
+    <ClInclude Include="menuScene.h" />
   </ItemGroup>
 </Project>
