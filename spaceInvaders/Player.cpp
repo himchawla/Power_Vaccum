@@ -156,9 +156,9 @@ void player::Update(float _dT)
 
 
 	//Calculate Accekaration from force for Collision
-	transform.m_Acceleration = (transform.m_Force / transform.m_Mass);
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
 	
-	m_externVel += transform.m_Acceleration * _dT * 200.0f;
+	m_externVel += transform.m_Acceleration * 200.0f;
 
 	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
@@ -169,9 +169,9 @@ void player::Update(float _dT)
 	#pragma region PowerupPhysics
 
 	//Calculate Accekaration from force for PoweUps
-	transform.m_Acceleration = (m_powerForce / transform.m_Mass);
+	transform.m_Acceleration = (m_powerForce / transform.m_Mass) * _dT * 200.0f;
 
-	m_forceVel += transform.m_Acceleration * _dT * 200.0f;
+	m_forceVel += transform.m_Acceleration * 200.0f;
 
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
@@ -224,17 +224,16 @@ void player::Update(float _dT)
 
 	//Clamp magnetic Speed
 	mag = sqrt(pow(m_forceVel.x, 2) + pow(m_forceVel.y, 2));
-	if (mag > 600.0f)
+	if (mag > 300.0f)
 	{
-		m_forceVel = (m_forceVel / mag) * 600.0f;
+		m_forceVel = (m_forceVel / mag) * 300.0f;
 	}
 
 	if (!m_disableControl)
-		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + m_externVel + m_forceVel;
+		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
 	else
 	{
-		transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-		transform.m_Velocity = m_externVel + m_forceVel;
+ 		transform.m_Velocity = (m_externVel + m_forceVel);
 
 	}
 	//Clamp Velocity
@@ -316,7 +315,7 @@ void player::PlayerCollision()
 				else
 				{
 					if (m_ability != battery::eAbility::turtle)
-						i->AddForce(transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
+						i->AddForce(transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.1f);		//Adds the bounce back effect on the two units
 					else
 						i->AddForce((transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.1f) * 10.0f);		//Adds the bounce back effect on the two units one is Turtle
 					
@@ -325,7 +324,7 @@ void player::PlayerCollision()
 				{
 					m_disableControl = true;
 					i->m_disableControl = true;
-					i->m_disableTimer = 0.8f;
+					m_disableTimer = 0.8f;
 				}
 			}
 			//std::cout << i->transform.m_Position.x << "\n";

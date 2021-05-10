@@ -27,6 +27,25 @@ lobbyScene::lobbyScene()
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 
+	for (int i = 0; i < 4; i++)
+	{
+		m_playerStatus[i].SetSpriteFromFile("Assets/Ready.png");
+		m_playerStatus[i].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+	}
+
+	m_playerStatus[0].transform.m_Position.x = 560.0f;
+	m_playerStatus[0].transform.m_Position.y = 275.0f;
+	m_playerStatus[1].transform.m_Position.x = 1715.0f;
+	m_playerStatus[1].transform.m_Position.y = 275.0f;
+
+
+	m_playerStatus[2].transform.m_Position.x = 560.0f;
+	m_playerStatus[2].transform.m_Position.y = 797.0f;
+	m_playerStatus[3].transform.m_Position.x = 1715.0f;
+	m_playerStatus[3].transform.m_Position.y = 797.0f;
+
+	
+
 	m_vPlayers = new std::vector<player*>();
 
 	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
@@ -106,10 +125,7 @@ void lobbyScene::Render(sf::RenderWindow& _window)
 	DrawObjects(_window);
 	DrawUI(_window);
 
-	for (auto i : *m_vPlayers)
-	{
-		i->Draw(_window);
-	}
+
 
 	_window.display();
 
@@ -129,6 +145,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 	for (int i = 0; i < 4; i++)
 	{
+		m_playerStatus[i].Update(_dT);
 		if (inputManager::GetControllerButton(3, i) && !m_hasJoined[i])
 		{
 			m_numPlayers++;
@@ -140,11 +157,11 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 			std::cout << "Player " << i << " has joined the game";
 			player* newPlayer = new player(i);
 
+			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");
+			m_playerStatus[m_numPlayers - 1].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+
 			switch (m_numPlayers)
 			{
-			case 0:
-				newPlayer->transform.m_Position = (sf::Vector2f(275.0f, 275.0f));
-				break;
 			case 1:
 				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
 				break;
@@ -173,18 +190,40 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
+	int k = 0;
 	for (auto i : *m_vPlayers)
 	{
-		
+
 		if (!i->IsReady())
 		{
 			m_canStart = false;
 			break;
 		}
-		else m_canStart = true;
+		else 
+		{
+			m_canStart = true;
+		}
+		k++;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_canStart)
+	k = 0;
+	for (auto i : *m_vPlayers)
+	{
+
+		if (!i->IsReady())
+		{
+			m_playerStatus[k].SetSpriteFromFile("Assets/Ready_NO.png");
+			m_playerStatus[k].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+		}
+		else
+		{
+			m_playerStatus[k].SetSpriteFromFile("Assets/Ready_YES.png");
+			m_playerStatus[k].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+		}
+		k++;
+	}
+
+	if (m_canStart && m_numPlayers > 1)
 	{
 		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
@@ -215,6 +254,15 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 {
+	for (auto i : *m_vPlayers)
+	{
+		i->Draw(_window);
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_playerStatus[i].Draw(_window);
+	}
 }
 
 /***********************

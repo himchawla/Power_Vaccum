@@ -32,6 +32,7 @@ public:
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
 
+
 	bool IsReady();
 	void SetReady(bool _ready);
 
