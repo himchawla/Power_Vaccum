@@ -122,6 +122,7 @@ void player::AddPowerForrce(sf::Vector2f dir)
 ********************/
 void player::Update(float _dT)
 {
+	m_delay -= _dT;
 	m_disableTimer -= _dT;
 	if (Magnitude(m_externVel) < 0.01f)
 	{
@@ -130,9 +131,22 @@ void player::Update(float _dT)
 
 	//Check Collisions
 	PlayerCollision();
-	BatteryCollision();
+	if(m_vBatteries!=nullptr)
+		BatteryCollision();
 	BatteryImplementation(_dT);
-	
+
+	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
+	{
+		m_ready = !m_ready;
+		std::cout << "Player is " << m_ready;
+		m_delay = 1.0f;
+	}
+
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	if (m_InputHandler->GetControllerButton(i))
+	//		exit(i);
+	//}
 
 	//Reset Velocity
 
@@ -142,26 +156,26 @@ void player::Update(float _dT)
 
 
 	//Calculate Accekaration from force for Collision
-	transform.m_Acceleration = (transform.m_Force / transform.m_Mass);
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
 	
-	m_externVel += transform.m_Acceleration * _dT * 200.0f;
+	m_externVel += transform.m_Acceleration * 200.0f;
 
 	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 
-#pragma endregion
+	#pragma endregion
 	
 	#pragma region PowerupPhysics
 
 	//Calculate Accekaration from force for PoweUps
-	transform.m_Acceleration = (m_powerForce / transform.m_Mass);
+	transform.m_Acceleration = (m_powerForce / transform.m_Mass) * _dT * 200.0f;
 
-	m_forceVel += transform.m_Acceleration * _dT * 200.0f;
+	m_forceVel += transform.m_Acceleration * 200.0f;
 
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
-#pragma endregion
+	#pragma endregion
 
 
 	//Retardation
@@ -210,17 +224,16 @@ void player::Update(float _dT)
 
 	//Clamp magnetic Speed
 	mag = sqrt(pow(m_forceVel.x, 2) + pow(m_forceVel.y, 2));
-	if (mag > 600.0f)
+	if (mag > 300.0f)
 	{
-		m_forceVel = (m_forceVel / mag) * 600.0f;
+		m_forceVel = (m_forceVel / mag) * 300.0f;
 	}
 
 	if (!m_disableControl)
-		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + m_externVel + m_forceVel;
+		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
 	else
 	{
-		transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
-		transform.m_Velocity = m_externVel + m_forceVel;
+ 		transform.m_Velocity = (m_externVel + m_forceVel);
 
 	}
 	//Clamp Velocity
@@ -258,6 +271,16 @@ void player::SetBatteryVector(std::vector<battery*>* _battery)
 	m_vBatteries = _battery;
 }
 
+bool player::IsReady()
+{
+	return m_ready;
+}
+
+void player::SetReady(bool _ready)
+{
+	m_ready = _ready;
+}
+
 /***********************
 * PlayerCollision: Checks Player Collision
 * @author: Neel Kolhe
@@ -292,18 +315,19 @@ void player::PlayerCollision()
 				else
 				{
 					if (m_ability != battery::eAbility::turtle)
-						i->AddForce(transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.5f);		//Adds the bounce back effect on the two units
+						i->AddForce(transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.1f);		//Adds the bounce back effect on the two units
 					else
 						i->AddForce((transform.m_Velocity * 1.6f + DistanceCalc * selfSpeed * 1.6f - i->transform.m_Velocity * 0.1f) * 10.0f);		//Adds the bounce back effect on the two units one is Turtle
 					
 				}
 				if (!m_disableControl)
 				{
+					m_disableControl = true;
 					i->m_disableControl = true;
-					i->m_disableTimer = 0.8f;
+					m_disableTimer = 0.8f;
 				}
 			}
-			std::cout << i->transform.m_Position.x << "\n";
+			//std::cout << i->transform.m_Position.x << "\n";
 
 		}
 	}

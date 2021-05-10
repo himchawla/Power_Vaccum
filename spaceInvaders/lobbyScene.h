@@ -29,14 +29,23 @@ public:
 	virtual ~lobbyScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
+	void Render(sf::RenderWindow& _window);
 private:
+
+	gameObject m_playerStatus[4];
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
+	bool m_hasJoined[4];
+	int m_numPlayers = 0;
+	bool m_canStart;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
+
+	std::vector<player*>* m_vPlayers;
+
 
 	uiImage* temp1;
 	uiImage* temp2;

@@ -12,6 +12,7 @@
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
+#include<iostream>
  // Local Includes 
 #include "gameScene.h"
 #include "sceneManager.h"
@@ -25,6 +26,27 @@ lobbyScene::lobbyScene()
 {
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_playerStatus[i].SetSpriteFromFile("Assets/Ready.png");
+		m_playerStatus[i].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+	}
+
+	m_playerStatus[0].transform.m_Position.x = 560.0f;
+	m_playerStatus[0].transform.m_Position.y = 275.0f;
+	m_playerStatus[1].transform.m_Position.x = 1715.0f;
+	m_playerStatus[1].transform.m_Position.y = 275.0f;
+
+
+	m_playerStatus[2].transform.m_Position.x = 560.0f;
+	m_playerStatus[2].transform.m_Position.y = 797.0f;
+	m_playerStatus[3].transform.m_Position.x = 1715.0f;
+	m_playerStatus[3].transform.m_Position.y = 797.0f;
+
+	
+
+	m_vPlayers = new std::vector<player*>();
 
 	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
 	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png");
@@ -60,7 +82,7 @@ lobbyScene::~lobbyScene()
 void lobbyScene::Initialise(sf::RenderWindow& _window)
 {
 	// Create background
-	m_texBackground->loadFromFile("Assets/lobbyBG.png");
+	m_texBackground->loadFromFile("Assets/lobby.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
@@ -95,6 +117,22 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 	Render(_window);
 }
 
+void lobbyScene::Render(sf::RenderWindow& _window)
+{
+	_window.clear();
+
+	DrawBackground(_window);
+	DrawObjects(_window);
+	DrawUI(_window);
+
+
+
+	_window.display();
+
+
+}
+
+
 /***********************
 * Update: Updates objects in the game scene.
 * @author: William de Beer
@@ -105,11 +143,97 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	temp1->Update(_dT);
 	temp2->Update(_dT);
 
-	// Start game
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	for (int i = 0; i < 4; i++)
 	{
-		sceneManager::SetScene(new gameScene());
+		m_playerStatus[i].Update(_dT);
+		if (inputManager::GetControllerButton(3, i) && !m_hasJoined[i])
+		{
+			m_numPlayers++;
+			if (m_numPlayers > 1 && !m_canStart)
+			{
+				m_canStart = true;
+			}
+			m_hasJoined[i] = true;
+			std::cout << "Player " << i << " has joined the game";
+			player* newPlayer = new player(i);
+
+			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");
+			m_playerStatus[m_numPlayers - 1].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+
+			switch (m_numPlayers)
+			{
+			case 1:
+				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				break;
+			case 2:
+				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
+				break;
+			case 3:
+				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 797.0f));
+				break;
+			case 4:
+				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 797.0f));
+				break;
+			default:
+				break;
+			}
+			
+
+			newPlayer->SetPlayerVector(m_vPlayers);
+			m_vPlayers->push_back(newPlayer);
+		}
 	}
+	// Start game
+	
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(_dT);
+	}
+
+	int k = 0;
+	for (auto i : *m_vPlayers)
+	{
+
+		if (!i->IsReady())
+		{
+			m_canStart = false;
+			break;
+		}
+		else 
+		{
+			m_canStart = true;
+		}
+		k++;
+	}
+
+	k = 0;
+	for (auto i : *m_vPlayers)
+	{
+
+		if (!i->IsReady())
+		{
+			m_playerStatus[k].SetSpriteFromFile("Assets/Ready_NO.png");
+			m_playerStatus[k].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+		}
+		else
+		{
+			m_playerStatus[k].SetSpriteFromFile("Assets/Ready_YES.png");
+			m_playerStatus[k].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
+		}
+		k++;
+	}
+
+	if (m_canStart && m_numPlayers > 1)
+	{
+		sceneManager::SetScene(new gameScene(m_vPlayers));
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		std::cout << m_vPlayers->at(0)->GetSprite()->getPosition().x << " " << m_vPlayers->at(0)->GetSprite()->getPosition().y << "\n";
+	}
+
+	
+		
 }
 
 /***********************
@@ -130,6 +254,15 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 {
+	for (auto i : *m_vPlayers)
+	{
+		i->Draw(_window);
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_playerStatus[i].Draw(_window);
+	}
 }
 
 /***********************

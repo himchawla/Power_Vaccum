@@ -33,11 +33,15 @@ public:
 	void SetBatteryVector(std::vector<battery*>* _player);
 
 
+	bool IsReady();
+	void SetReady(bool _ready);
+
 
 	battery::eAbility m_ability;
 
 private:
-	
+	bool m_ready;
+	float m_delay = 0.0f;
 	float m_disableTimer = 0.0f;
 	bool m_disableControl;
 	sf::Vector2f m_powerForce = sf::Vector2f(0.0f,0.0f);

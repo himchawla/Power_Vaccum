@@ -16,16 +16,28 @@
 #include "sceneManager.h"
  // This Include 
 #include "gameScene.h"
+
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
 
 bool isDebug = false;
 
-gameScene::gameScene()
+gameScene::gameScene(std::vector<player*>* _player)
 {
+
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<player*>();
+	
+	m_vPlayers = _player;
+	if (m_vPlayers == nullptr)
+	{
+		m_vPlayers = new std::vector<player*>();
+
+		for (int i = 0; i < 4; i++)
+		{
+
+		}
+	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
@@ -85,7 +97,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	battery* bat = new battery(1, sf::Vector2f(500.0f, 200.0f));
+	battery* bat = new battery(2, sf::Vector2f(500.0f, 200.0f));
 	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
 	m_vBatteries->push_back(bat);
 
@@ -93,14 +105,9 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_vBatteries->push_back(bat);
 
 
-	// Create all players
-	for (int i = 0; i < 4; i++)
+	for (auto i : *m_vPlayers)
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		newPlayer->SetBatteryVector(m_vBatteries);
-		m_vPlayers->push_back(newPlayer);
+		i->SetBatteryVector(m_vBatteries);
 	}
 
 }
@@ -165,7 +172,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		sceneManager::SetScene(new gameScene());
+		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
 
 }

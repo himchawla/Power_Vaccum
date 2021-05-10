@@ -78,6 +78,8 @@ bool inputManager::GetControllerButton(int _button)
 	return GetControllerButton(_button, m_iPlayerIndex);
 }
 
+
+
 /***********************
 * SetUsingKeyboard: Sets boolean indicating whether it is using the keyboard.
 * @author: William de Beer
@@ -189,7 +191,9 @@ bool inputManager::GetControllerButton(int _button, int _player)
 	{
 		return false;
 	}
+
 }
+
 
 /***********************
 * SetUsingKeyboard: Sets boolean indicating whether it is using the keyboard.
