@@ -67,6 +67,12 @@ b2Body* gameObject::GetBody()
 	return m_body;
 }
 
+void gameObject::Collide(b2Vec2 dir)
+{
+	dir *= 200.0f;
+	m_body->ApplyLinearImpulse(dir, m_body->GetWorldCenter(), 1);
+}
+
 b2Fixture* gameObject::GetFixture()
 {
 	return m_fixture;

@@ -48,6 +48,7 @@ public:
 	};
 
 	b2Body* GetBody();
+	void Collide(b2Vec2 dir);
 	b2Fixture* GetFixture();
 	Transform transform;
 

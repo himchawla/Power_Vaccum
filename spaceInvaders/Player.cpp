@@ -14,10 +14,10 @@
  // Library Includes 
 
 //This include
-#include "Player.h"
 #include <iostream>
+#include"Player.h"
 
-player::player(int _player, b2World& _world): gameObject(_world)
+player::player(int _player, b2World& _world):gameObject(_world)
 {
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
@@ -66,10 +66,7 @@ player::~player()
 * @author: Himanshu Chawla
 * @parameter: direction
 ********************/
-void player::AddForce(sf::Vector2f _dir)
-{
-	transform.m_Force += _dir;
-}
+
 
 /***********************
 * Update: Updates Player Position.
@@ -84,7 +81,9 @@ void player::Update(float _dT)
 	BatteryCollision();
 	BatteryImplementation(_dT);*/
 	
-	GetBody()->SetLinearVelocity(b2Vec2(m_InputHandler->GetMovementVector().x * m_speed / 100.0f, m_InputHandler->GetMovementVector().y * m_speed / 100.0f));
+	b2Vec2 vel =  b2Vec2(m_InputHandler->GetMovementVector().x * m_speed / 100.0f, m_InputHandler->GetMovementVector().y * m_speed / 100.0f);
+	vel *= _dT;
+	GetBody()->SetTransform(GetBody()->GetPosition() + vel, 0.0f);
 	
 	std::cout << GetBody()->GetPosition().x<<"\n";
 	//Update sprite position

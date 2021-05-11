@@ -25,8 +25,8 @@ class player :
 public:
 	player(int _player, b2World& _world);
 	~player();
-	void AddForce(sf::Vector2f _dir);
-	float m_speed = 10.0f;
+	void AddForce(sf::Vector2f _dir) {}
+	float m_speed = 50.0f;
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
