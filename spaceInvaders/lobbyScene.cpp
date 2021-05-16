@@ -229,7 +229,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		std::cout << m_vPlayers->at(0)->GetSprite()->getPosition().x << " " << m_vPlayers->at(0)->GetSprite()->getPosition().y << "\n";
+		sceneManager::SetScene(new gameScene(nullptr));
 	}
 
 	

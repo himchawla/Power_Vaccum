@@ -35,7 +35,10 @@ gameScene::gameScene(std::vector<player*>* _player)
 
 		for (int i = 0; i < 4; i++)
 		{
-
+			player* newPlayer = new player(i);
+			newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+			newPlayer->SetPlayerVector(m_vPlayers);
+			m_vPlayers->push_back(newPlayer);
 		}
 	}
 	m_texBackground = new sf::Texture();
