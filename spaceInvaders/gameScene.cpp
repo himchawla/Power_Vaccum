@@ -62,6 +62,9 @@ gameScene::~gameScene()
 		m_vPlayers = 0;
 	}
 
+	delete tileManager;
+	tileManager = 0;
+
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
 	{

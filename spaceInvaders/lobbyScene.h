@@ -17,10 +17,11 @@
  // Local Includes 
 #include "scene.h"
 #include "uiImage.h"
+#include "Player.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
- // Implementation 
+ // Implementation dssdwasdsawd
 
 class lobbyScene : public scene
 {

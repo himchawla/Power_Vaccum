@@ -51,6 +51,7 @@ void tManager::DropTiles(float _dT)
 
 	if (m_fFallTimer >= m_fTimeToFall)
 	{
+		// Exponentially get faster :)
 		m_fFallTimer -= m_fTimeToFall;
 		int iTemp = rand() % 136;
 
