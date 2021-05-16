@@ -34,7 +34,7 @@ battery::battery(int ch, sf::Vector2f _position)
 	}break;
 	case 3:	//Leaking Battery
 	{
-
+		SetSpriteFromFile("Assets/Batteries/Leaking.png");
 	}break;
 	default:
 		break;

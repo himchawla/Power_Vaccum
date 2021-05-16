@@ -19,6 +19,7 @@
 #include "gameObject.h"
 #include "gameScene.h"
 #include "lobbyScene.h"
+#include "menuScene.h"
 #include "sceneManager.h"
  // This Include 
  // Static Variables 
@@ -31,10 +32,11 @@ int main()
 	srand(static_cast<unsigned int>(time(0)));
 
 	// Create window
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!");
-
+	//sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!", sf::Style::Fullscreen);
+	
 	// Create initial scene
-	sceneManager::SetScene(new lobbyScene());
+	sceneManager::SetScene(new menuScene());
 	sceneManager::Update(window);
 	sceneManager::Shutdown();
 
