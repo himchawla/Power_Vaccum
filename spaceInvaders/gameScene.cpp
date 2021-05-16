@@ -208,6 +208,8 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		it->Draw(_window);
 	}
 
+	tileManager->Draw(_window);
+
 	// Draw players
 	for (auto p_it : *m_vPlayers)
 	{
@@ -220,7 +222,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		b_it->Draw(_window);
 	}
 
-	tileManager->Draw(_window);
+	
 }
 
 /***********************
