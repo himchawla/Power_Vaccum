@@ -281,6 +281,11 @@ void player::SetReady(bool _ready)
 	m_ready = _ready;
 }
 
+void player::OnTile(bool _isOnTile)
+{
+	m_isOnATile = _isOnTile;
+}
+
 /***********************
 * PlayerCollision: Checks Player Collision
 * @author: Neel Kolhe

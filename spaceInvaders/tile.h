@@ -18,6 +18,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
  // Local Includes 
+#include "Player.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -27,9 +28,11 @@ class tile
 {
 public:
 	tile();
-	tile(float x_pos, float y_pos);
+	tile(float x_pos, float y_pos, std::vector<player*>* _vPlayers);
 	virtual ~tile();
 
+	void SetPlayerVector(std::vector<player*>* _player);
+	
 	void Update(float _dT);
 
 	sf::Vector2f GetPosition();
@@ -38,6 +41,7 @@ public:
 	sf::RectangleShape* GetRect();
 	void SetRect(sf::RectangleShape* _rect);
 private:
+	std::vector<player*>* m_vPlayers;
 	sf::RectangleShape* m_TempRect;
 	sf::Vector2f m_2fPosition;
 	float m_fRotation;
