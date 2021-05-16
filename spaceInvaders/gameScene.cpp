@@ -62,6 +62,9 @@ gameScene::~gameScene()
 		m_vPlayers = 0;
 	}
 
+	delete tileManager;
+	tileManager = 0;
+
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
 	{
@@ -101,7 +104,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	battery* bat = new battery(2, sf::Vector2f(500.0f, 200.0f));
+	battery* bat = new battery(3, sf::Vector2f(500.0f, 200.0f));
 	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
 	m_vBatteries->push_back(bat);
 
@@ -209,6 +212,12 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 	}
 
 	tileManager->Draw(_window);
+	// Draw circle indicators
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawCircleIndicator(_window);
+	}
+
 	// Draw players
 	for (auto p_it : *m_vPlayers)
 	{
@@ -221,6 +230,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		b_it->Draw(_window);
 	}
 
+	
 }
 
 /***********************

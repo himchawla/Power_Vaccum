@@ -18,6 +18,7 @@
  //Local includes
 #include "gameObject.h"
 #include "battery.h"
+#include "timer.h"
 
 class player :
 	public gameObject
@@ -32,11 +33,15 @@ public:
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
 
-
 	bool IsReady();
 	void SetReady(bool _ready);
 
 	void OnTile(bool _isOnTile);
+	void LeakingBattery();
+	void DelayedDeathUpdate();
+	bool GetWillDie() { return m_bWillDie; };
+	void DrawCircleIndicator(sf::RenderWindow& _window);
+
 
 	battery::eAbility m_ability;
 
@@ -59,6 +64,14 @@ private:
 	std::vector<player*>* m_vPlayers;
 	std::vector<battery*>* m_vBatteries;
 
+	// Leaking battery variables
+	bool m_bExphit; // Explosion hit player.
+	bool m_bWillDie; // Player marked to die after time.
+	float m_fDeathTimer; // Death timer.
+	float m_fDeathDelay; // Amount of delay in death.
+	float m_fExpRange = 150.0f;
+	timer* m_DeathTimer;
+	sf::CircleShape m_circleIndicator;
 };
 
 #endif

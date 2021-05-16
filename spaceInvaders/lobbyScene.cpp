@@ -48,8 +48,8 @@ lobbyScene::lobbyScene()
 
 	m_vPlayers = new std::vector<player*>();
 
-	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
-	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png");
+	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", true);
+	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", true);
 }
 
 lobbyScene::~lobbyScene()
@@ -248,7 +248,7 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 }
 
 /***********************
-* DrawObjects: Draws all objects that are not in the background or UI. This includes players, powerups and tiles.
+* DrawObjects: Draws all objects that are not in the background or UI.
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/

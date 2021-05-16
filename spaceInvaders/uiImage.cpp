@@ -12,14 +12,16 @@
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
+#include <iostream>
  // Local Includes 
 #include "uiImage.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-uiImage::uiImage(sf::Vector2f _pos, std::string _texLoc)
+uiImage::uiImage(sf::Vector2f _pos, std::string _texLoc, bool _isBar)
 {
+	m_bIsBar = _isBar;
 	transform.m_Position = _pos;
 
 	// Load texture
@@ -27,6 +29,8 @@ uiImage::uiImage(sf::Vector2f _pos, std::string _texLoc)
 
 	// Configure sprite
 	GetSprite()->setTexture(*GetTexture());
+	if (!m_bIsBar)
+		GetSprite()->setOrigin((sf::Vector2f)GetTexture()->getSize() / 2.0f);
 
 	transform.m_Mass = 0.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
@@ -47,8 +51,8 @@ uiImage::~uiImage()
 void uiImage::Update(float _dt)
 {
 	// Demonstrates the bar functionality
-	tempClock += _dt;
-	SetPercentageDrawn(50 * (1 + sin(2 * PI * 0.5f * tempClock)));
+	/*tempClock += _dt;
+	SetPercentageDrawn(50 * (1 + sin(2 * PI * 0.5f * tempClock)));*/
 
 	GetSprite()->setPosition(transform.m_Position);
 }
@@ -60,6 +64,12 @@ void uiImage::Update(float _dt)
 ********************/
 void uiImage::SetPercentageDrawn(float _percentage)
 {
+	if (!m_bIsBar)
+	{
+		std::cout << "Image is not bar" << std::endl;
+		return;
+	}
+
 	// Gets texture size
 	float xSize = (GetTexture()->getSize().x);
 	float ySize = (GetTexture()->getSize().y);

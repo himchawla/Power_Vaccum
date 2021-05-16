@@ -25,12 +25,13 @@
 class uiImage : public gameObject
 {
 public:
-	uiImage(sf::Vector2f _pos, std::string _texLoc);
+	uiImage(sf::Vector2f _pos, std::string _texLoc, bool _isBar);
 	virtual ~uiImage();
 	virtual void Update(float _dt);
 
 	void SetPercentageDrawn(float _percentage); // Can be used for resource bars (used instead of GetSprite())
 private:
 	float tempClock;
+	bool m_bIsBar;
 };
 #endif
