@@ -30,7 +30,6 @@ public:
 	float ResetTimer();
 	float GetTime();
 	bool IsFinished();
-
 private:
 	bool m_bIsRandom;
 	float m_fCurrentTime;
