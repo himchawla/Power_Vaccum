@@ -49,14 +49,21 @@ public:
 
 	void Update(float _dT);
 
+	void Draw(sf::RenderWindow& _window);
+
 	sf::Sprite* GetSprite();
 	void SetSprite(sf::Sprite* _sprite);
 
 	sf::Texture* GetTexture();
-	void setTexture(sf::Texture* _texture);
+	void SetTexture(sf::Texture* _texture);
+
+	void SetSpriteFromFile(std::string _address);
+
+	void Destroy();
 
 	float Magnitude(sf::Vector2f _vec);
 private:
+	bool enabled;
 	sf::Sprite* m_Sprite;
 	sf::Texture* m_Texture;
 };

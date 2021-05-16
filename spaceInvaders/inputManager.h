@@ -34,6 +34,8 @@ public:
 	// Attached Input manager functions
 	sf::Vector2f GetMovementVector();
 	bool GetControllerButton(int _button);
+
+
 	void SetUsingKeyboard(bool _isUsing);
 
 	static void NormalizeClamp(sf::Vector2f& _vec);

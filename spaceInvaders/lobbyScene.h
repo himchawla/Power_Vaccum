@@ -1,5 +1,5 @@
-#ifndef __GAME_SCENE_H__
-#define __GAME_SCENE_H__
+#ifndef __LOBBY_SCENE_H__
+#define __LOBBY_SCENE_H__
 // 
 //  Bachelor of Software Engineering 
 //  Media Design School 
@@ -8,49 +8,46 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   gameScene.h
-//  Description :   A class holds all relevant objects in the game world.
+//  File Name   :   lobbyScene.h
+//  Description :   A lobby scene where players tag in and out of the game before playing.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
-#include <vector>
  // Local Includes 
 #include "scene.h"
-#include "gameObject.h"
-#include "tManager.h"
-#include "Player.h"
-
-#include"battery.h"
-
 #include "uiImage.h"
-
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-class gameScene : public scene
+
+class lobbyScene : public scene
 {
 public:
-	
-	gameScene(std::vector<player*>* _player);
-	virtual ~gameScene();
+	lobbyScene();
+	virtual ~lobbyScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
+	void Render(sf::RenderWindow& _window);
 private:
+
+	gameObject m_playerStatus[4];
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
-	std::vector<player*>* m_vPlayers;
-	std::vector<gameObject*>* m_vObjects;
+	bool m_hasJoined[4];
+	int m_numPlayers = 0;
+	bool m_canStart;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
 
-	std::vector<battery*>* m_vBatteries;
+	std::vector<player*>* m_vPlayers;
 
 
-
+	uiImage* temp1;
+	uiImage* temp2;
 };
 #endif

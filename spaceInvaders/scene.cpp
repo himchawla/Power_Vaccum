@@ -40,5 +40,7 @@ void scene::Render(sf::RenderWindow& _window)
 	DrawUI(_window);
 
 	_window.display();
+
+
 }
 

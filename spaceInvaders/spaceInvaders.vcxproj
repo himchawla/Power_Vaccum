@@ -158,23 +158,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="battery.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="inputManager.cpp" />
+    <ClCompile Include="lobbyScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tManager.cpp" />
+    <ClCompile Include="uiImage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="battery.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="inputManager.h" />
+    <ClInclude Include="lobbyScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="sceneManager.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tManager.h" />
+    <ClInclude Include="uiImage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,17 +13,34 @@
 // 
  // Library Includes 
  // Local Includes 
+#include "sceneManager.h"
  // This Include 
 #include "gameScene.h"
+
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-gameScene::gameScene()
+
+bool isDebug = false;
+
+gameScene::gameScene(std::vector<player*>* _player)
 {
+
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<player*>();
+	
+	m_vPlayers = _player;
+	if (m_vPlayers == nullptr)
+	{
+		m_vPlayers = new std::vector<player*>();
+
+		for (int i = 0; i < 4; i++)
+		{
+
+		}
+	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+	m_vBatteries = new std::vector<battery*>();
 }
 
 gameScene::~gameScene()
@@ -65,10 +82,11 @@ gameScene::~gameScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
+
 }
 
 /***********************
-* Initialise: Initialise scene and call MainLoop.
+* Initialise: Initialise scene.
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
@@ -79,7 +97,19 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	MainLoop(_window);
+	battery* bat = new battery(2, sf::Vector2f(500.0f, 200.0f));
+	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
+	m_vBatteries->push_back(bat);
+
+	bat = new battery(2, sf::Vector2f(200.0f, 800.0f));
+	m_vBatteries->push_back(bat);
+
+
+	for (auto i : *m_vPlayers)
+	{
+		i->SetBatteryVector(m_vBatteries);
+	}
+
 }
 
 /***********************
@@ -89,36 +119,30 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	// Create all players
-	for (int i = 0; i < 4; i++)
+	sf::Event event;
+
+	// Getting delta time
+	float deltaTime = m_Clock.getElapsedTime().asSeconds();
+	m_Clock.restart();
+
+	while (_window.pollEvent(event))
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		m_vPlayers->push_back(newPlayer);
-	}
+		if (event.type == sf::Event::Closed)
+			_window.close();
 
-
-	// Start clock
-	sf::Clock clock;
-	sf::Keyboard::Key key = sf::Keyboard::Escape;
-	while (_window.isOpen())
-	{
-		sf::Event event;
-
-		// Getting delta time
-		float deltaTime = clock.getElapsedTime().asSeconds();
-		clock.restart(); 
-
-		while (_window.pollEvent(event))
+		//Just to check the death function/ Delete Later
+		if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
 		{
-			if (event.type == sf::Event::Closed)
-				_window.close();
+			for (auto p_it : *m_vPlayers)
+			{
+				p_it->death();
+				break;
+			}
 		}
-
-		Update(_window, deltaTime);
-		Render(_window);
 	}
+
+	Update(_window, deltaTime);
+	Render(_window);
 }
 
 /***********************
@@ -139,6 +163,18 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	{
 		i->Update(_dT);
 	}
+
+	for (auto i : *m_vBatteries)
+	{
+		i->Update(_dT);
+	}
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		sceneManager::SetScene(new gameScene(m_vPlayers));
+	}
+
 }
 
 /***********************
@@ -161,21 +197,21 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
 	// Draw objects
-	for (auto i : *m_vObjects)
+	for (auto it : *m_vObjects)
 	{
-		if (i->GetSprite() != nullptr)
-		{
-			_window.draw(*(i)->GetSprite());
-		}
+		it->Draw(_window);
 	}
 
 	// Draw players
-	for (auto i : *m_vPlayers)
+	for (auto p_it : *m_vPlayers)
 	{
-		if (i->GetSprite() != nullptr)
-		{
-			_window.draw(*(i)->GetSprite());
-		}
+		p_it->Draw(_window);
+		
+	}
+
+	for (auto b_it : *m_vBatteries)
+	{
+		b_it->Draw(_window);
 	}
 
 	//tileManager->Draw(_window);
@@ -188,5 +224,4 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Draw UI elements
 }
