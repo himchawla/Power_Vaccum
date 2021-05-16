@@ -175,7 +175,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		sceneManager::SetScene(new gameScene(m_vPlayers));
+		sceneManager::SetScene(new gameScene(nullptr));
 	}
 
 }
