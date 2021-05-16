@@ -248,7 +248,7 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 }
 
 /***********************
-* DrawObjects: Draws all objects that are not in the background or UI. This includes players, powerups and tiles.
+* DrawObjects: Draws all objects that are not in the background or UI.
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/

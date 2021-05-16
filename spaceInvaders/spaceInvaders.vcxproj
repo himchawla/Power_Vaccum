@@ -163,11 +163,13 @@
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="lobbyScene.cpp" />
+    <ClCompile Include="menuScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="timer.cpp" />
     <ClCompile Include="tManager.cpp" />
     <ClCompile Include="uiImage.cpp" />
   </ItemGroup>
@@ -177,10 +179,12 @@
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="lobbyScene.h" />
+    <ClInclude Include="menuScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="tManager.h" />
     <ClInclude Include="uiImage.h" />
   </ItemGroup>
