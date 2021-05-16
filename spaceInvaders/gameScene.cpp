@@ -44,6 +44,7 @@ gameScene::gameScene(std::vector<player*>* _player)
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
+	tileManager = new tManager();
 }
 
 gameScene::~gameScene()
@@ -172,6 +173,8 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
+	tileManager->Update(_window, _dT);
+
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
@@ -217,7 +220,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		b_it->Draw(_window);
 	}
 
-	//tileManager->Draw(_window);
+	tileManager->Draw(_window);
 }
 
 /***********************
