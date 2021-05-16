@@ -26,6 +26,7 @@ sf::Vector2f Normalize(sf::Vector2f _v)
 }
 player::player(int _player)
 {
+	m_DeathTimer = 0;
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
 	transform.m_Mass = 1.0f;
@@ -86,6 +87,11 @@ player::~player()
 	{
 		delete m_InputHandler;
 		m_InputHandler = 0;
+	}
+	if (m_DeathTimer != nullptr)
+	{
+		delete m_DeathTimer;
+		m_DeathTimer = 0;
 	}
 }
 
@@ -193,8 +199,6 @@ void player::Update(float _dT)
 			m_forceVel.y = 0.0f;
 	}
 
-
-
 	//Clamp Acceleration
 	float mag = sqrt(pow(m_externVel.x, 2) + pow(m_externVel.y, 2));
 	if (mag > 600.0f)
@@ -223,7 +227,11 @@ void player::Update(float _dT)
 	m_circleIndicator.setPosition(transform.m_Position);
 //	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
 
-
+	if (m_DeathTimer != nullptr)
+	{
+		m_DeathTimer->Update(_dT);
+	}
+	DelayedDeathUpdate();
 }
 
 /***********************
@@ -343,7 +351,6 @@ void player::BatteryImplementation(float _dt)
 			{
 				float mag = Magnitude(transform.m_Position - it->transform.m_Position);
 				it->AddPowerForrce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
-				
 			}
 		}
 	}
@@ -392,6 +399,7 @@ void player::LeakingBattery()
 	// Cease player control and movement
 	m_disableControl = true;
 	m_disableTimer = m_fDeathDelay;
+	m_DeathTimer = new timer(m_fDeathDelay, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
 	m_externVel = sf::Vector2f(0.0f, 0.0f);
 	m_forceVel = sf::Vector2f(0.0f, 0.0f);
@@ -404,15 +412,14 @@ void player::LeakingBattery()
 * @author: William de Beer
 * @parameter: Delta time
 ********************/
-void player::DelayedDeathUpdate(float _dT)
+void player::DelayedDeathUpdate()
 {
-	if (m_bWillDie)
+	if (m_DeathTimer == nullptr)
+		return;
+	if (m_bWillDie && m_DeathTimer->IsFinished())
 	{
-		m_fDeathTimer += _dT;
-		if (m_fDeathTimer >= m_fDeathDelay)
-		{
-			death();
-		}
+		death();
+		std::cout << "Player has died" << std::endl;
 	}
 }
 

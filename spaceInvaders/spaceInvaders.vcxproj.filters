@@ -14,6 +14,7 @@
     <ClCompile Include="tManager.cpp" />
     <ClCompile Include="uiImage.cpp" />
     <ClCompile Include="menuScene.cpp" />
+    <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battery.h" />
@@ -28,5 +29,6 @@
     <ClInclude Include="tManager.h" />
     <ClInclude Include="uiImage.h" />
     <ClInclude Include="menuScene.h" />
+    <ClInclude Include="timer.h" />
   </ItemGroup>
 </Project>

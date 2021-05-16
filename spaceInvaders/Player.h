@@ -18,6 +18,7 @@
  //Local includes
 #include "gameObject.h"
 #include "battery.h"
+#include "timer.h"
 
 class player :
 	public gameObject
@@ -33,7 +34,7 @@ public:
 	void SetBatteryVector(std::vector<battery*>* _player);
 
 	void LeakingBattery();
-	void DelayedDeathUpdate(float _dT);
+	void DelayedDeathUpdate();
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
 
@@ -61,6 +62,7 @@ private:
 	float m_fDeathTimer; // Death timer.
 	float m_fDeathDelay; // Amount of delay in death.
 	float m_fExpRange = 150.0f;
+	timer* m_DeathTimer;
 	sf::CircleShape m_circleIndicator;
 };
 

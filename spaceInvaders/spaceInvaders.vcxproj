@@ -169,6 +169,7 @@
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="timer.cpp" />
     <ClCompile Include="tManager.cpp" />
     <ClCompile Include="uiImage.cpp" />
   </ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="tManager.h" />
     <ClInclude Include="uiImage.h" />
   </ItemGroup>
