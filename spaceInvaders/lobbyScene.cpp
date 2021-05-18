@@ -48,8 +48,8 @@ lobbyScene::lobbyScene()
 
 	m_vPlayers = new std::vector<player*>();
 
-	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
-	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png");
+	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", 1);
+	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", 1);
 }
 
 lobbyScene::~lobbyScene()
