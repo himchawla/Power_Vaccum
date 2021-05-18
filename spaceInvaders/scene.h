@@ -16,6 +16,7 @@
  // Library Includes 
 #include <SFML/Graphics.hpp>
  // Local Includes 
+#include "scoreManager.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 

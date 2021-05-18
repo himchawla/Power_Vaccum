@@ -357,7 +357,7 @@ void player::PlayerCollision()
 					m_disableTimer = 0.8f;
 				}
 			}
-			//std::cout << i->transform.m_Position.x << "\n";
+			std::cout << i->transform.m_Position.x << "\n";
 
 		}
 	}
@@ -507,7 +507,7 @@ void player::DelayedDeathUpdate()
 void player::DrawCircleIndicator(sf::RenderWindow& _window)
 {
 	// Only draw while leaking battery is in use.
-	if (m_ability == battery::ability::leaking)
+	if (m_ability == battery::eAbility::leaking)
 	{
 		_window.draw(m_circleIndicator);
 	}

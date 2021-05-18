@@ -48,8 +48,8 @@ lobbyScene::lobbyScene()
 
 	m_vPlayers = new std::vector<player*>();
 
-	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png");
-	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png");
+	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", true);
+	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", true);
 }
 
 lobbyScene::~lobbyScene()
@@ -115,21 +115,6 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 
 	Update(_window, deltaTime);
 	Render(_window);
-}
-
-void lobbyScene::Render(sf::RenderWindow& _window)
-{
-	_window.clear();
-
-	DrawBackground(_window);
-	DrawObjects(_window);
-	DrawUI(_window);
-
-
-
-	_window.display();
-
-
 }
 
 

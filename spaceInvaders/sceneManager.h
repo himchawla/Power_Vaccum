@@ -28,8 +28,8 @@ public:
 	static void Shutdown();
 
 private:
-	static scene* m_CurrentScene;
-	static scene* m_SceneBuffer;
+	static scene* sm_CurrentScene;
+	static scene* sm_SceneBuffer;
 };
 
 #endif
