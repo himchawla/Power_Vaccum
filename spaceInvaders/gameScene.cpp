@@ -44,7 +44,7 @@ gameScene::gameScene(std::vector<player*>* _player)
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
-	tileManager = new tManager();
+	m_tileManager = new tManager(m_vPlayers);
 }
 
 gameScene::~gameScene()
@@ -62,8 +62,8 @@ gameScene::~gameScene()
 		m_vPlayers = 0;
 	}
 
-	delete tileManager;
-	tileManager = 0;
+	delete m_tileManager;
+	m_tileManager = 0;
 
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
@@ -176,7 +176,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
-	tileManager->Update(_window, _dT);
+	m_tileManager->Update(_window, _dT);
 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
@@ -211,7 +211,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		it->Draw(_window);
 	}
 
-	tileManager->Draw(_window);
+	m_tileManager->Draw(_window);
 	// Draw circle indicators
 	for (auto p_it : *m_vPlayers)
 	{

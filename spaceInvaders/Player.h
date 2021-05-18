@@ -36,6 +36,7 @@ public:
 	bool IsReady();
 	void SetReady(bool _ready);
 
+
 	void OnTile(bool _isOnTile);
 	void LeakingBattery();
 	void DelayedDeathUpdate();
