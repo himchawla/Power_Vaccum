@@ -43,7 +43,7 @@ gameScene::gameScene(std::vector<player*>* _player)
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
-	m_tileManager = new tManager(m_vPlayers);
+	m_tileManager = new tManager();
 }
 
 gameScene::~gameScene()
