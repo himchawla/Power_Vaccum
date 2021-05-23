@@ -50,7 +50,6 @@ private:
 	};
 
 	// Trying 2 ways to do this.
-	//std::vector<tile*> TilesList;
 	std::vector<tile*> m_vTilesList;
 
 	// Adjusting numbers, made variables to make it easier to track.

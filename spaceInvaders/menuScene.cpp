@@ -59,6 +59,14 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	m_texBackground->loadFromFile("Assets/mainmenuBG.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
+
+	// Create Buttons
+	for (int i = 0; i < 3; i++)
+	{
+		m_vButtons.push_back(new button(550 + m_v2Offset.x, 500 + m_v2Offset.y * i, i));
+	}
+
+
 }
 
 /***********************
@@ -75,7 +83,8 @@ void menuScene::MainLoop(sf::RenderWindow& _window)
 	m_Clock.restart();
 
 	while (_window.pollEvent(event))
-	{
+	{	
+
 		if (event.type == sf::Event::Closed)
 			_window.close();
 	}
@@ -98,6 +107,17 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 	{
 		sceneManager::SetScene(new lobbyScene());
 	}
+
+	for (int i = 0; i < m_vButtons.size(); i++)
+	{
+		m_vButtons[i]->isMouseHere(_window);
+		if (m_vButtons[i]->isClicked() == true && m_vButtons[i]->getWeight() == 0) // Start Button
+		{
+			sceneManager::SetScene(new lobbyScene());
+		}
+	}
+
+
 }
 
 /***********************
@@ -129,5 +149,10 @@ void menuScene::DrawObjects(sf::RenderWindow& _window)
 void menuScene::DrawUI(sf::RenderWindow& _window)
 {
 	// Draw UI elements
+	for (int i = 0; i < m_vButtons.size(); i++)
+	{
+		_window.draw(*m_vButtons[i]->GetRect());
+
+	}
 
 }
