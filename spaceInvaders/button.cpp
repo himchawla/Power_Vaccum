@@ -55,13 +55,15 @@ void button::isMouseHere(sf::RenderWindow& window)
 		(fMouseY < fButtonHeightY && fMouseY > fButtonPosY))
 	{
 
+		isSelected(true);
+
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			std::cout << "This is True" << std::endl;
 			m_bIsClicked = true;
 			
 		}
-		else if (m_bIsClicked == false)
+		else if (m_bIsSelected == true)
 		{
 			m_TempRect->setFillColor(sf::Color::Red);
 
@@ -71,10 +73,17 @@ void button::isMouseHere(sf::RenderWindow& window)
 	}
 	else
 	{
+
+		isSelected(false);
 		m_TempRect->setFillColor(sf::Color::White);
 	}
 
 
+}
+
+void button::isSelected(bool _isSelected)
+{
+	m_bIsSelected = _isSelected;
 }
 
 sf::RectangleShape* button::GetRect()

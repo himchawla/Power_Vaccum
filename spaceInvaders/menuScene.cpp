@@ -110,7 +110,11 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
+
 		m_vButtons[i]->isMouseHere(_window);
+
+
+
 		if (m_vButtons[i]->isClicked() == true && m_vButtons[i]->getWeight() == 0) // Start Button
 		{
 			sceneManager::SetScene(new lobbyScene());
