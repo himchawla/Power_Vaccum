@@ -313,7 +313,7 @@ void player::SetReady(bool _ready)
 
 void player::OnTile(bool _isOnTile)
 {
-	m_isOnATile = _isOnTile;
+
 }
 
 /***********************
