@@ -18,6 +18,7 @@
  // Local Includes 
 #include "gameObject.h"
 #include "gameScene.h"
+#include "endScene.h"
 #include "lobbyScene.h"
 #include "menuScene.h"
 #include "sceneManager.h"
@@ -36,7 +37,7 @@ int main()
 	//sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!", sf::Style::Fullscreen);
 	
 	// Create initial scene
-	sceneManager::SetScene(new menuScene());
+	sceneManager::SetScene(new endScene());
 	sceneManager::Update(window);
 	sceneManager::Shutdown();
 

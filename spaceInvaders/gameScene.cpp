@@ -25,7 +25,6 @@ bool isDebug = false;
 
 gameScene::gameScene(std::vector<player*>* _player)
 {
-
 	m_vObjects = new std::vector<gameObject*>();
 	
 	m_vPlayers = _player;
@@ -113,6 +112,8 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 		i->SetBatteryVector(m_vBatteries);
 	}
 
+	scoreManager::GetInstance().ResetScores();
+	scoreManager::GetInstance().GamePositioning();
 }
 
 /***********************
@@ -172,12 +173,12 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
+	scoreManager::GetInstance().Update(_dT);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
-
 }
 
 /***********************
@@ -233,4 +234,5 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
+	scoreManager::GetInstance().DrawUI(_window);
 }

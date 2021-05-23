@@ -1,5 +1,5 @@
-#ifndef __LOBBY_SCENE_H__
-#define __LOBBY_SCENE_H__
+#ifndef __END_SCENE_H__
+#define __END_SCENE_H__
 // 
 //  Bachelor of Software Engineering 
 //  Media Design School 
@@ -8,8 +8,8 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   lobbyScene.h
-//  Description :   A lobby scene where players tag in and out of the game before playing.
+//  File Name   :   endScene.h
+//  Description :   A end scene which will display who won the match.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 
@@ -23,31 +23,23 @@
  // Static Function Prototypes 
  // Implementation 
 
-class lobbyScene : public scene
+class endScene : public scene
 {
 public:
-	lobbyScene();
-	virtual ~lobbyScene();
+	endScene();
+	virtual ~endScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
 private:
-
-	gameObject m_playerStatus[4];
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
-	bool m_hasJoined[4];
-	int m_numPlayers = 0;
-	bool m_canStart;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
+	sf::Text m_txtWinner;
+	sf::Font m_fntWinner;
 
-	std::vector<player*>* m_vPlayers;
-
-
-	uiImage* temp1;
-	uiImage* temp2;
 };
 #endif

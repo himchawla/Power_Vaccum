@@ -200,7 +200,7 @@ void player::Update(float _dT)
 
 	if (m_bExphit) // If player has been hit with explosion.
 	{
-		transform.m_Velocity = m_externVel + m_forceVel;
+		transform.m_Velocity = m_externVel;
 		transform.m_Position += transform.m_Velocity * _dT;
 		GetSprite()->setPosition(transform.m_Position);
 		return; // Return before applying retardation and clamping.
