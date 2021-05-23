@@ -15,6 +15,7 @@
     <ClCompile Include="uiImage.cpp" />
     <ClCompile Include="menuScene.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battery.h" />
@@ -30,5 +31,6 @@
     <ClInclude Include="uiImage.h" />
     <ClInclude Include="menuScene.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="button.h" />
   </ItemGroup>
 </Project>
