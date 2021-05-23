@@ -29,6 +29,7 @@ class tile
 public:
 	tile();
 	tile(float x_pos, float y_pos, std::vector<player*>* _vPlayers);
+	tile(float x_pos, float y_pos);
 	virtual ~tile();
 
 	void SetPlayerVector(std::vector<player*>* _player);

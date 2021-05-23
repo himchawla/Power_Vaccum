@@ -29,7 +29,7 @@
 class tManager
 {
 public:
-	tManager(std::vector<player*>* m_vPlayers);
+	tManager();
 	virtual ~tManager();
 
 	void Update(sf::RenderWindow& _window, float _dT);

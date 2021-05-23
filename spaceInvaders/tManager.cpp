@@ -20,14 +20,14 @@
  // Implementation 
 
 
-tManager::tManager(std::vector<player*>* m_vPlayers)
+tManager::tManager()
 {
 	for (int i = 0; i < m_iVerticalTiles; i++) // Vertical
 	{
 		for (int j = 0; j < m_iHorizontal; j++) // Horizontal
 		{
 
-			m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset), m_vPlayers));
+			m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset)));
 
 			
 
