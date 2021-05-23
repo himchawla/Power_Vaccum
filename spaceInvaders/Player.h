@@ -36,6 +36,8 @@ public:
 	bool IsReady();
 	void SetReady(bool _ready);
 
+
+	void OnTile(bool _isOnTile);
 	void LeakingBattery();
 	void DelayedDeathUpdate();
 	bool GetWillDie() { return m_bWillDie; };
@@ -45,6 +47,8 @@ public:
 	battery::eAbility m_ability;
 
 private:
+	bool m_isOnATile;
+
 	bool m_ready;
 	float m_delay = 0.0f;
 	float m_disableTimer = 0.0f;

@@ -176,9 +176,9 @@ void player::Update(float _dT)
 
 
 	//Calculate Accekaration from force for Collision
-	transform.m_Acceleration = (transform.m_Force / transform.m_Mass) * _dT * 200.0f;
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 200.0f;
 	
-	m_externVel += transform.m_Acceleration * 200.0f;
+	m_externVel += transform.m_Acceleration * _dT * 200.0f;
 
 	//Reset Force
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
@@ -189,9 +189,9 @@ void player::Update(float _dT)
 	#pragma region PowerupPhysics
 
 	//Calculate Accekaration from force for PoweUps
-	transform.m_Acceleration = (m_powerForce / transform.m_Mass) * _dT * 200.0f;
+	transform.m_Acceleration = (m_powerForce / transform.m_Mass) * 200.0f;
 
-	m_forceVel += transform.m_Acceleration * 200.0f;
+	m_forceVel += transform.m_Acceleration * _dT * 200.0f;
 
 	transform.m_Acceleration = sf::Vector2f(0.0f, 0.0f);
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
@@ -311,6 +311,11 @@ void player::SetReady(bool _ready)
 	m_ready = _ready;
 }
 
+void player::OnTile(bool _isOnTile)
+{
+	m_isOnATile = _isOnTile;
+}
+
 /***********************
 * PlayerCollision: Checks Player Collision
 * @author: Neel Kolhe
@@ -366,7 +371,7 @@ void player::PlayerCollision()
 
 
 /***********************
-* PlayerCollision: Checks Battery Collision
+* BateryCollision: Checks Battery Collision
 * @author: Himanshu Chawla
 ********************/
 void player::BatteryCollision()

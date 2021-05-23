@@ -47,6 +47,7 @@ private:
 	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
+	tManager* m_tileManager;
 
 	std::vector<battery*>* m_vBatteries;
 
