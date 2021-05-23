@@ -16,6 +16,9 @@
     <ClCompile Include="menuScene.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="scoreManager.cpp" />
+    <ClCompile Include="uiScore.cpp" />
+    <ClCompile Include="endScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battery.h" />
@@ -32,5 +35,8 @@
     <ClInclude Include="menuScene.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="button.h" />
+    <ClInclude Include="scoreManager.h" />
+    <ClInclude Include="uiScore.h" />
+    <ClInclude Include="endScene.h" />
   </ItemGroup>
 </Project>

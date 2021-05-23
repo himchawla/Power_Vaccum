@@ -74,7 +74,7 @@ tile* tManager::GetTile(int _i)
 
 void tManager::AddTile(float _xPos, float _yPos)
 {
-	m_vTilesList.push_back(new tile(_xPos, _yPos));
+	m_vTilesList.push_back(new tile(_xPos, _yPos, nullptr));
 }
 
 void tManager::RemoveTile(int _i)

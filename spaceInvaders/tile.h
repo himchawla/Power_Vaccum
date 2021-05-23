@@ -24,7 +24,7 @@
  // Static Function Prototypes 
  // Implementation 
 
-class tile
+class tile : public gameObject
 {
 public:
 	tile();

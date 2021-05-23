@@ -117,21 +117,6 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 	Render(_window);
 }
 
-void lobbyScene::Render(sf::RenderWindow& _window)
-{
-	_window.clear();
-
-	DrawBackground(_window);
-	DrawObjects(_window);
-	DrawUI(_window);
-
-
-
-	_window.display();
-
-
-}
-
 
 /***********************
 * Update: Updates objects in the game scene.

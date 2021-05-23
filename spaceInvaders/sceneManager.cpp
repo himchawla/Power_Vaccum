@@ -17,8 +17,8 @@
  // This Include 
 #include "sceneManager.h"
  // Static Variables 
-scene* sceneManager::m_CurrentScene = 0;
-scene* sceneManager::m_SceneBuffer = 0;
+scene* sceneManager::sm_CurrentScene = 0;
+scene* sceneManager::sm_SceneBuffer = 0;
  // Static Function Prototypes 
  // Implementation 
 
@@ -30,7 +30,7 @@ scene* sceneManager::m_SceneBuffer = 0;
 ********************/
 void sceneManager::SetScene(scene* _scene)
 {
-	m_SceneBuffer = _scene;
+	sm_SceneBuffer = _scene;
 }
 
 /***********************
@@ -43,21 +43,21 @@ void sceneManager::Update(sf::RenderWindow& _window)
 	// Ends when window is closed.
 	while (_window.isOpen())
 	{
-		if (m_SceneBuffer != nullptr)
+		if (sm_SceneBuffer != nullptr)
 		{
-			if (m_CurrentScene != nullptr)
+			if (sm_CurrentScene != nullptr)
 			{
-				delete m_CurrentScene;
-				m_CurrentScene = 0;
+				delete sm_CurrentScene;
+				sm_CurrentScene = 0;
 			}
-			m_CurrentScene = m_SceneBuffer;
-			m_CurrentScene->Initialise(_window);
-			m_SceneBuffer = nullptr;
+			sm_CurrentScene = sm_SceneBuffer;
+			sm_CurrentScene->Initialise(_window);
+			sm_SceneBuffer = nullptr;
 		}
 
-		if (m_CurrentScene != nullptr)
+		if (sm_CurrentScene != nullptr)
 		{
-			m_CurrentScene->MainLoop(_window);
+			sm_CurrentScene->MainLoop(_window);
 		}
 		else
 		{
@@ -73,15 +73,17 @@ void sceneManager::Update(sf::RenderWindow& _window)
 ********************/
 void sceneManager::Shutdown()
 {
-	if (m_CurrentScene != nullptr)
+	if (sm_CurrentScene != nullptr)
 	{
-		delete m_CurrentScene;
-		m_CurrentScene = 0;
+		delete sm_CurrentScene;
+		sm_CurrentScene = 0;
 	}
 
-	if (m_SceneBuffer != nullptr)
+	if (sm_SceneBuffer != nullptr)
 	{
-		delete m_SceneBuffer;
-		m_SceneBuffer = 0;
+		delete sm_SceneBuffer;
+		sm_SceneBuffer = 0;
 	}
+
+	scoreManager::RemoveInstance();
 }

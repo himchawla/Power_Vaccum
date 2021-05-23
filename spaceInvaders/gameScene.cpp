@@ -25,7 +25,6 @@ bool isDebug = false;
 
 gameScene::gameScene(std::vector<player*>* _player)
 {
-
 	m_vObjects = new std::vector<gameObject*>();
 	
 	m_vPlayers = _player;
@@ -44,7 +43,7 @@ gameScene::gameScene(std::vector<player*>* _player)
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
-	tileManager = new tManager();
+	m_tileManager = new tManager(m_vPlayers);
 }
 
 gameScene::~gameScene()
@@ -62,8 +61,8 @@ gameScene::~gameScene()
 		m_vPlayers = 0;
 	}
 
-	delete tileManager;
-	tileManager = 0;
+	delete m_tileManager;
+	m_tileManager = 0;
 
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
@@ -117,6 +116,8 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 		i->SetBatteryVector(m_vBatteries);
 	}
 
+	scoreManager::GetInstance().ResetScores();
+	scoreManager::GetInstance().GamePositioning();
 }
 
 /***********************
@@ -176,14 +177,14 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
-	tileManager->Update(_window, _dT);
+	scoreManager::GetInstance().Update(_dT);
+	m_tileManager->Update(_window, _dT);
 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		sceneManager::SetScene(new gameScene(nullptr));
 	}
-
 }
 
 /***********************
@@ -211,7 +212,7 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		it->Draw(_window);
 	}
 
-	tileManager->Draw(_window);
+	m_tileManager->Draw(_window);
 	// Draw circle indicators
 	for (auto p_it : *m_vPlayers)
 	{
@@ -240,4 +241,5 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
+	scoreManager::GetInstance().DrawUI(_window);
 }

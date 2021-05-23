@@ -60,6 +60,11 @@ tile::~tile()
 {
 }
 
+void tile::SetPlayerVector(std::vector<player*>* _player)
+{
+	m_vPlayers;
+}
+
 void tile::Update(float _dT)
 {
 	m_TempRect->getPosition().x;
