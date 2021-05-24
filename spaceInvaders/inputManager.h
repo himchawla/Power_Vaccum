@@ -33,15 +33,15 @@ public:
 
 	// Attached Input manager functions
 	sf::Vector2f GetMovementVector();
-	sf::Vector2f GetRightVector();
 	bool GetControllerButton(int _button);
+
+
 	void SetUsingKeyboard(bool _isUsing);
 
-	static void Normalize(sf::Vector2f& _vec);
+	static void NormalizeClamp(sf::Vector2f& _vec);
 
 	// Static Input manager functions
 	static sf::Vector2f GetMovementVector(int _player);
-	sf::Vector2f GetRightVector(int _player);
 	static bool GetControllerButton(int _button, int _player);
 	static void SetUsingKeyboard(int _player, bool _isUsing);
 private: 

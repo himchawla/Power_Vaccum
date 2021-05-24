@@ -13,22 +13,41 @@
 // 
  // Library Includes 
  // Local Includes 
+#include "sceneManager.h"
  // This Include 
 #include "gameScene.h"
+
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-gameScene::gameScene()
+
+bool isDebug = false;
+
+gameScene::gameScene(std::vector<player*>* _player)
 {
 	m_vObjects = new std::vector<gameObject*>();
-	m_vPlayers = new std::vector<player*>();
+	
+	m_vPlayers = _player;
+	if (m_vPlayers == nullptr)
+	{
+		m_vPlayers = new std::vector<player*>();
+
+		for (int i = 0; i < 4; i++)
+		{
+			player* newPlayer = new player(i);
+			newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+			newPlayer->SetPlayerVector(m_vPlayers);
+			m_vPlayers->push_back(newPlayer);
+		}
+	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
+	m_vBatteries = new std::vector<battery*>();
+	m_tileManager = new tManager();
 }
 
 gameScene::~gameScene()
 {
-
 	std::vector<player*>::iterator p_it = m_vPlayers->begin();
 	while (p_it != m_vPlayers->end())
 	{
@@ -36,11 +55,14 @@ gameScene::~gameScene()
 		delete* p_it;
 		p_it = m_vPlayers->erase((p_it));
 	}
-	if (m_vPlayers != nullptr)
+	if (m_vPlayers != nullptr) // Delete vector
 	{
 		delete m_vPlayers;
 		m_vPlayers = 0;
 	}
+
+	delete m_tileManager;
+	m_tileManager = 0;
 
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
@@ -49,12 +71,13 @@ gameScene::~gameScene()
 		delete* it;
 		it = m_vObjects->erase((it));
 	}
-	if (m_vObjects != nullptr)
+	if (m_vObjects != nullptr) // Delete vector
 	{
 		delete m_vObjects;
 		m_vObjects = 0;
 	}
 
+	// Delete background 
 	if (m_texBackground != nullptr)
 	{
 		delete m_texBackground;
@@ -65,22 +88,37 @@ gameScene::~gameScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
+
 }
 
 /***********************
-* Initialise: Initialise scene and call MainLoop.
+* Initialise: Initialise scene.
 * @author: William de Beer
 * @parameter: Reference to render window.
 ********************/
 void gameScene::Initialise(sf::RenderWindow& _window)
 {
+	// Create background
 	m_texBackground->loadFromFile("Assets/BG.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
-	MainLoop(_window);
-}
 
-bool flag = false;
+	battery* bat = new battery(3, sf::Vector2f(500.0f, 200.0f));
+	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
+	m_vBatteries->push_back(bat);
+
+	bat = new battery(2, sf::Vector2f(200.0f, 800.0f));
+	m_vBatteries->push_back(bat);
+
+
+	for (auto i : *m_vPlayers)
+	{
+		i->SetBatteryVector(m_vBatteries);
+	}
+
+	scoreManager::GetInstance().ResetScores();
+	scoreManager::GetInstance().GamePositioning();
+}
 
 /***********************
 * MainLoop: Loop which calls update and render functions.
@@ -89,51 +127,30 @@ bool flag = false;
 ********************/
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
-	
-	for (int i = 0; i < 4; i++)
+	sf::Event event;
+
+	// Getting delta time
+	float deltaTime = m_Clock.getElapsedTime().asSeconds();
+	m_Clock.restart();
+
+	while (_window.pollEvent(event))
 	{
-		player* newPlayer = new player(i);
-		newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
-		newPlayer->SetPlayerVector(m_vPlayers);
-		m_vPlayers->push_back(newPlayer);
+		if (event.type == sf::Event::Closed)
+			_window.close();
+
+		//Just to check the death function/ Delete Later
+		if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
+		{
+			for (auto p_it : *m_vPlayers)
+			{
+				p_it->death();
+				break;
+			}
+		}
 	}
 
-
-	// Start clock
-	sf::Clock clock;
-	sf::Keyboard::Key key = sf::Keyboard::Escape;
-	while (_window.isOpen())
-	{
-		sf::Event event;
-
-		// Getting delta time
-		float deltaTime = clock.getElapsedTime().asSeconds();
-		clock.restart(); 
-
-		while (_window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				_window.close();
-			
-
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !flag)
-		{
-			m_vPlayers->at(0)->AddForce(m_vPlayers->at(0)->m_InputHandler->GetRightVector() * 10.0f);
-			flag = true;
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-		{
-			flag = false;
-		}
-
-		//temp->Update(deltaTime);
-
-		Update(_window, deltaTime);
-		Render(_window);
-	}
+	Update(_window, deltaTime);
+	Render(_window);
 }
 
 /***********************
@@ -143,19 +160,31 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void gameScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
+	// Update objects
+	for (auto i : *m_vObjects)
 	{
-		(*it)->Update(_dT);
-		it++;
+		i->Update(_dT);
 	}
 
+	// Update players
 	for (auto i : *m_vPlayers)
 	{
 		i->Update(_dT);
 	}
 
+	for (auto i : *m_vBatteries)
+	{
+		i->Update(_dT);
+	}
+
+	scoreManager::GetInstance().Update(_dT);
+	m_tileManager->Update(_window, _dT);
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		sceneManager::SetScene(new gameScene(nullptr));
+	}
 }
 
 /***********************
@@ -165,9 +194,9 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 ********************/
 void gameScene::DrawBackground(sf::RenderWindow& _window)
 {
+	// Draw background
 	_window.draw(*m_sprBackground);
 	//// Vector of background objects (if any) 
-
 }
 
 /***********************
@@ -177,26 +206,32 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
-	// Vector of objects
-	std::vector<gameObject*>::iterator it = m_vObjects->begin();
-	while (it != m_vObjects->end())
+	// Draw objects
+	for (auto it : *m_vObjects)
 	{
-		if ((*it)->GetSprite() != nullptr)
-		{
-			_window.draw(*(*it)->GetSprite());
-		}
-		it++;
+		it->Draw(_window);
 	}
 
-	std::vector<player*>::iterator p_it = m_vPlayers->begin();
-	while (p_it != m_vPlayers->end())
+	m_tileManager->Draw(_window);
+	// Draw circle indicators
+	for (auto p_it : *m_vPlayers)
 	{
-		if ((*p_it)->GetSprite() != nullptr)
-		{
-			_window.draw(*(*p_it)->GetSprite());
-		}
-		p_it++;
+		p_it->DrawCircleIndicator(_window);
 	}
+
+	// Draw players
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->Draw(_window);
+		
+	}
+
+	for (auto b_it : *m_vBatteries)
+	{
+		b_it->Draw(_window);
+	}
+
+	
 }
 
 /***********************
@@ -206,5 +241,5 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Vector of UI elements
+	scoreManager::GetInstance().DrawUI(_window);
 }

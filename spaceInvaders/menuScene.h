@@ -1,5 +1,5 @@
-#ifndef __GAME_SCENE_H__
-#define __GAME_SCENE_H__
+#ifndef __MENU_SCENE_H__
+#define __MENU_SCENE_H__
 // 
 //  Bachelor of Software Engineering 
 //  Media Design School 
@@ -8,33 +8,26 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   gameScene.h
-//  Description :   A class holds all relevant objects in the game world.
+//  File Name   :   menuScene.h
+//  Description :   A lobby scene where players tag in and out of the game before playing.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 
  // Library Includes 
-#include <vector>
  // Local Includes 
 #include "scene.h"
-#include "gameObject.h"
-#include "tManager.h"
-#include "Player.h"
-
-#include"battery.h"
-
 #include "uiImage.h"
-
+#include "button.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
-class gameScene : public scene
+
+class menuScene : public scene
 {
 public:
-	
-	gameScene(std::vector<player*>* _player);
-	virtual ~gameScene();
+	menuScene();
+	virtual ~menuScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
 private:
@@ -43,15 +36,14 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
-	std::vector<player*>* m_vPlayers;
-	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
-	tManager* m_tileManager;
 
-	std::vector<battery*>* m_vBatteries;
+	// Buttons in a Vector
+	std::vector<button*> m_vButtons;
+	sf::Vector2f m_v2Offset = sf::Vector2f(400.0f, 200.0f);
+	int m_iWeight = 0; // Use Input manager, delete this later.
 
-
-
+	uiImage* m_imgLogo;
 };
 #endif

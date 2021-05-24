@@ -35,15 +35,13 @@ public:
 	{
 		sf::Vector2f m_Position;
 		sf::Vector2f m_Velocity;
-		sf::Vector2f m_Accelaration;
+		sf::Vector2f m_Acceleration;
 		sf::Vector2f m_Force;
 
 		sf::Vector2f m_Friction;
 		
-		
 		float m_Rotation;
 		float m_Mass;
-
 
 		bool m_IsKinematic;
 	};
@@ -51,14 +49,21 @@ public:
 
 	void Update(float _dT);
 
+	void Draw(sf::RenderWindow& _window);
+
 	sf::Sprite* GetSprite();
 	void SetSprite(sf::Sprite* _sprite);
 
 	sf::Texture* GetTexture();
-	void setTexture(sf::Texture* _texture);
+	void SetTexture(sf::Texture* _texture);
+
+	void SetSpriteFromFile(std::string _address);
+
+	void Destroy();
 
 	float Magnitude(sf::Vector2f _vec);
 private:
+	bool enabled;
 	sf::Sprite* m_Sprite;
 	sf::Texture* m_Texture;
 };

@@ -33,9 +33,10 @@ public:
 	virtual ~tManager();
 
 	void Update(sf::RenderWindow& _window, float _dT);
+	void DropTiles(float _dT);
 
 	tile* GetTile(int _i);
-	void AddTile(tile* _tile);
+	void AddTile(float _xPos, float _yPos);
 	void RemoveTile(int _i);
 
 	void Draw(sf::RenderWindow& _window);
@@ -49,8 +50,21 @@ private:
 	};
 
 	// Trying 2 ways to do this.
-	//std::vector<tile*> TilesList;
 	std::vector<tile*> m_vTilesList;
+
+	// Adjusting numbers, made variables to make it easier to track.
+	sf::Vector2f m_v2FirstOffset = sf::Vector2f(300, 200);
+	float m_fOffset = 75;
+	int m_iVerticalTiles = 17;
+	int m_iHorizontal = 8;
+
+	// Independent Tile Manager Fall Timer
+	float m_fFallTimer = 0.0f;
+	float m_fTimeToFall = 15.0f;
+	int m_iRow = 0;
+	int m_iCollumn = 0;
+	int m_iInterval = 0;
+
 
 
 };
