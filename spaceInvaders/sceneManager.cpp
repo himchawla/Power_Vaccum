@@ -86,4 +86,5 @@ void sceneManager::Shutdown()
 	}
 
 	scoreManager::RemoveInstance();
+	audioManager::RemoveInstance();
 }

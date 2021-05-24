@@ -12,7 +12,7 @@
 //  Mail        :   himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
-
+#include "audioManager.h"
 //This include
 #include "Player.h"
 #include <iostream>
@@ -357,6 +357,7 @@ void player::PlayerCollision()
 				}
 				if (!m_disableControl)
 				{
+					audioManager::GetInstance().PlaySound("RoombaCollision");
 					m_disableControl = true;
 					i->m_disableControl = true;
 					m_disableTimer = 0.8f;

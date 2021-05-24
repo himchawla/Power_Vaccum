@@ -17,10 +17,10 @@
  // This Include 
 #include "scoreManager.h"
  // Static Variables 
+scoreManager* scoreManager::sm_Instance = 0;
  // Static Function Prototypes 
  // Implementation 
 
-scoreManager* scoreManager::sm_Instance = 0;
 
 scoreManager::~scoreManager()
 {

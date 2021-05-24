@@ -29,7 +29,6 @@ public:
 	static scoreManager& GetInstance();
 	static void RemoveInstance();
 
-	void Initialise();
 	void IncrementScore(int _playerIndex);
 	void DrawUI(sf::RenderWindow& _window);
 	void Update(float _dT);
@@ -42,6 +41,7 @@ public:
 	void EndPositioning();
 private:
 	scoreManager() {};
+	void Initialise();
 	static scoreManager* sm_Instance;
 
 	uiScore* m_ScoreUI[4];
