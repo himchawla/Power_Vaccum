@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="battery.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="endScene.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="gameScene.cpp" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battery.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="endScene.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="gameScene.h" />

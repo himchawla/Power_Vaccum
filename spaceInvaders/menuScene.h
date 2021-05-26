@@ -17,6 +17,7 @@
  // Local Includes 
 #include "scene.h"
 #include "uiImage.h"
+#include "button.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -37,6 +38,11 @@ private:
 
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
+
+	// Buttons in a Vector
+	std::vector<button*> m_vButtons;
+	sf::Vector2f m_v2Offset = sf::Vector2f(400.0f, 200.0f);
+	int m_iWeight = 0; // Use Input manager, delete this later.
 
 	uiImage* m_imgLogo;
 };
