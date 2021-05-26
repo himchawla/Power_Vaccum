@@ -26,6 +26,7 @@ class player :
 {
 public:
 	player(int _player);
+	void SetTileManager(tManager* _tileManager);
 	void death();
 	~player();
 	void AddForce(sf::Vector2f _dir);
@@ -49,13 +50,12 @@ public:
 	battery::eAbility m_ability;
 
 private:
-<<<<<<< Updated upstream
-	bool m_isOnATile;
-=======
+
 	bool m_isOnATile[136];
-	
+
+	tManager* m_tileManager;
+
 	std::vector<tile*> m_vTilesList;
->>>>>>> Stashed changes
 
 	bool m_ready;
 	float m_delay = 0.0f;

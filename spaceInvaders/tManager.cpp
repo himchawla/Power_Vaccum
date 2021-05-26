@@ -12,6 +12,7 @@
 //  Mail        :   Gervince.Go@mds.ac.nz
 // 
  // Library Includes 
+#include <iostream>
  // Local Includes 
  // This Include 
 #include "tManager.h"
@@ -20,19 +21,38 @@
  // Implementation 
 
 
-tManager::tManager(std::vector<player*>* m_vPlayers)
+tManager::tManager()
 {
 	for (int i = 0; i < m_iVerticalTiles; i++) // Vertical
 	{
 		for (int j = 0; j < m_iHorizontal; j++) // Horizontal
 		{
 
-			m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset), m_vPlayers));
+			m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset)));
 
 			
 
 		}
 	}
+}
+
+bool tManager::isOnTile(sf::Vector2f _position, float _radius)
+{
+	for (auto i : m_vTilesList)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+		{
+			std::cout << i->GetPosition().y << '\t' << _position.y << '\n';
+		}
+		if ((i->GetPosition().x - 64.0f < _position.x && i->GetPosition().x + 64 > _position.x) && (i->GetPosition().y - 64.0f < _position.y && i->GetPosition().y + 64 > _position.y))
+		{
+			return true;
+
+		}
+		else
+			continue;
+	}
+	return false;
 }
 
 tManager::~tManager()

@@ -27,12 +27,8 @@
 class tile : public gameObject
 {
 public:
-	tile();
-<<<<<<< Updated upstream
-	tile(float x_pos, float y_pos, std::vector<player*>* _vPlayers);
-=======
+	
 	tile(float x_pos, float y_pos);
->>>>>>> Stashed changes
 	virtual ~tile();
 
 	//void SetPlayerVector(std::vector<player*>* _player);
@@ -55,6 +51,6 @@ private:
 	float m_fRotation;
 	int m_iWeight = 0;
 	
-	sf::Vector2f m_v2TileSize = sf::Vector2f(75, 75);
+	sf::Vector2f m_v2TileSize = sf::Vector2f(70, 70);
 };
 #endif

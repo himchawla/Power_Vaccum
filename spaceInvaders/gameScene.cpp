@@ -32,18 +32,20 @@ gameScene::gameScene(std::vector<player*>* _player)
 	{
 		m_vPlayers = new std::vector<player*>();
 
+		m_tileManager = new tManager();
 		for (int i = 0; i < 4; i++)
 		{
 			player* newPlayer = new player(i);
 			newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
 			newPlayer->SetPlayerVector(m_vPlayers);
+			newPlayer->SetTileManager(m_tileManager);
 			m_vPlayers->push_back(newPlayer);
+		
 		}
 	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_vBatteries = new std::vector<battery*>();
-	m_tileManager = new tManager(m_vPlayers);
 }
 
 gameScene::~gameScene()

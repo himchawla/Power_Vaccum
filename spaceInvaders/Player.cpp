@@ -33,9 +33,14 @@ sf::Vector2f Normalize(sf::Vector2f _v)
 	return _v;
 }
 
+void player::SetTileManager(tManager* _tileManager)
+{
+	m_tileManager = _tileManager;
+}
 
 player::player(int _player)
 {
+	
 	m_DeathTimer = 0;
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
@@ -161,21 +166,13 @@ void player::Update(float _dT)
 
 		bool willDie = true;
 
-		for (int i = 0; i < 1; i++)
-		{
-			if (m_isOnATile[i])
-			{
-				willDie = false;
-				break;
-			}
-		}
+		
 
-		if (willDie)
+		if (m_tileManager != nullptr && !m_tileManager->isOnTile(this->transform.m_Position, this->GetTexture()->getSize().x))
 		{
 			death();
 			return;
 		}
-
 	}
 	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
 	{
@@ -334,7 +331,7 @@ void player::SetReady(bool _ready)
 
 void player::OnTile(bool _isOnTile)
 {
-	m_isOnATile = _isOnTile;
+	//m_isOnATile = _isOnTile;
 }
 
 /***********************

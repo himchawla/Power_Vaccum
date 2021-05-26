@@ -29,7 +29,8 @@
 class tManager
 {
 public:
-	tManager(std::vector<player*>* m_vPlayers);
+	tManager();
+	bool isOnTile(sf::Vector2f _position, float _radius);
 	virtual ~tManager();
 
 	void Update(sf::RenderWindow& _window, float _dT);
@@ -59,8 +60,8 @@ private:
 	// Adjusting numbers, made variables to make it easier to track.
 	sf::Vector2f m_v2FirstOffset = sf::Vector2f(300, 200);
 	float m_fOffset = 75;
-	int m_iVerticalTiles = 1;
-	int m_iHorizontal = 1;
+	int m_iVerticalTiles = 17;
+	int m_iHorizontal = 8;
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;

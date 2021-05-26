@@ -20,23 +20,9 @@
  // Implementation 
 
 
-tile::tile()
-{
-	m_TempRect = new sf::RectangleShape;
 
-	m_TempRect->setSize(sf::Vector2f(m_v2TileSize));
-	m_TempRect->setFillColor(sf::Color::White);
-	m_TempRect->setOutlineThickness(2);
-	m_TempRect->setOutlineColor(sf::Color::Black);
-	m_TempRect->setPosition(50, 50);
-}
-
-<<<<<<< Updated upstream
-tile::tile(float x_pos, float y_pos, std::vector<player*>* _vPlayers)
-=======
 
 tile::tile(float x_pos, float y_pos)
->>>>>>> Stashed changes
 {
 	m_TempRect = new sf::RectangleShape;
 
