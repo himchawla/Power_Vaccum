@@ -39,6 +39,9 @@ public:
 	void AddTile(float _xPos, float _yPos);
 	void RemoveTile(int _i);
 
+	std::vector<tile*> GetTileVector();
+
+
 	void Draw(sf::RenderWindow& _window);
 private:
 	struct Tiles
@@ -56,8 +59,8 @@ private:
 	// Adjusting numbers, made variables to make it easier to track.
 	sf::Vector2f m_v2FirstOffset = sf::Vector2f(300, 200);
 	float m_fOffset = 75;
-	int m_iVerticalTiles = 17;
-	int m_iHorizontal = 8;
+	int m_iVerticalTiles = 1;
+	int m_iHorizontal = 1;
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;

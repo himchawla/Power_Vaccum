@@ -163,6 +163,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				break;
 			}
 			
+			reinterpret_cast<gameObject*>(newPlayer)->Update(_dT);
 
 			newPlayer->SetPlayerVector(m_vPlayers);
 			m_vPlayers->push_back(newPlayer);

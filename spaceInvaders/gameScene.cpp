@@ -114,6 +114,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	for (auto i : *m_vPlayers)
 	{
 		i->SetBatteryVector(m_vBatteries);
+		i->SetTileVector(m_tileManager->GetTileVector());
 	}
 
 	scoreManager::GetInstance().ResetScores();

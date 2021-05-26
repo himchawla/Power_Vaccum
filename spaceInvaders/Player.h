@@ -19,6 +19,7 @@
 #include "gameObject.h"
 #include "battery.h"
 #include "timer.h"
+#include "tManager.h"
 
 class player :
 	public gameObject
@@ -43,11 +44,18 @@ public:
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
 
+	void SetTileVector(std::vector<tile*> _tiles);
 
 	battery::eAbility m_ability;
 
 private:
+<<<<<<< Updated upstream
 	bool m_isOnATile;
+=======
+	bool m_isOnATile[136];
+	
+	std::vector<tile*> m_vTilesList;
+>>>>>>> Stashed changes
 
 	bool m_ready;
 	float m_delay = 0.0f;
@@ -60,6 +68,7 @@ private:
 	float m_abilityTimer;
 	inputManager* m_InputHandler;
 	void PlayerCollision();
+	void PlayerCollisionTile();
 	void BatteryCollision();
 	void BatteryImplementation(float _dt);
 	std::vector<player*>* m_vPlayers;

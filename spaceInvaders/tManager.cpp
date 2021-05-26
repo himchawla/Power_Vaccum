@@ -74,7 +74,7 @@ tile* tManager::GetTile(int _i)
 
 void tManager::AddTile(float _xPos, float _yPos)
 {
-	m_vTilesList.push_back(new tile(_xPos, _yPos, nullptr));
+	m_vTilesList.push_back(new tile(_xPos, _yPos));
 }
 
 void tManager::RemoveTile(int _i)
@@ -84,6 +84,12 @@ void tManager::RemoveTile(int _i)
 
 
 }
+
+std::vector<tile*> tManager::GetTileVector()
+{
+	return m_vTilesList;
+}
+
 
 void tManager::Draw(sf::RenderWindow& _window)
 {

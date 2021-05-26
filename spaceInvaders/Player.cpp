@@ -155,7 +155,28 @@ void player::Update(float _dT)
 			BatteryCollision();
 	}
 	BatteryImplementation(_dT);
+	if (m_vTilesList.size() > 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+	{
+		PlayerCollisionTile();
 
+		bool willDie = true;
+
+		for (int i = 0; i < 1; i++)
+		{
+			if (m_isOnATile[i])
+			{
+				willDie = false;
+				break;
+			}
+		}
+
+		if (willDie)
+		{
+			death();
+			return;
+		}
+
+	}
 	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
 	{
 		m_ready = !m_ready;
@@ -368,6 +389,18 @@ void player::PlayerCollision()
 	}
 }
 
+void player::PlayerCollisionTile()
+{
+	for (int i = 0; i < 1; i++)
+	{
+		if (m_vTilesList[i]->GetRect()->getTextureRect().intersects(GetSprite()->getTextureRect()))
+		{
+			m_isOnATile[i] = true;
+			break;
+		}
+	}
+}
+
 
 
 /***********************
@@ -516,4 +549,9 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 	{
 		_window.draw(m_circleIndicator);
 	}
+}
+
+void player::SetTileVector(std::vector<tile*> _tiles)
+{
+	m_vTilesList = _tiles;
 }
