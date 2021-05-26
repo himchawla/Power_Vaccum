@@ -45,17 +45,14 @@ public:
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
 
-	void SetTileVector(std::vector<tile*> _tiles);
 
 	battery::eAbility m_ability;
 
 private:
 
-	bool m_isOnATile[136];
 
 	tManager* m_tileManager;
 
-	std::vector<tile*> m_vTilesList;
 
 	bool m_ready;
 	float m_delay = 0.0f;

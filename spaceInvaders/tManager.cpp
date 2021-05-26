@@ -40,12 +40,10 @@ bool tManager::isOnTile(sf::Vector2f _position, float _radius)
 {
 	for (auto i : m_vTilesList)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-		{
-			std::cout << i->GetPosition().y << '\t' << _position.y << '\n';
-		}
+		
 		if ((i->GetPosition().x - 64.0f < _position.x && i->GetPosition().x + 64 > _position.x) && (i->GetPosition().y - 64.0f < _position.y && i->GetPosition().y + 64 > _position.y))
 		{
+			if(i->GetRect()->getSize().x > 0)
 			return true;
 
 		}

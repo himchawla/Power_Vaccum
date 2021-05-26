@@ -27,21 +27,60 @@ gameScene::gameScene(std::vector<player*>* _player)
 {
 	m_vObjects = new std::vector<gameObject*>();
 	
+	m_tileManager = new tManager();
 	m_vPlayers = _player;
 	if (m_vPlayers == nullptr)
 	{
 		m_vPlayers = new std::vector<player*>();
 
-		m_tileManager = new tManager();
 		for (int i = 0; i < 4; i++)
 		{
 			player* newPlayer = new player(i);
-			newPlayer->transform.m_Position = (sf::Vector2f(100.0f * i, 100.0f));
+
+			switch (m_vPlayers->size())
+			{
+			case 0:
+				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				break;
+			case 1:
+				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
+				break;
+			case 2:
+				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 697.0f));
+				break;
+			case 3:
+				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 697.0f));
+			}
 			newPlayer->SetPlayerVector(m_vPlayers);
 			newPlayer->SetTileManager(m_tileManager);
 			m_vPlayers->push_back(newPlayer);
-		
+
 		}
+	}
+	else
+	{
+		int numPlayers = 1;
+		for (auto p_it : *m_vPlayers)
+		{
+			switch (numPlayers)
+			{
+			case 1:
+				p_it->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				break;
+			case 2:
+				p_it->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
+				break;
+			case 3:
+				p_it->transform.m_Position = (sf::Vector2f(320.0f, 697.0f));
+				break;
+			case 4:
+				p_it->transform.m_Position = (sf::Vector2f(1475.0f, 697.0f));
+			}
+			numPlayers++;
+			p_it->SetTileManager(m_tileManager);
+			p_it->SetBatteryVector(m_vBatteries);
+		}
+	
 	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
@@ -113,11 +152,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_vBatteries->push_back(bat);
 
 
-	for (auto i : *m_vPlayers)
-	{
-		i->SetBatteryVector(m_vBatteries);
-		i->SetTileVector(m_tileManager->GetTileVector());
-	}
+
 
 	scoreManager::GetInstance().ResetScores();
 	scoreManager::GetInstance().GamePositioning();
@@ -173,6 +208,11 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	for (auto i : *m_vPlayers)
 	{
 		i->Update(_dT);
+	}
+	if (m_vPlayers->size() == 1)
+	{
+		//Load End Scene Here
+		sceneManager::SetScene(new gameScene(nullptr));
 	}
 
 	for (auto i : *m_vBatteries)

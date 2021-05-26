@@ -160,20 +160,14 @@ void player::Update(float _dT)
 			BatteryCollision();
 	}
 	BatteryImplementation(_dT);
-	if (m_vTilesList.size() > 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+	
+	
+	if (m_tileManager != nullptr && !m_tileManager->isOnTile(this->transform.m_Position, 0.0f))
 	{
-		PlayerCollisionTile();
-
-		bool willDie = true;
-
-		
-
-		if (m_tileManager != nullptr && !m_tileManager->isOnTile(this->transform.m_Position, this->GetTexture()->getSize().x))
-		{
-			death();
-			return;
-		}
+		death();
+		return;
 	}
+	
 	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
 	{
 		m_ready = !m_ready;
@@ -194,7 +188,7 @@ void player::Update(float _dT)
 
 
 	//Calculate Accekaration from force for Collision
-	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 200.0f;
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 100.0f;
 	
 	m_externVel += transform.m_Acceleration * _dT * 200.0f;
 
@@ -385,17 +379,6 @@ void player::PlayerCollision()
 	}
 }
 
-void player::PlayerCollisionTile()
-{
-	for (int i = 0; i < 1; i++)
-	{
-		if (m_vTilesList[i]->GetRect()->getTextureRect().intersects(GetSprite()->getTextureRect()))
-		{
-			m_isOnATile[i] = true;
-			break;
-		}
-	}
-}
 
 
 
@@ -545,9 +528,4 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 	{
 		_window.draw(m_circleIndicator);
 	}
-}
-
-void player::SetTileVector(std::vector<tile*> _tiles)
-{
-	m_vTilesList = _tiles;
 }
