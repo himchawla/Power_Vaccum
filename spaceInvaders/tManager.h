@@ -30,6 +30,7 @@ class tManager
 {
 public:
 	tManager();
+	bool isOnTile(sf::Vector2f _position, float _radius);
 	virtual ~tManager();
 
 	void Update(sf::RenderWindow& _window, float _dT);
@@ -38,6 +39,9 @@ public:
 	tile* GetTile(int _i);
 	void AddTile(float _xPos, float _yPos);
 	void RemoveTile(int _i);
+
+	std::vector<tile*> GetTileVector();
+
 
 	void Draw(sf::RenderWindow& _window);
 private:

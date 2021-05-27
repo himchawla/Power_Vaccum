@@ -12,6 +12,7 @@
 //  Mail        :   Gervince.Go@mds.ac.nz
 // 
  // Library Includes 
+#include <iostream>
  // Local Includes 
  // This Include 
 #include "tManager.h"
@@ -33,6 +34,23 @@ tManager::tManager()
 
 		}
 	}
+}
+
+bool tManager::isOnTile(sf::Vector2f _position, float _radius)
+{
+	for (auto i : m_vTilesList)
+	{
+		
+		if ((i->GetPosition().x - 64.0f < _position.x && i->GetPosition().x + 64 > _position.x) && (i->GetPosition().y - 64.0f < _position.y && i->GetPosition().y + 64 > _position.y))
+		{
+			if(i->GetRect()->getSize().x > 0)
+			return true;
+
+		}
+		else
+			continue;
+	}
+	return false;
 }
 
 tManager::~tManager()
@@ -74,7 +92,7 @@ tile* tManager::GetTile(int _i)
 
 void tManager::AddTile(float _xPos, float _yPos)
 {
-	m_vTilesList.push_back(new tile(_xPos, _yPos, nullptr));
+	m_vTilesList.push_back(new tile(_xPos, _yPos));
 }
 
 void tManager::RemoveTile(int _i)
@@ -84,6 +102,12 @@ void tManager::RemoveTile(int _i)
 
 
 }
+
+std::vector<tile*> tManager::GetTileVector()
+{
+	return m_vTilesList;
+}
+
 
 void tManager::Draw(sf::RenderWindow& _window)
 {
