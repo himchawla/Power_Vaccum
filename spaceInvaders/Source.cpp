@@ -37,7 +37,7 @@ int main()
 	//sf::RenderWindow window(sf::VideoMode(1920, 1080), "Power Vacuum!", sf::Style::Fullscreen);
 	
 	// Create initial scene
-	sceneManager::SetScene(new endScene());
+	sceneManager::SetScene(new menuScene());
 	sceneManager::Update(window);
 	sceneManager::Shutdown();
 

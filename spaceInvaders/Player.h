@@ -45,14 +45,14 @@ public:
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
 
+	int GetIndex() { return m_iPlayerIndex; };
 
 	battery::eAbility m_ability;
 
 private:
-
-
 	tManager* m_tileManager;
 
+	int m_iPlayerIndex;
 
 	bool m_ready;
 	float m_delay = 0.0f;

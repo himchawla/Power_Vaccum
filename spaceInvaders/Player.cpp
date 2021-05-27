@@ -40,7 +40,7 @@ void player::SetTileManager(tManager* _tileManager)
 
 player::player(int _player)
 {
-	
+	m_iPlayerIndex = _player;
 	m_DeathTimer = 0;
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
