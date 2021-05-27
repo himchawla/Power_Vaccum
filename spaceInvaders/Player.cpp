@@ -63,6 +63,7 @@ player::player(int _player)
 		break;
 	}
 
+
 	// Leaking battery variables
 	m_bExphit = false;
 	m_bWillDie = false;
@@ -134,6 +135,16 @@ void player::AddPowerForrce(sf::Vector2f dir)
 }
 
 /***********************
+* Nitro : Nitro
+* @author: Neel Kolhe
+* @parameter: direction
+********************/
+void player::Nitro(sf::Vector2f dir)
+{
+	transform.m_Velocity += dir;
+}
+
+/***********************
 * Update: Updates Player Position.
 * @author: Himanshu Chawla
 * @parameter: Delta time.
@@ -142,6 +153,12 @@ void player::Update(float _dT)
 {
 	m_delay -= _dT;
 	m_disableTimer -= _dT;
+
+	if (m_NitroResource < 100)			//replenishes nitro
+	{
+		m_NitroResource += 0.01f;		//adds nitro
+	}
+
 	if (Magnitude(m_externVel) < 0.01f)
 	{
 		m_disableControl = false;
@@ -256,14 +273,26 @@ void player::Update(float _dT)
 	}
 
 	if (!m_disableControl)
+	{
 		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
+		
+		if (m_InputHandler->GetControllerButton(0))		//checks input of nitro button
+		{
+			if (m_NitroResource > 10.0f) {						//checks if you have enough resource
+				std::cout << m_NitroResource << std::endl;		//debug the nitro
+				m_NitroResource -= 1.0f;						//uses nitro resource
+				Nitro(transform.m_Velocity);					//boosts speed
+			}
+		}
+
+	}
 	else
 	{
  		transform.m_Velocity = (m_externVel + m_forceVel);
 
 	}
 	//Clamp Velocity
-	
+
 
 	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;

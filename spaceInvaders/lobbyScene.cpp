@@ -169,6 +169,8 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 			newPlayer->SetPlayerVector(m_vPlayers);
 			m_vPlayers->push_back(newPlayer);
 		}
+
+
 	}
 	// Start game
 	

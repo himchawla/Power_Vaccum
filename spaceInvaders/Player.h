@@ -29,6 +29,7 @@ public:
 	~player();
 	void AddForce(sf::Vector2f _dir);
 	void AddPowerForrce(sf::Vector2f dir);
+	void Nitro(sf::Vector2f dir);
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
@@ -45,6 +46,7 @@ public:
 
 
 	battery::eAbility m_ability;
+
 
 private:
 	bool m_isOnATile[136];
@@ -71,6 +73,7 @@ private:
 	float m_fDeathTimer; // Death timer.
 	float m_fDeathDelay; // Amount of delay in death.
 	float m_fExpRange = 150.0f;
+	float m_NitroResource = 100.0f;
 	timer* m_DeathTimer;
 	sf::CircleShape m_circleIndicator;
 };
