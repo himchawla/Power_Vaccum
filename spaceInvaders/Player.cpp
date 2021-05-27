@@ -33,9 +33,14 @@ sf::Vector2f Normalize(sf::Vector2f _v)
 	return _v;
 }
 
+void player::SetTileManager(tManager* _tileManager)
+{
+	m_tileManager = _tileManager;
+}
 
 player::player(int _player)
 {
+	
 	m_DeathTimer = 0;
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
@@ -172,7 +177,14 @@ void player::Update(float _dT)
 			BatteryCollision();
 	}
 	BatteryImplementation(_dT);
-
+	
+	
+	if (m_tileManager != nullptr && !m_tileManager->isOnTile(this->transform.m_Position, 0.0f))
+	{
+		death();
+		return;
+	}
+	
 	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
 	{
 		m_ready = !m_ready;
@@ -193,7 +205,7 @@ void player::Update(float _dT)
 
 
 	//Calculate Accekaration from force for Collision
-	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 200.0f;
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 100.0f;
 	
 	m_externVel += transform.m_Acceleration * _dT * 200.0f;
 
@@ -342,7 +354,6 @@ void player::SetReady(bool _ready)
 
 void player::OnTile(bool _isOnTile)
 {
-
 }
 
 /***********************
@@ -396,6 +407,7 @@ void player::PlayerCollision()
 		}
 	}
 }
+
 
 
 
