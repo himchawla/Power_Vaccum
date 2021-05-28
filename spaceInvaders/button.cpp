@@ -13,6 +13,10 @@ button::button()
 	m_TempRect->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
 }
 
+
+
+
+
 // Weight is how we determine which button is associated with what.
 button::button(float x_pos, float y_pos, int _weight)
 {
@@ -53,7 +57,7 @@ void button::isMouseHere(sf::RenderWindow& window)
 	if ((fMouseX < fButtonWidthX && fMouseX > fButtonPosX) &&
 		(fMouseY < fButtonHeightY && fMouseY > fButtonPosY))
 	{
-
+		m_bIsHovering = true;
 		m_TempRect->setFillColor(sf::Color::Red);
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -77,7 +81,7 @@ void button::isMouseHere(sf::RenderWindow& window)
 	}
 	else
 	{
-
+		m_bIsHovering = false;
 		isSelected(false);
 		m_TempRect->setFillColor(sf::Color::White);
 	}
@@ -90,6 +94,16 @@ void button::isSelected(bool _isSelected)
 	m_bIsSelected = _isSelected;
 }
 
+bool button::isHovering()
+{
+	return m_bIsHovering;
+}
+
+void button::SetColor(const sf::Color& _color)
+{
+	m_TempRect->setFillColor(_color);
+}
+
 sf::RectangleShape* button::GetRect()
 {
 	return m_TempRect;
@@ -100,10 +114,17 @@ void button::SetRect(sf::RectangleShape* _rect)
 	m_TempRect = _rect;
 }
 
-bool button::isClicked()
+bool button::Clicked()
 {
 	return (m_bIsClicked);
 }
+
+void button::Clicked(bool _clicked)
+{
+	m_bIsClicked = _clicked;
+}
+
+
 
 int button::getWeight()
 {

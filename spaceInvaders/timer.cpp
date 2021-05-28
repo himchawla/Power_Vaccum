@@ -87,10 +87,10 @@ void timer::Update(float _dT)
 ********************/
 float timer::ResetTimer()
 {
-    m_fStartTime = 0;
-    m_fEndTime = 0;
     if (m_bIsRandom)
     {
+		m_fStartTime = 0;
+		m_fEndTime = 0;
         if (m_bCountDown)
             m_fStartTime = float(rand()) / float((RAND_MAX)) * m_fMaxRange + m_fMinRange;
         if (!m_bCountDown)

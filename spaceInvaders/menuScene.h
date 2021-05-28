@@ -18,6 +18,7 @@
 #include "scene.h"
 #include "uiImage.h"
 #include "button.h"
+#include "timer.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -41,6 +42,13 @@ private:
 
 	// Buttons in a Vector
 	std::vector<button*> m_vButtons;
+	int m_controllerSelection = 0;
+	timer *m_delayTimer;
+	bool m_wasPressed[4];
+	timer *m_bigDelayTimer;
+
+	void SelectionController();
+	
 	sf::Vector2f m_v2Offset = sf::Vector2f(400.0f, 200.0f);
 	int m_iWeight = 0; // Use Input manager, delete this later.
 

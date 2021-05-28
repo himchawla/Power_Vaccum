@@ -174,6 +174,23 @@ sf::Vector2f inputManager::GetMovementVector(int _player)
 	return result;
 }
 
+sf::Vector2i inputManager::GetDPAD(int _player)
+{
+	sf::Vector2i result;
+
+	result.x = sf::Joystick::getAxisPosition(_player, sf::Joystick::PovX);
+	result.y = sf::Joystick::getAxisPosition(_player, sf::Joystick::PovY);
+
+	if (result.x < -0.1f)	result.x = -1;
+	if (result.x > 0.1f)	result.x = 1;
+
+	if (result.y < -0.1f)	result.y = -1;
+	if (result.y > 0.1f) result.y = 1;
+	
+
+	return result;
+}
+
 /***********************
 * GetControllerButton: Returns bool value indicating whether or not button is being pressed.
 * @author: William de Beer

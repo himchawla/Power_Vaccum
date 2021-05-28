@@ -26,6 +26,8 @@ menuScene::menuScene()
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_imgLogo = new uiImage(sf::Vector2f(960, 200), "Assets/Menu/TempLogo.png", false);
+	m_delayTimer = new timer(0.3f, 0.0f);
+	m_bigDelayTimer = new timer(1.0f, 0.0f);
 }
 
 menuScene::~menuScene()
@@ -100,6 +102,8 @@ void menuScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void menuScene::Update(sf::RenderWindow& _window, float _dT)
 {
+	m_delayTimer->Update(_dT);
+	m_bigDelayTimer->Update(_dT);
 	m_imgLogo->Update(_dT);
 
 	// Go to lobby
@@ -114,11 +118,13 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 		m_vButton->isMouseHere(_window);
 
 
-		if (m_vButton->isClicked() == true && m_vButton->getWeight() == 0) // Start Button
+		if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Start Button
 		{
 			sceneManager::SetScene(new lobbyScene());
 		}
 	}
+
+	SelectionController();
 
 
 }
@@ -158,4 +164,67 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 
 	}
 
+}
+
+void menuScene::SelectionController()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		sf::Vector2i result;
+
+
+		for (auto it : m_vButtons)
+		{
+			if (it->isHovering())
+			{
+				if (!m_vButtons[m_controllerSelection]->isHovering())
+					m_vButtons[m_controllerSelection]->SetColor(sf::Color::White);
+				return;
+			}
+		}
+		result = inputManager::GetDPAD(i);
+		for (int j = 0; j < m_controllerSelection; j++)
+		{
+			m_vButtons[j]->SetColor(sf::Color::White);
+		}
+		m_vButtons[m_controllerSelection]->SetColor(sf::Color::Red);
+
+
+
+		if (result.y == 1 && m_controllerSelection > 0 && m_delayTimer->IsFinished())
+		{
+			for (int k = 0; k < 4; k++)	m_wasPressed[k] = false;
+			m_controllerSelection--;
+			m_delayTimer->ResetTimer();
+			m_bigDelayTimer->ResetTimer();
+		}
+		if (result.y == -1 && m_controllerSelection < m_vButtons.size() - 1 && m_delayTimer->IsFinished())
+		{
+			for (int k = 0; k < 4; k++)	m_wasPressed[k] = false;
+			m_controllerSelection++;
+			m_delayTimer->ResetTimer();
+			m_bigDelayTimer->ResetTimer();
+		}
+
+		if(inputManager::GetControllerButton(0, i) && m_bigDelayTimer->IsFinished())
+		{
+			m_wasPressed[i] = true;
+			
+		}
+		for (int k = 0; k < 4; k++)
+		{
+			if (m_wasPressed[k])
+			{
+				m_vButtons[m_controllerSelection]->SetColor(sf::Color::Blue);
+				break;;
+			}
+		}
+
+		
+		if(m_wasPressed[i] && !inputManager::GetControllerButton(0, i))
+		{
+			m_vButtons[m_controllerSelection]->Clicked(true);
+		}
+		
+	}
 }
