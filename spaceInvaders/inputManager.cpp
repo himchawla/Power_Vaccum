@@ -208,3 +208,27 @@ void inputManager::SetUsingKeyboard(int _player, bool _isUsing)
 	}
 	usingKeyboard[_player] = _isUsing;
 }
+
+
+bool inputManager::GetKeyboardButton(int _button)
+{
+	if (m_iPlayerIndex == -1)
+	{
+		std::cout << "Error: Input manager recieved no player index." << std::endl;
+		return false;
+	}
+	return GetKeyboardButton(_button, m_iPlayerIndex);
+}
+
+bool inputManager::GetKeyboardButton(int _button, int _player)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+	{
+		std::cout << "Player " << _player << " pressed button " << _button << "!" << std::endl;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

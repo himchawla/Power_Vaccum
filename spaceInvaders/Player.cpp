@@ -33,9 +33,14 @@ sf::Vector2f Normalize(sf::Vector2f _v)
 	return _v;
 }
 
+void player::SetTileManager(tManager* _tileManager)
+{
+	m_tileManager = _tileManager;
+}
 
 player::player(int _player)
 {
+	
 	m_DeathTimer = 0;
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
@@ -62,6 +67,7 @@ player::player(int _player)
 	default:
 		break;
 	}
+
 
 	// Leaking battery variables
 	m_bExphit = false;
@@ -134,6 +140,16 @@ void player::AddPowerForrce(sf::Vector2f dir)
 }
 
 /***********************
+* Nitro : Nitro
+* @author: Neel Kolhe
+* @parameter: direction
+********************/
+void player::Nitro(sf::Vector2f dir)
+{
+	transform.m_Velocity += dir;
+}
+
+/***********************
 * Update: Updates Player Position.
 * @author: Himanshu Chawla
 * @parameter: Delta time.
@@ -142,6 +158,12 @@ void player::Update(float _dT)
 {
 	m_delay -= _dT;
 	m_disableTimer -= _dT;
+
+	if (m_NitroResource < 100)			//replenishes nitro
+	{
+		m_NitroResource += 0.01f;		//adds nitro
+	}
+
 	if (Magnitude(m_externVel) < 0.01f)
 	{
 		m_disableControl = false;
@@ -155,7 +177,14 @@ void player::Update(float _dT)
 			BatteryCollision();
 	}
 	BatteryImplementation(_dT);
-
+	
+	
+	if (m_tileManager != nullptr && !m_tileManager->isOnTile(this->transform.m_Position, 0.0f))
+	{
+		death();
+		return;
+	}
+	
 	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
 	{
 		m_ready = !m_ready;
@@ -176,7 +205,7 @@ void player::Update(float _dT)
 
 
 	//Calculate Accekaration from force for Collision
-	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 200.0f;
+	transform.m_Acceleration = (transform.m_Force / transform.m_Mass)  * 100.0f;
 	
 	m_externVel += transform.m_Acceleration * _dT * 200.0f;
 
@@ -256,14 +285,26 @@ void player::Update(float _dT)
 	}
 
 	if (!m_disableControl)
+	{
 		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
+		
+		if (m_InputHandler->GetControllerButton(0))		//checks input of nitro button
+		{
+			if (m_NitroResource > 10.0f) {						//checks if you have enough resource
+				std::cout << m_NitroResource << std::endl;		//debug the nitro
+				m_NitroResource -= 1.0f;						//uses nitro resource
+				Nitro(transform.m_Velocity);					//boosts speed
+			}
+		}
+
+	}
 	else
 	{
  		transform.m_Velocity = (m_externVel + m_forceVel);
 
 	}
 	//Clamp Velocity
-	
+
 
 	//Update Position from velocity
 	transform.m_Position += transform.m_Velocity * _dT;
@@ -313,7 +354,6 @@ void player::SetReady(bool _ready)
 
 void player::OnTile(bool _isOnTile)
 {
-	m_isOnATile = _isOnTile;
 }
 
 /***********************
@@ -367,6 +407,7 @@ void player::PlayerCollision()
 		}
 	}
 }
+
 
 
 

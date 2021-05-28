@@ -35,6 +35,7 @@ public:
 	sf::Vector2f GetMovementVector();
 	bool GetControllerButton(int _button);
 
+	bool GetKeyboardButton(int _button);
 
 	void SetUsingKeyboard(bool _isUsing);
 
@@ -43,6 +44,7 @@ public:
 	// Static Input manager functions
 	static sf::Vector2f GetMovementVector(int _player);
 	static bool GetControllerButton(int _button, int _player);
+	static bool GetKeyboardButton(int _button, int _player);
 	static void SetUsingKeyboard(int _player, bool _isUsing);
 private: 
 	int m_iPlayerIndex;

@@ -19,16 +19,19 @@
 #include "gameObject.h"
 #include "battery.h"
 #include "timer.h"
+#include "tManager.h"
 
 class player :
 	public gameObject
 {
 public:
 	player(int _player);
+	void SetTileManager(tManager* _tileManager);
 	void death();
 	~player();
 	void AddForce(sf::Vector2f _dir);
 	void AddPowerForrce(sf::Vector2f dir);
+	void Nitro(sf::Vector2f dir);
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
@@ -46,8 +49,12 @@ public:
 
 	battery::eAbility m_ability;
 
+
 private:
-	bool m_isOnATile;
+
+
+	tManager* m_tileManager;
+
 
 	bool m_ready;
 	float m_delay = 0.0f;
@@ -60,6 +67,7 @@ private:
 	float m_abilityTimer;
 	inputManager* m_InputHandler;
 	void PlayerCollision();
+	void PlayerCollisionTile();
 	void BatteryCollision();
 	void BatteryImplementation(float _dt);
 	std::vector<player*>* m_vPlayers;
@@ -71,6 +79,7 @@ private:
 	float m_fDeathTimer; // Death timer.
 	float m_fDeathDelay; // Amount of delay in death.
 	float m_fExpRange = 150.0f;
+	float m_NitroResource = 100.0f;
 	timer* m_DeathTimer;
 	sf::CircleShape m_circleIndicator;
 };

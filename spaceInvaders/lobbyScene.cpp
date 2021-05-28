@@ -128,6 +128,8 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	temp1->Update(_dT);
 	temp2->Update(_dT);
 
+
+
 	for (int i = 0; i < 4; i++)
 	{
 		m_playerStatus[i].Update(_dT);
@@ -163,10 +165,13 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				break;
 			}
 			
+			reinterpret_cast<gameObject*>(newPlayer)->Update(_dT);
 
 			newPlayer->SetPlayerVector(m_vPlayers);
 			m_vPlayers->push_back(newPlayer);
 		}
+
+
 	}
 	// Start game
 	

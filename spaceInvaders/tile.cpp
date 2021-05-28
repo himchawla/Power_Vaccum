@@ -20,16 +20,7 @@
  // Implementation 
 
 
-tile::tile()
-{
-	m_TempRect = new sf::RectangleShape;
 
-	m_TempRect->setSize(sf::Vector2f(m_v2TileSize));
-	m_TempRect->setFillColor(sf::Color::White);
-	m_TempRect->setOutlineThickness(2);
-	m_TempRect->setOutlineColor(sf::Color::Black);
-	m_TempRect->setPosition(50, 50);
-}
 
 tile::tile(float x_pos, float y_pos)
 {
@@ -41,29 +32,14 @@ tile::tile(float x_pos, float y_pos)
 	m_TempRect->setOutlineColor(sf::Color::Black);
 	m_TempRect->setPosition(x_pos, y_pos);
 	m_TempRect->setOrigin(m_v2TileSize.x * 0.5f, m_v2TileSize.y * 0.5f);
-}
-
-tile::tile(float x_pos, float y_pos, std::vector<player*>* _vPlayers)
-{
-	m_TempRect = new sf::RectangleShape;
-
-	m_TempRect->setSize(sf::Vector2f(m_v2TileSize));
-	m_TempRect->setFillColor(sf::Color::White);
-	m_TempRect->setOutlineThickness(2);
-	m_TempRect->setOutlineColor(sf::Color::Black);
-	m_TempRect->setPosition(x_pos, y_pos);
-	m_TempRect->setOrigin(m_v2TileSize.x * 0.5f, m_v2TileSize.y * 0.5f);
-	m_vPlayers = _vPlayers;
+	
 }
 
 tile::~tile()
 {
+
 }
 
-void tile::SetPlayerVector(std::vector<player*>* _player)
-{
-	m_vPlayers;
-}
 
 void tile::Update(float _dT)
 {
@@ -91,3 +67,4 @@ void tile::SetRect(sf::RectangleShape* _rect)
 {
 	m_TempRect = _rect;
 }
+
