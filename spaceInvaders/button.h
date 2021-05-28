@@ -30,6 +30,8 @@ class button
 		bool m_bIsClicked = false;
 		bool m_bIsSelected = false;
 
+		uiImage* m_ButtonSprite;
+
 		sf::Vector2f m_v2ButtonSize = sf::Vector2f(300, 150);
 
 

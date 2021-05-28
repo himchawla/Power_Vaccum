@@ -4,6 +4,7 @@
 button::button()
 {
 	m_TempRect = new sf::RectangleShape;
+	m_ButtonSprite = new uiImage(sf::Vector2f(960, 200), "Assets/Menu/TempLogo.png", false);
 
 	m_TempRect->setSize(sf::Vector2f(m_v2ButtonSize));
 	m_TempRect->setFillColor(sf::Color::White);
