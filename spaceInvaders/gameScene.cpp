@@ -176,15 +176,7 @@ void gameScene::MainLoop(sf::RenderWindow& _window)
 		if (event.type == sf::Event::Closed)
 			_window.close();
 
-		//Just to check the death function/ Delete Later
-		if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::V)
-		{
-			for (auto p_it : *m_vPlayers)
-			{
-				p_it->death();
-				break;
-			}
-		}
+		
 	}
 
 	Update(_window, deltaTime);
@@ -222,6 +214,8 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 
 	scoreManager::GetInstance().Update(_dT);
 	m_tileManager->Update(_window, _dT);
+
+	
 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))

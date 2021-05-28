@@ -46,7 +46,6 @@ void button::isMouseHere(sf::RenderWindow& window)
 
 	if (m_bIsClicked == true)
 	{
-		m_TempRect->setFillColor(sf::Color::Blue);
 	}
 
 
@@ -55,19 +54,24 @@ void button::isMouseHere(sf::RenderWindow& window)
 		(fMouseY < fButtonHeightY && fMouseY > fButtonPosY))
 	{
 
-		isSelected(true);
+		m_TempRect->setFillColor(sf::Color::Red);
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
+			isSelected(true);
+			m_TempRect->setFillColor(sf::Color::Blue);
 			std::cout << "This is True" << std::endl;
-			m_bIsClicked = true;
-			
 		}
+		
 		else if (m_bIsSelected == true)
 		{
-			m_TempRect->setFillColor(sf::Color::Red);
+			
+			m_TempRect->setFillColor(sf::Color::Blue);
+			m_bIsClicked = true;
 
 		}
+
+		
 
 
 	}
