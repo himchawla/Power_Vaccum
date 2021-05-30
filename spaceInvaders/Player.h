@@ -53,6 +53,14 @@ public:
 
 
 private:
+	enum eTextureName
+	{
+		Magnetic,
+		Turtle,
+		None
+	};
+	eTextureName m_TextureName = None;
+
 	tManager* m_tileManager;
 
 	int m_iPlayerIndex;

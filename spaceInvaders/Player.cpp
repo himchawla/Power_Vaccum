@@ -471,15 +471,28 @@ void player::BatteryImplementation(float _dt)
 	switch (m_ability)
 	{
 	case battery::none:
-		break;
+		if (m_TextureName != eTextureName::None)
+		{
+			SetSpriteFromFile("Assets/Players/Roomba.png");
+			m_TextureName = None;
+		}break;
 	case battery::turtle:
 	{
+		if (m_TextureName != eTextureName::Turtle)
+		{
+			SetSpriteFromFile("Assets/Players/Roomba_Turtle.png");
+			m_TextureName = Turtle;
+		}
 		m_speed = 2.5f;
 	}
 		break;
 	case battery::magnetic:
 	{
-		//Magnetic Pull
+		if (m_TextureName != eTextureName::Magnetic)
+		{
+			SetSpriteFromFile("Assets/Players/Roomba_Magnetic.png");
+			m_TextureName = Magnetic;
+		}//Magnetic Pull
 		for (auto it : *m_vPlayers)
 		{
 			if (it != this)
