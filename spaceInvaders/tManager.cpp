@@ -65,7 +65,6 @@ void tManager::Update(sf::RenderWindow& _window, float _dT)
 
 void tManager::DropTiles(float _dT)
 {
-	int iTemp = 0;
 	if (m_bFallAnimation != true)
 	{
 		m_fFallTimer += _dT;
@@ -75,13 +74,14 @@ void tManager::DropTiles(float _dT)
 	if (m_fFallTimer >= m_fTimeToFall)
 	{
 		m_fFallTimer -= m_fTimeToFall;
-		iTemp = rand() % 136;
+		m_iTile = rand() % 136;
 
-		while (m_vTilesList[iTemp]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f))
+		while (m_vTilesList[m_iTile]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f))
 		{
-			iTemp = rand() % 136;
+			m_iTile = rand() % 136;
 		}
 
+		m_vTilesList[m_iTile]->GetRect()->setFillColor(sf::Color::Red);
 		m_bFallAnimation = true;
 
 
@@ -92,34 +92,28 @@ void tManager::DropTiles(float _dT)
 		m_fShakeTimer += _dT;
 		if (m_fShakeTimer >= m_fShakeInterval)
 		{
-			m_fShakeTimer -= m_fShakeInterval;
+			m_fShakeTimer = 0;
 			m_bLeft = !m_bLeft;
 			m_iInterval++;
-			std::cout << "Shake!" << std::endl;
 		}
 
 		if (m_bLeft == true)
 		{
-			m_vTilesList[iTemp]->GetRect()->move(-20.0f, 0.0f);
-			std::cout << "Moving! left" << std::endl;
+			m_vTilesList[m_iTile]->GetRect()->move(-30.0f * _dT, 0.0f);
 		}
 		else
 		{
-			m_vTilesList[iTemp]->GetRect()->move(20.0f, 0.0f);
-			std::cout << "Moving! Right" << std::endl;
+			m_vTilesList[m_iTile]->GetRect()->move(30.0f * _dT, 0.0f);
 		}
 
-		if (m_iInterval >= 4)
+		if (m_iInterval >= 20)
 		{
 			m_bFallAnimation = false;
 			m_bLeft = false;
 			m_fShakeTimer = 0;
+			m_iInterval = 0;
+			RemoveTile(m_iTile);
 
-		}
-
-		if (m_bFallAnimation = false)
-		{
-			RemoveTile(iTemp);
 		}
 		
 	}
