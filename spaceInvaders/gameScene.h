@@ -20,6 +20,7 @@
 #include "gameObject.h"
 #include "tManager.h"
 #include "Player.h"
+#include "timer.h"
 
 #include"battery.h"
 
@@ -37,6 +38,7 @@ public:
 	virtual ~gameScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
+	virtual void SummonBattery();
 private:
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
@@ -48,9 +50,9 @@ private:
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
 	tManager* m_tileManager;
-
 	std::vector<battery*>* m_vBatteries;
-
+	timer* m_batterySpawn;
+	
 
 
 };

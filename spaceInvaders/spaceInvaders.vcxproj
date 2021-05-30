@@ -167,6 +167,7 @@
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="lobbyScene.cpp" />
     <ClCompile Include="menuScene.cpp" />
+    <ClCompile Include="nitroManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sceneManager.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="lobbyScene.h" />
     <ClInclude Include="menuScene.h" />
+    <ClInclude Include="nitroManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sceneManager.h" />
