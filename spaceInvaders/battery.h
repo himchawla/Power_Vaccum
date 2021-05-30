@@ -20,12 +20,8 @@ public:
 	battery(int ch, sf::Vector2f _position);
 	~battery();
 
-	void Update(float _dT)
-	{
-		m_destroyTimer->Update(_dT);
-		reinterpret_cast<gameObject*>(this)->Update(_dT);
-	}
-	
+	void Update(float _dT);
+
 	float GetAbilityTimer();
 
 private:

@@ -327,9 +327,27 @@ void gameScene::SummonBattery()
 
 		if (m_tileManager->GetTile(randomTile)->GetBattery() == nullptr)
 		{
-			battery* bat = new battery(rand() % 3 + 1,
-				m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
 
+			battery* bat = nullptr;
+
+			int ch = rand() % 100;
+			if(ch < 40)
+			{
+				bat = new battery(1,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+			}
+			else if(ch < 80)
+			{
+				bat = new battery(2,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			}
+			else if(ch < 100)
+			{
+				bat = new battery(3,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			}
 			m_tileManager->GetTile(randomTile)->SetBattery(bat);
 			m_vBatteries->push_back(bat);
 		}

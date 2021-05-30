@@ -5,6 +5,13 @@ battery::~battery()
 	delete m_destroyTimer;
 }
 
+
+void battery::Update(float _dT)
+{
+	m_destroyTimer->Update(_dT);
+	reinterpret_cast<gameObject*>(this)->Update(_dT);
+}
+
 float battery::GetAbilityTimer()
 {
 	return m_abilityTimer;
@@ -30,7 +37,7 @@ timer* battery::GetDestroyTimer()
 //Assigns Battery type
 battery::battery(int ch, sf::Vector2f _position)
 {
-	m_destroyTimer = new timer(10.0f, 0.0f);
+	m_destroyTimer = new timer(20.0f, 0.0f);
 
 	switch (ch)
 	{
