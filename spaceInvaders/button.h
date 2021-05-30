@@ -15,15 +15,24 @@ class button
 		virtual ~button();
 		void Update(float _dT);
 
+		// Check If the Mouse is hovering over the Button
 		void isMouseHere(sf::RenderWindow& window);
+
+		
+		sf::Text* GetButtonText();
+		void setButtonText(std::string _textString, int _characterSize);
+
 		sf::RectangleShape* GetRect();
 		void SetRect(sf::RectangleShape* _rect);
-		bool Clicked();
-		void Clicked(bool _clicked);
+
+		// Check if button is Clicked
+		bool Clicked(); // return if button is clicked
+		void Clicked(bool _clicked); // Set if button is clicked.
+
+
 		void AssignImage(std::string _imageLoc);
-		void Update(sf::RenderWindow& _window);
-		// get UI Image.
-		bool isClicked();
+
+		// Weight 
 		int getWeight();
 		void isSelected(bool _selected);
 
@@ -36,8 +45,10 @@ class button
 
 		sf::RectangleShape* m_TempRect;
 		sf::Vector2f m_2fPosition;
+		sf::Text* m_buttonText;
+		sf::Font m_arial;
 		float m_fRotation = 0;
-		int m_iWeight = 0;
+		int m_iWeight = 0; // Weight is which button this is designated on the scene.
 		bool m_bIsClicked = false;
 		bool m_bIsSelected = false;
 		bool m_bIsHovering = false;
