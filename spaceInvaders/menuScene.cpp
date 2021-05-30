@@ -64,6 +64,10 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	for (int i = 0; i < 3; i++)
 	{
 		m_vButtons.push_back(new button(550 + m_v2Offset.x, 500 + m_v2Offset.y * i, i));
+		if (i == 0)
+		{
+			m_vButtons[i]->AssignImage("Assets/Start.png");
+		}
 	}
 
 
@@ -100,7 +104,7 @@ void menuScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void menuScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	m_imgLogo->Update(_dT);
+	
 
 	// Go to lobby
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
@@ -108,10 +112,11 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 		sceneManager::SetScene(new lobbyScene());
 	}
 
-	for (auto& m_vButton : m_vButtons)
+	for (auto&  m_vButton : m_vButtons)
 	{
-		
+
 		m_vButton->isMouseHere(_window);
+		m_vButton->Update(_window, _dT);
 
 
 		if (m_vButton->isClicked() == true && m_vButton->getWeight() == 0) // Start Button
@@ -119,6 +124,8 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 			sceneManager::SetScene(new lobbyScene());
 		}
 	}
+
+	m_imgLogo->Update(_dT);
 
 
 }

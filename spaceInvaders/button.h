@@ -14,6 +14,9 @@ class button
 		void isMouseHere(sf::RenderWindow& window);
 		sf::RectangleShape* GetRect();
 		void SetRect(sf::RectangleShape* _rect);
+		void AssignImage(std::string _imageLoc);
+		void Update(sf::RenderWindow& _window, float _dt);
+		// get UI Image.
 		bool isClicked();
 		int getWeight();
 		void isSelected(bool _selected);
@@ -30,7 +33,7 @@ class button
 		bool m_bIsClicked = false;
 		bool m_bIsSelected = false;
 
-		uiImage* m_ButtonSprite;
+		uiImage* m_buttonSprite;
 
 		sf::Vector2f m_v2ButtonSize = sf::Vector2f(300, 150);
 

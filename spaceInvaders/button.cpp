@@ -4,7 +4,7 @@
 button::button()
 {
 	m_TempRect = new sf::RectangleShape;
-	m_ButtonSprite = new uiImage(sf::Vector2f(960, 200), "Assets/Menu/TempLogo.png", false);
+	
 
 	m_TempRect->setSize(sf::Vector2f(m_v2ButtonSize));
 	m_TempRect->setFillColor(sf::Color::White);
@@ -32,6 +32,17 @@ button::button(float x_pos, float y_pos, int _weight)
 button::~button()
 {
 
+}
+
+void button::Update(sf::RenderWindow& _window, float _dt)
+{
+	if (m_buttonSprite != NULL)
+	{	  
+		m_buttonSprite->GetSprite()->setPosition(GetRect()->getPosition());
+		m_buttonSprite->Update(_dt);
+		m_buttonSprite->Draw(_window);
+		
+	}
 }
 
 void button::isMouseHere(sf::RenderWindow& window)
@@ -84,6 +95,11 @@ void button::isMouseHere(sf::RenderWindow& window)
 	}
 
 
+}
+
+void button::AssignImage(std::string _imageLoc)
+{
+	m_buttonSprite = new uiImage(m_TempRect->getPosition(), _imageLoc, false);
 }
 
 void button::isSelected(bool _isSelected)
