@@ -116,7 +116,7 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 	{
 
 		m_vButton->isMouseHere(_window);
-		m_vButton->Update(_window, _dT);
+		
 
 
 		if (m_vButton->isClicked() == true && m_vButton->getWeight() == 0) // Start Button

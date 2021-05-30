@@ -34,15 +34,9 @@ button::~button()
 
 }
 
-void button::Update(sf::RenderWindow& _window, float _dt)
+void button::Update(sf::RenderWindow& _window)
 {
-	if (m_buttonSprite != NULL)
-	{	  
-		m_buttonSprite->GetSprite()->setPosition(GetRect()->getPosition());
-		m_buttonSprite->Update(_dt);
-		m_buttonSprite->Draw(_window);
-		
-	}
+
 }
 
 void button::isMouseHere(sf::RenderWindow& window)
@@ -72,7 +66,6 @@ void button::isMouseHere(sf::RenderWindow& window)
 		{
 			isSelected(true);
 			m_TempRect->setFillColor(sf::Color::Blue);
-			std::cout << "This is True" << std::endl;
 		}
 		
 		else if (m_bIsSelected == true)

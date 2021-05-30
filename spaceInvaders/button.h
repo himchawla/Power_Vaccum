@@ -15,7 +15,7 @@ class button
 		sf::RectangleShape* GetRect();
 		void SetRect(sf::RectangleShape* _rect);
 		void AssignImage(std::string _imageLoc);
-		void Update(sf::RenderWindow& _window, float _dt);
+		void Update(sf::RenderWindow& _window);
 		// get UI Image.
 		bool isClicked();
 		int getWeight();
