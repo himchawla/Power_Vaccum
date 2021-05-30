@@ -56,10 +56,10 @@ button::button(float x_pos, float y_pos, int _weight)
 
 button::~button()
 {
-	m_buttonText = NULL;
+	m_buttonText = nullptr;
 	delete m_buttonText;
 
-	m_TempRect = NULL;
+	m_TempRect = nullptr;
 	delete m_TempRect;
 
 }
