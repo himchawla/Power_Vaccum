@@ -50,7 +50,7 @@ private:
 	void SelectionController();
 	
 	sf::Vector2f m_v2Offset = sf::Vector2f(400.0f, 200.0f);
-	int m_iWeight = 0; // Use Input manager, delete this later.
+    //int m_iWeight = 0; // Use Input manager, delete this later.
 
 	uiImage* m_imgLogo;
 };

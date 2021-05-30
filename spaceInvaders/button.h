@@ -19,6 +19,10 @@ class button
 		void SetRect(sf::RectangleShape* _rect);
 		bool Clicked();
 		void Clicked(bool _clicked);
+		void AssignImage(std::string _imageLoc);
+		void Update(sf::RenderWindow& _window);
+		// get UI Image.
+		bool isClicked();
 		int getWeight();
 		void isSelected(bool _selected);
 
@@ -35,6 +39,9 @@ class button
 		bool m_bIsClicked = false;
 		bool m_bIsSelected = false;
 		bool m_bIsHovering = false;
+
+		uiImage* m_buttonSprite;
+
 		sf::Vector2f m_v2ButtonSize = sf::Vector2f(300, 150);
 		float m_delay;
 };

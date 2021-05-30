@@ -4,6 +4,7 @@
 button::button()
 {
 	m_TempRect = new sf::RectangleShape;
+	
 
 	m_TempRect->setSize(sf::Vector2f(m_v2ButtonSize));
 	m_TempRect->setFillColor(sf::Color::White);
@@ -37,6 +38,11 @@ button::~button()
 
 }
 
+void button::Update(sf::RenderWindow& _window)
+{
+
+}
+
 void button::isMouseHere(sf::RenderWindow& window)
 {
 	float fMouseX = sf::Mouse::getPosition(window).x;
@@ -64,7 +70,6 @@ void button::isMouseHere(sf::RenderWindow& window)
 		{
 			isSelected(true);
 			m_TempRect->setFillColor(sf::Color::Blue);
-			std::cout << "This is True" << std::endl;
 		}
 		
 		else if (m_bIsSelected == true)
@@ -87,6 +92,11 @@ void button::isMouseHere(sf::RenderWindow& window)
 	}
 
 
+}
+
+void button::AssignImage(std::string _imageLoc)
+{
+	m_buttonSprite = new uiImage(m_TempRect->getPosition(), _imageLoc, false);
 }
 
 void button::isSelected(bool _isSelected)
