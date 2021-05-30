@@ -59,6 +59,11 @@ tManager::~tManager()
 
 void tManager::Update(sf::RenderWindow& _window, float _dT)
 {
+
+	for (int i = 0; i < m_vTilesList.size(); i++)
+	{
+		m_vTilesList[i]->Update(_dT);
+	}
 	Draw(_window);
 	DropTiles(_dT);
 }

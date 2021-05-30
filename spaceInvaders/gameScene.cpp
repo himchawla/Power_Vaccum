@@ -309,7 +309,7 @@ void gameScene::SummonBattery()
 	//float x = rand() % 900 + 300;
 	//float y = rand() % 900 + 300;
 
-	if (m_vBatteries->size() < 200)
+	if (m_vBatteries->size() < 6)
 	{
 		int randomTile = rand() % m_tileManager->GetTileVector().size();
 
@@ -326,5 +326,5 @@ void gameScene::SummonBattery()
 	{
 		delete m_batterySpawn;
 	}
-	m_batterySpawn = new timer(0.0f, 1.0f);
+	m_batterySpawn = new timer(0.0f, 10.0f);
 }

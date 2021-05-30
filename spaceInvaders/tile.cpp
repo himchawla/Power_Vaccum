@@ -24,7 +24,7 @@
 
 tile::tile(float x_pos, float y_pos)
 {
-	m_connectedBattery = 0;
+	m_connectedBattery = nullptr;
 
 	m_TempRect = new sf::RectangleShape;
 
@@ -45,10 +45,10 @@ tile::~tile()
 
 void tile::Update(float _dT)
 {
-	m_TempRect->getPosition().x;
-	if (m_TempRect->getSize() == sf::Vector2f(0.0f, 0.0f) && m_connectedBattery != nullptr);
+	if ((m_TempRect->getSize() == sf::Vector2f(0.0f, 0.0f)) && (m_connectedBattery != nullptr))
 	{
 		m_connectedBattery->Destroy();
+		m_connectedBattery = nullptr;
 	}
 }
 
