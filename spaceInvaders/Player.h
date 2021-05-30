@@ -19,12 +19,14 @@
 #include "gameObject.h"
 #include "battery.h"
 #include "timer.h"
+#include "tManager.h"
 
 class player :
 	public gameObject
 {
 public:
 	player(int _player);
+	void SetTileManager(tManager* _tileManager);
 	void death();
 	~player();
 	void AddForce(sf::Vector2f _dir);
@@ -49,8 +51,11 @@ public:
 
 
 private:
-	bool m_isOnATile[136];
-	
+
+
+	tManager* m_tileManager;
+
+
 	bool m_ready;
 	float m_delay = 0.0f;
 	float m_disableTimer = 0.0f;
@@ -63,6 +68,7 @@ private:
 	float m_abilityTimer;
 	inputManager* m_InputHandler;
 	void PlayerCollision();
+	void PlayerCollisionTile();
 	void BatteryCollision();
 	void BatteryImplementation(float _dt);
 	std::vector<player*>* m_vPlayers;

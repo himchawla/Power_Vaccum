@@ -17,8 +17,8 @@
  // Library Includes 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "gameObject.h"
  // Local Includes 
-#include "Player.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -27,12 +27,11 @@
 class tile : public gameObject
 {
 public:
-	tile();
-	tile(float x_pos, float y_pos, std::vector<player*>* _vPlayers);
+	
 	tile(float x_pos, float y_pos);
 	virtual ~tile();
 
-	void SetPlayerVector(std::vector<player*>* _player);
+	//void SetPlayerVector(std::vector<player*>* _player);
 	
 	void Update(float _dT);
 
@@ -41,13 +40,17 @@ public:
 
 	sf::RectangleShape* GetRect();
 	void SetRect(sf::RectangleShape* _rect);
+    bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Sprite& Object2, sf::Uint8 AlphaLimit);
+
+
+
 private:
-	std::vector<player*>* m_vPlayers;
+	//std::vector<player*>* m_vPlayers;
 	sf::RectangleShape* m_TempRect;
 	sf::Vector2f m_2fPosition;
 	float m_fRotation;
 	int m_iWeight = 0;
 	
-	sf::Vector2f m_v2TileSize = sf::Vector2f(75, 75);
+	sf::Vector2f m_v2TileSize = sf::Vector2f(70, 70);
 };
 #endif
