@@ -3,6 +3,12 @@
 
 button::button()
 {
+	if (!m_arial.loadFromFile("Assets/arial.ttf"))
+	{
+		// error...
+	}
+
+	m_buttonText->setFont(m_arial);
 	m_TempRect = new sf::RectangleShape;
 	
 
@@ -22,6 +28,20 @@ button::button()
 // Weight is how we determine which button is associated with what.
 button::button(float x_pos, float y_pos, int _weight)
 {
+	if (!m_arial.loadFromFile("Assets/arial.ttf"))
+	{
+		// error...
+	}
+
+	m_buttonText = new sf::Text;
+
+	m_buttonText->setFont(m_arial);
+	m_buttonText->setCharacterSize(50);
+	m_buttonText->setString("Default");
+	m_buttonText->setFillColor(sf::Color::Black);
+	m_buttonText->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
+	m_buttonText->setPosition(x_pos + 50, y_pos + 45);
+
 	m_TempRect = new sf::RectangleShape;
 
 	m_TempRect->setSize(sf::Vector2f(m_v2ButtonSize));
@@ -36,6 +56,11 @@ button::button(float x_pos, float y_pos, int _weight)
 
 button::~button()
 {
+	m_buttonText = NULL;
+	delete m_buttonText;
+
+	m_TempRect = NULL;
+	delete m_TempRect;
 
 }
 
@@ -90,6 +115,17 @@ void button::isMouseHere(sf::RenderWindow& window)
 	}
 
 
+}
+
+void button::setButtonText(std::string _textString, int _characterSize)
+{
+	m_buttonText->setCharacterSize(_characterSize);
+	m_buttonText->setString(_textString);
+}
+
+sf::Text* button::GetButtonText()
+{
+	return m_buttonText;
 }
 
 void button::AssignImage(std::string _imageLoc)
