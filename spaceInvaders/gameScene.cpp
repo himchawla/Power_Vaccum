@@ -103,12 +103,15 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	battery* bat = new battery(3, sf::Vector2f(500.0f, 200.0f));
+	m_batterySpawn = new timer(0.0f, 5.0f);
+	
+	//battery* bat = new battery(3, sf::Vector2f(500.0f, 200.0f));
 	//bat->transform.m_Position = sf::Vector2f(100.0f, 400.0f);
-	m_vBatteries->push_back(bat);
+	//m_vBatteries->push_back(bat);
 
-	bat = new battery(2, sf::Vector2f(200.0f, 800.0f));
-	m_vBatteries->push_back(bat);
+	//bat = new battery(2, sf::Vector2f(200.0f, 800.0f));
+	//m_vBatteries->push_back(bat);
+
 
 
 	for (auto i : *m_vPlayers)
@@ -128,6 +131,7 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 void gameScene::MainLoop(sf::RenderWindow& _window)
 {
 	sf::Event event;
+
 
 	// Getting delta time
 	float deltaTime = m_Clock.getElapsedTime().asSeconds();
@@ -171,6 +175,13 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	{
 		i->Update(_dT);
 	}
+
+	m_batterySpawn->Update(_dT);
+
+	if (m_batterySpawn->IsFinished()) {
+		SummonBattery();
+	}
+
 
 	for (auto i : *m_vBatteries)
 	{
@@ -242,4 +253,20 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
 	scoreManager::GetInstance().DrawUI(_window);
+}
+
+void gameScene::SummonBattery() 
+{
+	float x = rand() % 900 + 300;
+	float y = rand() % 900 + 300;
+	int choice = rand() % 3 + 1;
+
+	battery * bat = new battery(choice, sf::Vector2f(x, y));
+	m_vBatteries->push_back(bat);
+
+	if (m_batterySpawn != nullptr)
+	{
+		delete m_batterySpawn;
+	}
+	m_batterySpawn = new timer(0.0f, 5.0f);
 }

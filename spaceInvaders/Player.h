@@ -55,6 +55,7 @@ private:
 	float m_delay = 0.0f;
 	float m_disableTimer = 0.0f;
 	bool m_disableControl;
+	float m_NitroResource = 100.0f;
 	sf::Vector2f m_powerForce = sf::Vector2f(0.0f,0.0f);
 	sf::Vector2f m_externVel = sf::Vector2f(0.0f, 0.0f);
 	sf::Vector2f m_forceVel = sf::Vector2f(0.0f, 0.0f);
@@ -73,7 +74,6 @@ private:
 	float m_fDeathTimer; // Death timer.
 	float m_fDeathDelay; // Amount of delay in death.
 	float m_fExpRange = 150.0f;
-	float m_NitroResource = 100.0f;
 	timer* m_DeathTimer;
 	sf::CircleShape m_circleIndicator;
 };
