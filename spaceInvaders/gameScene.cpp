@@ -303,6 +303,12 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 void gameScene::DrawUI(sf::RenderWindow& _window)
 {
 	scoreManager::GetInstance().DrawUI(_window);
+
+	// Draw resource bars
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawNitroResource(_window);
+	}
 }
 
 /***********************

@@ -46,6 +46,7 @@ public:
 	void DelayedDeathUpdate();
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
+	void DrawNitroResource(sf::RenderWindow& _window);
 
 	int GetIndex() { return m_iPlayerIndex; };
 
@@ -74,8 +75,11 @@ private:
 	std::vector<player*>* m_vPlayers;
 	std::vector<battery*>* m_vBatteries;
 
-	int m_NitroResource;
+	float m_NitroResource;
 	uiImage* m_nitroBar;
+	bool m_bNitroEnabled;
+
+	sf::Color m_playerColor;
 
 	// Leaking battery variables
 	bool m_bExphit; // Explosion hit player.
