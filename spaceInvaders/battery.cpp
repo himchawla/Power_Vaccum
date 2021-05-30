@@ -14,7 +14,7 @@ void battery::Update(float _dT)
 		sf::Color color = GetSprite()->getColor();
 		GetSprite()->setColor(sf::Color(color.r, color.g, color.b, (m_destroyTimer->GetTime() / 2) * 255));
 	}
-	reinterpret_cast<gameObject*>(this)->Update(_dT);
+	gameObject::Update(_dT);
 }
 
 float battery::GetAbilityTimer()
