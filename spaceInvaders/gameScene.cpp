@@ -255,6 +255,11 @@ void gameScene::DrawUI(sf::RenderWindow& _window)
 	scoreManager::GetInstance().DrawUI(_window);
 }
 
+/***********************
+* SpawnBattery: Spawns the battery into the screen
+* @author: Neel Kolhe
+* @parameter: none
+********************/
 void gameScene::SummonBattery() 
 {
 	float x = rand() % 900 + 300;
