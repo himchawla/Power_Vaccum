@@ -171,7 +171,8 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
 		_window.draw(*m_vButtons[i]->GetRect());
-		m_vButtons[i]->m_buttonSprite->Draw(_window);
+		if (m_vButtons[i]->m_buttonSprite = nullptr)
+			m_vButtons[i]->m_buttonSprite->Draw(_window);
 
 	}
 

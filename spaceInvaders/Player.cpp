@@ -444,7 +444,7 @@ void player::BatteryCollision()
 	it = m_vBatteries->begin();
 	while (it != m_vBatteries->end())
 	{
-		if ((*it)->isEnabled())
+		if ((*it)->IsEnabled())
 		{
 			delete (*it);
 			m_vBatteries->erase(it);
