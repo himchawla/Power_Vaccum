@@ -68,6 +68,7 @@ player::player(int _player)
 		break;
 	}
 
+	m_nitroBar/* = new uiImage()*/;
 
 	// Leaking battery variables
 	m_bExphit = false;
