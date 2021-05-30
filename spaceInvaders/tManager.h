@@ -57,11 +57,11 @@ private:
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;
-	float m_fTimeToFall = 5.5f;
+	float m_fTimeToFall = 5.5f; // Starting time to fall
 
-	float m_fSpeedIncrease = 0.8f;
-	const float m_cfFallDefault = 6.0f;
-	float m_fMaxFallTimer = 1.5f;
+	float m_fSpeedIncrease = 0.8f; // Increment increase time to fall;
+	const float m_cfFallDefault = 5.5f; // Default Time to fal
+	float m_fMaxFallTimer = 1.5f; // Minimum Time to Fall
 	int m_iTimesFallen = 0; // How Many Tiles have fallen.
 
 	// Shaking Animation.
