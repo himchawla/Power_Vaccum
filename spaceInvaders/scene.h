@@ -17,6 +17,7 @@
 #include <SFML/Graphics.hpp>
  // Local Includes 
 #include "scoreManager.h"
+#include "audioManager.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 

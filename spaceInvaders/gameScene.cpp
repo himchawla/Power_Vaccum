@@ -14,9 +14,9 @@
  // Library Includes 
  // Local Includes 
 #include "sceneManager.h"
+#include "endScene.h"
  // This Include 
 #include "gameScene.h"
-
  // Static Variables 
  // Static Function Prototypes 
  // Implementation 
@@ -26,6 +26,7 @@ bool isDebug = false;
 gameScene::gameScene(std::vector<player*>* _player)
 {
 	m_vObjects = new std::vector<gameObject*>();
+	m_vBatteries = new std::vector<battery*>();
 	
 	m_tileManager = new tManager();
 	m_vPlayers = _player;
@@ -52,6 +53,7 @@ gameScene::gameScene(std::vector<player*>* _player)
 				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 697.0f));
 			}
 			newPlayer->SetPlayerVector(m_vPlayers);
+			newPlayer->SetBatteryVector(m_vBatteries);
 			newPlayer->SetTileManager(m_tileManager);
 			m_vPlayers->push_back(newPlayer);
 
@@ -84,7 +86,6 @@ gameScene::gameScene(std::vector<player*>* _player)
 	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
-	m_vBatteries = new std::vector<battery*>();
 }
 
 gameScene::~gameScene()
@@ -151,10 +152,6 @@ void gameScene::Initialise(sf::RenderWindow& _window)
 	bat = new battery(2, sf::Vector2f(200.0f, 800.0f));
 	m_vBatteries->push_back(bat);
 
-
-
-
-	scoreManager::GetInstance().ResetScores();
 	scoreManager::GetInstance().GamePositioning();
 }
 
@@ -203,8 +200,18 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	}
 	if (m_vPlayers->size() == 1)
 	{
-		//Load End Scene Here
-		sceneManager::SetScene(new gameScene(nullptr));
+		int winningIndex = m_vPlayers->front()->GetIndex();
+		scoreManager::GetInstance().IncrementScore(winningIndex);
+
+		if (scoreManager::GetInstance().HighestScore() == 3)
+		{
+			sceneManager::SetScene(new endScene());
+		}
+		else
+		{
+			//Load End Scene Here
+			sceneManager::SetScene(new gameScene(nullptr));
+		}
 	}
 
 	for (auto i : *m_vBatteries)

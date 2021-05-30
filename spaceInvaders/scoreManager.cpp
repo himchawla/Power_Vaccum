@@ -17,10 +17,10 @@
  // This Include 
 #include "scoreManager.h"
  // Static Variables 
+scoreManager* scoreManager::sm_Instance = 0;
  // Static Function Prototypes 
  // Implementation 
 
-scoreManager* scoreManager::sm_Instance = 0;
 
 scoreManager::~scoreManager()
 {
@@ -75,7 +75,7 @@ void scoreManager::Initialise()
 
 	for (int i = 0; i < 4; i++)
 	{
-		m_iPlayerScores[i] = 2;
+		m_iPlayerScores[i] = 0;
 		m_ScoreUI[i]->SetScore(m_iPlayerScores[i]);
 	}
 }
@@ -190,6 +190,7 @@ void scoreManager::EndPositioning()
 	{
 		m_ScoreUI[i]->GetSprite()->setScale(sf::Vector2f(1.0f, 1.0f));
 	}
+	m_ScoreUI[WinningIndex()]->GetSprite()->setScale(sf::Vector2f(1.1f, 1.1f));
 
 	m_ScoreUI[0]->transform.m_Position = sf::Vector2f(960, 500);
 	m_ScoreUI[1]->transform.m_Position = sf::Vector2f(960, 580);

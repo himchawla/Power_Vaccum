@@ -30,6 +30,7 @@ endScene::endScene()
 
 endScene::~endScene()
 {
+	scoreManager::GetInstance().ResetScores();
 }
 
 /***********************

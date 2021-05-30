@@ -12,7 +12,7 @@
 //  Mail        :   himanshu.chawla@mds.ac.nz
 // 
  // Library Includes 
-
+#include "audioManager.h"
 //This include
 #include "Player.h"
 #include <iostream>
@@ -40,7 +40,7 @@ void player::SetTileManager(tManager* _tileManager)
 
 player::player(int _player)
 {
-	
+	m_iPlayerIndex = _player;
 	m_DeathTimer = 0;
 	m_vPlayers = 0;
 	m_InputHandler = new inputManager(_player);
@@ -77,8 +77,8 @@ player::player(int _player)
 
 	m_circleIndicator = sf::CircleShape(m_fExpRange);
 	m_circleIndicator.setOrigin(sf::Vector2f(m_fExpRange, m_fExpRange));
-	m_circleIndicator.setFillColor(sf::Color(200, 170, 130, 160));
-	m_circleIndicator.setOutlineColor(sf::Color(255, 255, 255, 160));
+	m_circleIndicator.setFillColor(sf::Color(200, 170, 130, 0));
+	m_circleIndicator.setOutlineColor(sf::Color(255, 255, 255, 0));
 	m_circleIndicator.setOutlineThickness(5.0f);
 }
 
@@ -397,6 +397,7 @@ void player::PlayerCollision()
 				}
 				if (!m_disableControl)
 				{
+					audioManager::GetInstance().PlaySound("RoombaCollision");
 					m_disableControl = true;
 					i->m_disableControl = true;
 					m_disableTimer = 0.8f;
@@ -477,12 +478,23 @@ void player::BatteryImplementation(float _dt)
 	}
 		break;
 	case battery::leaking:
+	{
+		float alpha = (1.0f - (m_abilityTimer / 5.0f)) * 170.0f;
+		if (alpha > 170.0f)
+		{
+			alpha = 170.0f;
+		}
+		m_circleIndicator.setFillColor(sf::Color(255, 170, 0, alpha));
+		m_circleIndicator.setOutlineColor(sf::Color(170, 170, 170, alpha));
 		if (m_abilityTimer < 0.0f)
 		{
 			LeakingBattery();
 		}
 		break;
+	}
 	default:
+		m_circleIndicator.setFillColor(sf::Color(0, 0, 0, 0));
+		m_circleIndicator.setOutlineColor(sf::Color(0, 0, 0, 0));
 		break;
 	}
 
