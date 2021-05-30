@@ -45,15 +45,7 @@ public:
 
 	void Draw(sf::RenderWindow& _window);
 private:
-	struct Tiles
-	{
-		sf::Vector2f m_Position;
-		sf::Vector2f m_size;
-		sf::RectangleShape m_TempRect;
-		sf::Sprite* m_Sprite;
-	};
 
-	// Trying 2 ways to do this.
 	std::vector<tile*> m_vTilesList;
 
 	// Adjusting numbers, made variables to make it easier to track.

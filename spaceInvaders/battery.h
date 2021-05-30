@@ -16,7 +16,6 @@ public:
 
 	battery();
 	battery(int ch, sf::Vector2f _position);
-	void Destroy();
 	~battery();
 	
 	float GetAbilityTimer();

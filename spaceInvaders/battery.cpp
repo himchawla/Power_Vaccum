@@ -10,6 +10,7 @@ float battery::GetAbilityTimer()
 	return m_abilityTimer;
 }
 
+
 battery::battery()
 {
 	SetSpriteFromFile("Assets/Batteries/Base.png");
@@ -42,10 +43,5 @@ battery::battery(int ch, sf::Vector2f _position)
 	transform.m_Position = _position;
 	m_ability = (eAbility)ch;
 	m_abilityTimer = 5.0f;
-
-}
-
-void battery::Destroy()
-{
 
 }

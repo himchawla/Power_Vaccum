@@ -24,6 +24,8 @@
 
 tile::tile(float x_pos, float y_pos)
 {
+	m_connectedBattery = 0;
+
 	m_TempRect = new sf::RectangleShape;
 
 	m_TempRect->setSize(sf::Vector2f(m_v2TileSize));
@@ -44,6 +46,10 @@ tile::~tile()
 void tile::Update(float _dT)
 {
 	m_TempRect->getPosition().x;
+	if (m_TempRect->getSize() == sf::Vector2f(0.0f, 0.0f) && m_connectedBattery != nullptr);
+	{
+		m_connectedBattery->Destroy();
+	}
 }
 
 sf::Vector2f tile::GetPosition()
@@ -66,5 +72,10 @@ sf::RectangleShape* tile::GetRect()
 void tile::SetRect(sf::RectangleShape* _rect)
 {
 	m_TempRect = _rect;
+}
+
+void tile::SetBattery(battery* _battery)
+{
+	m_connectedBattery = _battery;
 }
 

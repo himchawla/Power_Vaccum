@@ -109,6 +109,7 @@ void menuScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void menuScene::Update(sf::RenderWindow& _window, float _dT)
 {
+	
 	m_delayTimer->Update(_dT);
 	m_bigDelayTimer->Update(_dT);
 	m_imgLogo->Update(_dT);
@@ -121,7 +122,7 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 
 	for (auto&  m_vButton : m_vButtons)
 	{
-
+		m_vButton->Update(_dT);
 		m_vButton->isMouseHere(_window);
 		
 
@@ -170,6 +171,8 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
 		_window.draw(*m_vButtons[i]->GetRect());
+		if (m_vButtons[i]->m_buttonSprite = nullptr)
+			m_vButtons[i]->m_buttonSprite->Draw(_window);
 
 	}
 
