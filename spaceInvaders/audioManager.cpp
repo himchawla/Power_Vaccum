@@ -82,6 +82,7 @@ void audioManager::Initialise()
 {
 	m_Music = new sf::Music();
 	m_Music->setLoop(true);
+	m_Music->setVolume(30.0f);
 
 	// Initialise sounds
 	CreateSound("RoombaCollision", "RoombaCollision.wav");
