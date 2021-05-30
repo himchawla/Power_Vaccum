@@ -30,6 +30,12 @@ scene* sceneManager::sm_SceneBuffer = 0;
 ********************/
 void sceneManager::SetScene(scene* _scene)
 {
+	if (sm_SceneBuffer != nullptr)
+	{
+		delete sm_SceneBuffer;
+		sm_SceneBuffer = 0;
+		std::cout << "Overwriting scene buffer\n";
+	}
 	sm_SceneBuffer = _scene;
 }
 
@@ -86,4 +92,5 @@ void sceneManager::Shutdown()
 	}
 
 	scoreManager::RemoveInstance();
+	audioManager::RemoveInstance();
 }
