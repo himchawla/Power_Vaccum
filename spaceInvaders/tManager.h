@@ -57,9 +57,6 @@ private:
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;
-<<<<<<< HEAD
-	float m_fTimeToFall = 5.0f;
-=======
 	float m_fTimeToFall = 8.0f;
 	float m_fSpeedIncrease = 0.6f;
 	const float m_cfFallDefault = 8.0f;
@@ -67,7 +64,6 @@ private:
 	int m_iTimesFallen = 0; // How Many Tiles have fallen.
 
 	// Shaking Animation.
->>>>>>> Gervince
 	float m_fShakeTimer = 0.0f;
 	float m_fShakeInterval = 0.1f;
 	bool m_bLeft = false;

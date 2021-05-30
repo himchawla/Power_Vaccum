@@ -18,6 +18,8 @@
 #include "scene.h"
 #include "uiImage.h"
 #include "Player.h"
+#include "menuScene.h"
+#include "button.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -45,6 +47,8 @@ private:
 	sf::Sprite* m_sprBackground;
 
 	std::vector<player*>* m_vPlayers;
+	std::vector<button*> m_vButtons;
+	sf::Vector2f m_v2Offset = sf::Vector2f(400.0f, 200.0f);
 
 
 	uiImage* temp1;

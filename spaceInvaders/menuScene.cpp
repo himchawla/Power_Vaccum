@@ -140,7 +140,7 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 		{
 			sceneManager::SetScene(new lobbyScene());
 		}
-		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Credits Button
+		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Credits Button
 		{
 			std::cout << "Display Credits here" << std::endl;
 		}
@@ -187,8 +187,12 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 	// Draw UI elements
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
-		_window.draw(*m_vButtons[i]->GetRect());
-		_window.draw(*m_vButtons[i]->GetButtonText());
+		if (i != 1)
+		{
+			_window.draw(*m_vButtons[i]->GetRect());
+			_window.draw(*m_vButtons[i]->GetButtonText());
+		}
+		
 		if (m_vButtons[i]->m_buttonSprite = nullptr)
 			m_vButtons[i]->m_buttonSprite->Draw(_window);
 
