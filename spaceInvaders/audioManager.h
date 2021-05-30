@@ -8,8 +8,8 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   
-//  Description :   
+//  File Name   :   audioManager.h
+//  Description :   Loads and plays audio as a singleton.
 //  Author      :   William de Beer
 //  Mail        :   William.Beer@mds.ac.nz
 // 

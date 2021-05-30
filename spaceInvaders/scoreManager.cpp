@@ -75,7 +75,7 @@ void scoreManager::Initialise()
 
 	for (int i = 0; i < 4; i++)
 	{
-		m_iPlayerScores[i] = 2;
+		m_iPlayerScores[i] = 0;
 		m_ScoreUI[i]->SetScore(m_iPlayerScores[i]);
 	}
 }
