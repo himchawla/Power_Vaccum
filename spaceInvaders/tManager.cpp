@@ -79,6 +79,14 @@ void tManager::DropTiles(float _dT)
 	if (m_fFallTimer >= m_fTimeToFall)
 	{
 		m_fFallTimer -= m_fTimeToFall;
+		m_iTimesFallen++;
+		m_fTimeToFall = m_cfFallDefault - (m_iTimesFallen * m_fSpeedIncrease);
+
+		if (m_fTimeToFall < m_fMaxFallTimer)
+		{
+			m_fTimeToFall = m_fMaxFallTimer;
+		}
+
 		m_iTile = rand() % 136;
 
 		while (m_vTilesList[m_iTile]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f))
