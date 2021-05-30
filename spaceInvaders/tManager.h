@@ -57,7 +57,7 @@ private:
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;
-	float m_fTimeToFall = 7.0f;
+	float m_fTimeToFall = 3.0f;
 
 	float m_fSpeedIncrease = 0.6f;
 	const float m_cfFallDefault = 8.0f;

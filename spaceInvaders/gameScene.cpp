@@ -331,12 +331,12 @@ void gameScene::SummonBattery()
 			battery* bat = nullptr;
 
 			int ch = rand() % 100;
-			if(ch < 40)
+			if(ch < 45)
 			{
 				bat = new battery(1,
 					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
 			}
-			else if(ch < 80)
+			else if(ch < 90)
 			{
 				bat = new battery(2,
 					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
@@ -356,5 +356,5 @@ void gameScene::SummonBattery()
 	{
 		delete m_batterySpawn;
 	}
-	m_batterySpawn = new timer(0.0f, 10.0f);
+	m_batterySpawn = new timer(0.0f, 6.0f);
 }
