@@ -119,6 +119,7 @@ gameScene::~gameScene()
 		m_vObjects = 0;
 	}
 
+
 	// Delete background 
 	if (m_texBackground != nullptr)
 	{
@@ -214,6 +215,8 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		else
 		{
 			//Load End Scene Here
+
+
 			sceneManager::SetScene(new gameScene(nullptr));
 		}
 	}

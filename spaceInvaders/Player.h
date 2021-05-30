@@ -16,6 +16,7 @@
  // Library Includes 
 #include <vector>
  //Local includes
+#include "uiImage.h"
 #include "gameObject.h"
 #include "battery.h"
 #include "timer.h"
@@ -39,7 +40,7 @@ public:
 	bool IsReady();
 	void SetReady(bool _ready);
 
-
+	float GetNitro() { return m_NitroResource; };
 	void OnTile(bool _isOnTile);
 	void LeakingBattery();
 	void DelayedDeathUpdate();
@@ -74,6 +75,7 @@ private:
 	std::vector<battery*>* m_vBatteries;
 
 	int m_NitroResource;
+	uiImage* m_nitroBar;
 
 	// Leaking battery variables
 	bool m_bExphit; // Explosion hit player.
