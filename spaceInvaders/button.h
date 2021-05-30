@@ -13,6 +13,7 @@ class button
 		
 		button(float x_pos, float y_pos, int _weight);
 		virtual ~button();
+		void Update(float _dT);
 
 		void isMouseHere(sf::RenderWindow& window);
 		sf::RectangleShape* GetRect();
@@ -28,6 +29,7 @@ class button
 
 		bool isHovering();
 		void SetColor(const sf::Color& _color);
+		uiImage* m_buttonSprite;
 
 
 	private:
@@ -40,7 +42,6 @@ class button
 		bool m_bIsSelected = false;
 		bool m_bIsHovering = false;
 
-		uiImage* m_buttonSprite;
 
 		sf::Vector2f m_v2ButtonSize = sf::Vector2f(300, 150);
 		float m_delay;

@@ -47,6 +47,8 @@ public:
 	};
 	Transform transform;
 
+	bool IsEnabled();
+
 	void Update(float _dT);
 
 	void Draw(sf::RenderWindow& _window);

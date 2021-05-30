@@ -47,6 +47,11 @@ gameObject::~gameObject()
 	}
 }
 
+bool gameObject::IsEnabled()
+{
+	return enabled;
+}
+
 /***********************
 * Update: Calculates the physics for the gameObject
 * @author: Himanshu Chawla

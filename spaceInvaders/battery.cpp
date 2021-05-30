@@ -10,6 +10,7 @@ float battery::GetAbilityTimer()
 	return m_abilityTimer;
 }
 
+
 battery::battery()
 {
 	SetSpriteFromFile("Assets/Batteries/Base.png");

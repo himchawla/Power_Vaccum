@@ -12,6 +12,7 @@ button::button()
 	m_TempRect->setOutlineColor(sf::Color::Black);
 	m_TempRect->setPosition(0, 0);
 	m_TempRect->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
+	
 }
 
 
@@ -38,9 +39,10 @@ button::~button()
 
 }
 
-void button::Update(sf::RenderWindow& _window)
+void button::Update(float _dT)
 {
-
+	if(m_buttonSprite != nullptr)
+		m_buttonSprite->Update(_dT);
 }
 
 void button::isMouseHere(sf::RenderWindow& window)
@@ -79,10 +81,6 @@ void button::isMouseHere(sf::RenderWindow& window)
 			m_bIsClicked = true;
 
 		}
-
-		
-
-
 	}
 	else
 	{
