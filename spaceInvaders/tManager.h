@@ -64,11 +64,12 @@ private:
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;
-	float m_fTimeToFall = 10.0f;
+	float m_fTimeToFall = 8.0f;
 	float m_fShakeTimer = 0.0f;
-	float m_fShakeInterval = 0.5f;
+	float m_fShakeInterval = 0.1f;
 	bool m_bLeft = false;
 	int m_iInterval = 0;
+	int m_iTile = 0;
 
 	bool m_bFallAnimation = false;
 
