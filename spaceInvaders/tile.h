@@ -17,8 +17,9 @@
  // Library Includes 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "gameObject.h"
  // Local Includes 
+#include "gameObject.h"
+#include "battery.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -42,7 +43,8 @@ public:
 	void SetRect(sf::RectangleShape* _rect);
     bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Sprite& Object2, sf::Uint8 AlphaLimit);
 
-
+	void SetBattery(battery* _battery);
+	battery* GetBattery() { return m_connectedBattery; };
 
 private:
 	//std::vector<player*>* m_vPlayers;
@@ -50,7 +52,7 @@ private:
 	sf::Vector2f m_2fPosition;
 	float m_fRotation;
 	int m_iWeight = 0;
-	
+	battery* m_connectedBattery;
 	sf::Vector2f m_v2TileSize = sf::Vector2f(70, 70);
 };
 #endif

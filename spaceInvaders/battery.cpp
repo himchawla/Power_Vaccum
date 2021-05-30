@@ -45,8 +45,3 @@ battery::battery(int ch, sf::Vector2f _position)
 	m_abilityTimer = 5.0f;
 
 }
-
-void battery::Destroy()
-{
-
-}

@@ -161,7 +161,7 @@ void player::Update(float _dT)
 
 	if (m_NitroResource < 100)			//replenishes nitro
 	{
-		m_NitroResource += 0.01f;		//adds nitro
+		m_NitroResource += 15.0f * _dT;		//adds nitro
 	}
 
 	if (Magnitude(m_externVel) < 0.01f)
@@ -292,7 +292,7 @@ void player::Update(float _dT)
 		{
 			if (m_NitroResource > 10.0f) {						//checks if you have enough resource
 				std::cout << m_NitroResource << std::endl;		//debug the nitro
-				m_NitroResource -= 1.0f;						//uses nitro resource
+				m_NitroResource -= 66.0f * _dT;					//uses nitro resource
 				Nitro(transform.m_Velocity);					//boosts speed
 			}
 		}
@@ -400,7 +400,7 @@ void player::PlayerCollision()
 					audioManager::GetInstance().PlaySound("RoombaCollision");
 					m_disableControl = true;
 					i->m_disableControl = true;
-					m_disableTimer = 0.8f;
+					m_disableTimer = 0.2f;
 				}
 			}
 			//std::cout << i->transform.m_Position.x << "\n";
@@ -444,10 +444,14 @@ void player::BatteryCollision()
 	it = m_vBatteries->begin();
 	while (it != m_vBatteries->end())
 	{
-		if ((*it)->IsEnabled())
+		if (!(*it)->IsEnabled())
 		{
 			delete (*it);
-			m_vBatteries->erase(it);
+			it = m_vBatteries->erase(it);
+		}
+		else
+		{
+			it++;
 		}
 	}
 	
@@ -508,10 +512,14 @@ void player::BatteryImplementation(float _dt)
 		break;
 	}
 
+	if (m_ability != battery::turtle)
+	{
+		m_speed = 5.0f;
+	}
+
 	if (m_abilityTimer < 0.0f && m_ability != battery::eAbility::none)
 	{
 		m_ability = battery::eAbility::none;
-		m_speed = 5.0f;
 	}
 }
 

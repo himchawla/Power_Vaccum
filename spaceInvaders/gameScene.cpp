@@ -306,16 +306,25 @@ void gameScene::DrawUI(sf::RenderWindow& _window)
 ********************/
 void gameScene::SummonBattery() 
 {
-	float x = rand() % 900 + 300;
-	float y = rand() % 900 + 300;
-	int choice = rand() % 3 + 1;
+	//float x = rand() % 900 + 300;
+	//float y = rand() % 900 + 300;
 
-	battery * bat = new battery(choice, sf::Vector2f(x, y));
-	m_vBatteries->push_back(bat);
+	if (m_vBatteries->size() < 200)
+	{
+		int randomTile = rand() % m_tileManager->GetTileVector().size();
 
+		if (m_tileManager->GetTile(randomTile)->GetBattery() == nullptr)
+		{
+			battery* bat = new battery(rand() % 3 + 1,
+				m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			m_tileManager->GetTile(randomTile)->SetBattery(bat);
+			m_vBatteries->push_back(bat);
+		}
+	}
 	if (m_batterySpawn != nullptr)
 	{
 		delete m_batterySpawn;
 	}
-	m_batterySpawn = new timer(0.0f, 5.0f);
+	m_batterySpawn = new timer(0.0f, 1.0f);
 }
