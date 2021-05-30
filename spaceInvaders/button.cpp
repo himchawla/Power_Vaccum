@@ -40,7 +40,7 @@ button::button(float x_pos, float y_pos, int _weight)
 	m_buttonText->setString("Default");
 	m_buttonText->setFillColor(sf::Color::Black);
 	m_buttonText->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
-	m_buttonText->setPosition(x_pos + 50, y_pos + 45);
+	m_buttonText->setPosition(x_pos + 25, y_pos + 45);
 
 	m_TempRect = new sf::RectangleShape;
 
@@ -56,10 +56,10 @@ button::button(float x_pos, float y_pos, int _weight)
 
 button::~button()
 {
-	m_buttonText = NULL;
+	m_buttonText = nullptr;
 	delete m_buttonText;
 
-	m_TempRect = NULL;
+	m_TempRect = nullptr;
 	delete m_TempRect;
 
 }

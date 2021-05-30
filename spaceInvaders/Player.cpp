@@ -49,26 +49,42 @@ player::player(int _player)
 	m_ability = battery::eAbility::none;
 	m_abilityTimer = 0.0f;
 
+	m_NitroResource = 100.0f;
+	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/ResourceBar.png", true);
+	m_bNitroEnabled = true;
+
+
+	sf::Vector2f offset(25.0f, 50.0f);
+
 	// Set sprite colour
 	switch (_player)
 	{
 	case 0:
-		GetSprite()->setColor(sf::Color::Red);
+		m_playerColor = sf::Color::Red;
+		m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
 		break;
 	case 1:
-		GetSprite()->setColor(sf::Color::Cyan);
+		m_playerColor = sf::Color::Cyan;
+		m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
 		break;
 	case 2:
-		GetSprite()->setColor(sf::Color::Green);
+		m_playerColor = sf::Color::Green;
+		m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
 		break;
 	case 3:
-		GetSprite()->setColor(sf::Color::Yellow);
+		m_playerColor = sf::Color::Yellow;
+		m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
 		break;
 	default:
 		break;
 	}
 
-	m_nitroBar/* = new uiImage()*/;
+	GetSprite()->setColor(m_playerColor);
+	m_nitroBar->GetSprite()->setColor(m_playerColor);
 
 	// Leaking battery variables
 	m_bExphit = false;
@@ -116,6 +132,11 @@ player::~player()
 		delete m_DeathTimer;
 		m_DeathTimer = 0;
 	}
+	if (m_nitroBar != nullptr)
+	{
+		delete m_nitroBar;
+		m_nitroBar = 0;
+	}
 }
 
 
@@ -160,9 +181,26 @@ void player::Update(float _dT)
 	m_delay -= _dT;
 	m_disableTimer -= _dT;
 
-	if (m_NitroResource < 100)			//replenishes nitro
+	m_NitroResource += 15.0f * _dT;		//adds nitro
+
+	if (m_NitroResource > 100) // If nitro reaches max
 	{
-		m_NitroResource += 15.0f * _dT;		//adds nitro
+		m_NitroResource = 100;
+		m_bNitroEnabled = true;
+		m_nitroBar->GetSprite()->setColor(m_playerColor);
+	}
+	if (m_NitroResource < 5) // If nitro is too low
+	{
+		m_bNitroEnabled = false;
+		m_nitroBar->GetSprite()->setColor(sf::Color(m_playerColor.r / 2.0f,
+			m_playerColor.g / 2.0f,
+			m_playerColor.b / 2.0f));
+	}
+
+	if (m_nitroBar != nullptr)
+	{
+		m_nitroBar->Update(_dT);
+		m_nitroBar->SetPercentageDrawn(m_NitroResource);
 	}
 
 	if (Magnitude(m_externVel) < 0.01f)
@@ -289,13 +327,11 @@ void player::Update(float _dT)
 	{
 		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
 		
-		if (m_InputHandler->GetControllerButton(0))		//checks input of nitro button
+		if (m_InputHandler->GetControllerButton(0) && m_bNitroEnabled)		//checks input of nitro button
 		{
-			if (m_NitroResource > 10.0f) {						//checks if you have enough resource
-				std::cout << m_NitroResource << std::endl;		//debug the nitro
-				m_NitroResource -= 66.0f * _dT;					//uses nitro resource
-				Nitro(transform.m_Velocity);					//boosts speed
-			}
+			std::cout << m_NitroResource << std::endl;		//debug the nitro
+			m_NitroResource -= 66.0f * _dT;					//uses nitro resource
+			Nitro(transform.m_Velocity);					//boosts speed
 		}
 
 	}
@@ -601,4 +637,15 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 	{
 		_window.draw(m_circleIndicator);
 	}
+}
+
+/***********************
+* DrawNitroResource: Draw nitro resource bar.
+* @author: William de Beer
+* @parameter: Reference to render window
+********************/
+void player::DrawNitroResource(sf::RenderWindow& _window)
+{
+	if (m_nitroBar != nullptr)
+		m_nitroBar->Draw(_window);
 }

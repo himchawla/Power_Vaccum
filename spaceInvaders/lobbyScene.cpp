@@ -50,6 +50,8 @@ lobbyScene::lobbyScene()
 
 	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", true);
 	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", true);
+
+	
 }
 
 lobbyScene::~lobbyScene()
@@ -92,6 +94,21 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 
 	temp2->GetSprite()->setColor(sf::Color::Blue);
 	temp2->GetSprite()->setScale(sf::Vector2f(-4.0f, 4.0f));
+
+	// Create Buttons
+	for (int i = 0; i < 2; i++)
+	{
+		m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i));
+		if (i == 0)
+		{
+			m_vButtons[i]->AssignImage("Assets/Start.png");
+			m_vButtons[i]->setButtonText("Start Game!", 50);
+		}
+		else if (i == 1)
+		{
+			m_vButtons[i]->setButtonText("Main Menu", 45);
+		}
+	}
 }
 
 /***********************
@@ -127,6 +144,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
 	temp1->Update(_dT);
 	temp2->Update(_dT);
+
 
 
 
@@ -173,6 +191,9 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 
 	}
+
+	
+
 	// Start game
 	
 	for (auto i : *m_vPlayers)
@@ -222,6 +243,30 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 		sceneManager::SetScene(new gameScene(nullptr));
 	}
 
+
+	for (auto& m_vButton : m_vButtons)
+	{
+		m_vButton->Update(_dT);
+		m_vButton->isMouseHere(_window);
+
+
+
+		if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Start Button
+		{
+			if (m_canStart && m_numPlayers > 1)
+			{
+				sceneManager::SetScene(new gameScene(m_vPlayers));
+			}
+			else
+			{
+				sceneManager::SetScene(new gameScene(nullptr));
+			}
+		}
+		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Back to Main Menu Button
+		{
+			sceneManager::SetScene(new menuScene());
+		}
+	}
 	
 		
 }
@@ -265,4 +310,17 @@ void lobbyScene::DrawUI(sf::RenderWindow& _window)
 	// Draw UI elements
 	_window.draw(*temp1->GetSprite());
 	_window.draw(*temp2->GetSprite());
+
+	// Draw UI elements
+	for (int i = 0; i < m_vButtons.size(); i++)
+	{
+
+		_window.draw(*m_vButtons[i]->GetRect());
+		_window.draw(*m_vButtons[i]->GetButtonText());
+
+
+		if (m_vButtons[i]->m_buttonSprite = nullptr)
+			m_vButtons[i]->m_buttonSprite->Draw(_window);
+
+	}
 }
