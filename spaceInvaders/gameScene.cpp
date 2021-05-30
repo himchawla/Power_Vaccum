@@ -23,18 +23,21 @@
 
 bool isDebug = false;
 
-gameScene::gameScene(std::vector<player*>* _player)
+gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 {
 	m_vObjects = new std::vector<gameObject*>();
 	m_vBatteries = new std::vector<battery*>();
-	
 	m_tileManager = new tManager();
 	m_vPlayers = _player;
+
 	if (m_vPlayers == nullptr)
 	{
+		m_numPlayers = _numPlayers;
+
+		
 		m_vPlayers = new std::vector<player*>();
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < _numPlayers; i++)
 		{
 			player* newPlayer = new player(i);
 
@@ -82,6 +85,8 @@ gameScene::gameScene(std::vector<player*>* _player)
 			p_it->SetTileManager(m_tileManager);
 			p_it->SetBatteryVector(m_vBatteries);
 		}
+		m_numPlayers = numPlayers - 1;
+
 	
 	}
 	m_texBackground = new sf::Texture();
@@ -214,7 +219,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		else
 		{
 			//Load End Scene Here
-			sceneManager::SetScene(new gameScene(nullptr));
+			sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
 		}
 	}
 
