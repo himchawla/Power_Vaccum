@@ -25,7 +25,7 @@ menuScene::menuScene()
 {
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
-	m_imgLogo = new uiImage(sf::Vector2f(960, 200), "Assets/Menu/TempLogo.png", false);
+	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Menu/TempLogo.png", false);
 	m_delayTimer = new timer(0.3f, 0.0f);
 	m_bigDelayTimer = new timer(1.0f, 0.0f);
 }
@@ -68,7 +68,7 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	// Create Buttons
 	for (int i = 0; i < 2; i++)
 	{
-		m_vButtons.push_back(new button(550 + m_v2Offset.x, 500 + m_v2Offset.y * i, i));
+		m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i));
 		if (i == 0)
 		{
 			m_vButtons[i]->AssignImage("Assets/Start.png");

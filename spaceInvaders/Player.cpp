@@ -543,12 +543,16 @@ void player::BatteryImplementation(float _dt)
 		break;
 	case battery::leaking:
 	{
-		float alpha = (1.0f - (m_abilityTimer / 5.0f)) * 170.0f;
+		float lerp = m_abilityTimer / 5.0f;
+		float alpha = (1.0f - lerp) * 170.0f;
+		float red = (1.0f - lerp) * 255.0f;
+		float green = lerp * 255.0f;
+
 		if (alpha > 170.0f)
 		{
 			alpha = 170.0f;
 		}
-		m_circleIndicator.setFillColor(sf::Color(255, 170, 0, alpha));
+		m_circleIndicator.setFillColor(sf::Color(red, green, 0, alpha));
 		m_circleIndicator.setOutlineColor(sf::Color(170, 170, 170, alpha));
 		if (m_abilityTimer < 0.0f)
 		{
