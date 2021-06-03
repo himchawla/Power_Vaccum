@@ -44,16 +44,16 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 			switch (m_vPlayers->size())
 			{
 			case 0:
-				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(420.0f, 375.0f));
 				break;
 			case 1:
-				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 375.0f));
 				break;
 			case 2:
-				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 697.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(420.0f, 597.0f));
 				break;
 			case 3:
-				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 697.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
 			}
 			newPlayer->SetPlayerVector(m_vPlayers);
 			newPlayer->SetBatteryVector(m_vBatteries);
@@ -70,16 +70,16 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 			switch (numPlayers)
 			{
 			case 1:
-				p_it->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				p_it->transform.m_Position = (sf::Vector2f(420.0f, 375.0f));
 				break;
 			case 2:
-				p_it->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
+				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 375.0f));
 				break;
 			case 3:
-				p_it->transform.m_Position = (sf::Vector2f(320.0f, 697.0f));
+				p_it->transform.m_Position = (sf::Vector2f(420.0f, 597.0f));
 				break;
 			case 4:
-				p_it->transform.m_Position = (sf::Vector2f(1475.0f, 697.0f));
+				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
 			}
 			numPlayers++;
 			p_it->SetTileManager(m_tileManager);
@@ -327,9 +327,27 @@ void gameScene::SummonBattery()
 
 		if (m_tileManager->GetTile(randomTile)->GetBattery() == nullptr)
 		{
-			battery* bat = new battery(rand() % 3 + 1,
-				m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
 
+			battery* bat = nullptr;
+
+			int ch = rand() % 100;
+			if(ch < 45)
+			{
+				bat = new battery(1,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+			}
+			else if(ch < 90)
+			{
+				bat = new battery(2,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			}
+			else if(ch < 100)
+			{
+				bat = new battery(3,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			}
 			m_tileManager->GetTile(randomTile)->SetBattery(bat);
 			m_vBatteries->push_back(bat);
 		}
@@ -338,5 +356,5 @@ void gameScene::SummonBattery()
 	{
 		delete m_batterySpawn;
 	}
-	m_batterySpawn = new timer(0.0f, 10.0f);
+	m_batterySpawn = new timer(0.0f, 6.0f);
 }
