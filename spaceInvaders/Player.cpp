@@ -171,6 +171,27 @@ void player::Nitro(sf::Vector2f dir)
 	transform.m_Velocity += dir;
 }
 
+void player::LobbyUpdate(float _dT)
+{
+	if(abs(transform.m_Position.x - m_startPos->transform.m_Position.x) < m_startPos->GetSprite()->getLocalBounds().width/2 && abs(transform.m_Position.y - m_startPos->transform.m_Position.y) < m_startPos->GetSprite()->getLocalBounds().height/2)
+	{
+			m_ready = true;
+			std::cout << "Player is ready";
+	}
+	else
+	{
+		m_ready = false;
+		std::cout << "Player is not ready";
+	}
+}
+
+
+void player::SetStartPos(gameObject* _startPos)
+{
+	m_startPos = _startPos;
+}
+
+
 /***********************
 * Update: Updates Player Position.
 * @author: Himanshu Chawla
@@ -224,12 +245,7 @@ void player::Update(float _dT)
 		return;
 	}
 	
-	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
-	{
-		m_ready = !m_ready;
-		std::cout << "Player is " << m_ready;
-		m_delay = 1.0f;
-	}
+	
 
 	//for (int i = 0; i < 9; i++)
 	//{
@@ -327,7 +343,7 @@ void player::Update(float _dT)
 	{
 		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
 		
-		if (m_InputHandler->GetControllerButton(0) && m_bNitroEnabled)		//checks input of nitro button
+		if (m_InputHandler->FaceButtonPressed() && m_bNitroEnabled)		//checks input of nitro button
 		{
 			std::cout << m_NitroResource << std::endl;		//debug the nitro
 			m_NitroResource -= 66.0f * _dT;					//uses nitro resource

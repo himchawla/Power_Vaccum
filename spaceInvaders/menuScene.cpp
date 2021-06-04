@@ -248,7 +248,7 @@ void menuScene::SelectionController()
 			m_bigDelayTimer->ResetTimer();
 		}
 
-		if(inputManager::GetControllerButton(0, i) && m_bigDelayTimer->IsFinished())
+		if(inputManager::FaceButtonPressed(i) && m_bigDelayTimer->IsFinished())
 		{
 			m_wasPressed[i] = true;
 			
@@ -263,7 +263,7 @@ void menuScene::SelectionController()
 		}
 
 		
-		if(m_wasPressed[i] && !inputManager::GetControllerButton(0, i))
+		if(m_wasPressed[i] && !inputManager::FaceButtonPressed(i))
 		{
 			m_vButtons[m_controllerSelection]->Clicked(true);
 		}

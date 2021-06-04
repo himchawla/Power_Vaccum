@@ -59,7 +59,7 @@ public:
 	sf::Texture* GetTexture();
 	void SetTexture(sf::Texture* _texture);
 
-	void SetSpriteFromFile(std::string _address);
+	void SetSpriteFromFile(std::string _address, sf::Vector2f _size = sf::Vector2f(64.0f,64.0f));
 
 	void Destroy();
 
