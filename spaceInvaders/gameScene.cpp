@@ -352,19 +352,19 @@ void gameScene::SummonBattery()
 
 			battery* bat = nullptr;
 
-			int ch = rand() % 100;
-			if(ch < 45)
+			int ch = rand() % 3;
+			if(ch == 0)
 			{
 				bat = new battery(1,
 					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
 			}
-			else if(ch < 90)
+			else if(ch == 1)
 			{
 				bat = new battery(2,
 					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
 
 			}
-			else if(ch < 100)
+			else if(ch == 2)
 			{
 				bat = new battery(3,
 					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());

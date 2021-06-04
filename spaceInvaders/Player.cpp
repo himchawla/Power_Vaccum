@@ -607,7 +607,7 @@ void player::LeakingBattery()
 			float distance = Magnitude(transform.m_Position - it->transform.m_Position);
 			if (distance < m_fExpRange)
 			{
-				it->AddForce(((it->transform.m_Position - transform.m_Position) / distance) * 10.0f);
+				it->AddForce(((it->transform.m_Position - transform.m_Position) / distance) * 80.0f);
 				it->m_disableControl = true;
 				it->m_disableTimer = 0.8f;
 				it->m_bExphit = true;

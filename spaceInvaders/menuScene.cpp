@@ -29,7 +29,7 @@ menuScene::menuScene()
 	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
-	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Start.png", false);
+	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Menu/Logo.png", false);
 	m_delayTimer = new timer(0.3f, 0.0f);
 	m_bigDelayTimer = new timer(1.0f, 0.0f);
 }
