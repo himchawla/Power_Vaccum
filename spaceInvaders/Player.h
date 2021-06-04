@@ -86,6 +86,7 @@ private:
 	float m_NitroResource;
 	uiImage* m_nitroBar;
 	bool m_bNitroEnabled;
+	bool m_bPrevNitroState;
 
 	sf::Color m_playerColor;
 

@@ -86,6 +86,12 @@ void audioManager::Initialise()
 
 	// Initialise sounds
 	CreateSound("RoombaCollision", "RoombaCollision.wav");
+	CreateSound("NitroStart", "RoombaCollision.wav");
+	CreateSound("NitroEnd", "RoombaCollision.wav");
+	CreateSound("RoombaDeath", "RoombaCollision.wav");
+	CreateSound("BatteryPickup", "RoombaCollision.wav");
+	CreateSound("ButtonPress", "RoombaCollision.wav");
+	CreateSound("ButtonChange", "RoombaCollision.wav");
 }
 
 /***********************

@@ -52,6 +52,7 @@ player::player(int _player)
 	m_NitroResource = 100.0f;
 	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/ResourceBar.png", true);
 	m_bNitroEnabled = true;
+	m_bPrevNitroState = false;
 
 
 	sf::Vector2f offset(25.0f, 50.0f);
@@ -192,10 +193,18 @@ void player::Update(float _dT)
 	if (m_NitroResource < 5) // If nitro is too low
 	{
 		m_bNitroEnabled = false;
+		
 		m_nitroBar->GetSprite()->setColor(sf::Color(m_playerColor.r / 2.0f,
 			m_playerColor.g / 2.0f,
 			m_playerColor.b / 2.0f));
 	}
+
+	if (m_bNitroEnabled && !m_bPrevNitroState)
+	{
+		m_bPrevNitroState = true;
+
+	}
+
 
 	if (m_nitroBar != nullptr)
 	{

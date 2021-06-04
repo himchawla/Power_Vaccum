@@ -235,6 +235,7 @@ void menuScene::SelectionController()
 
 		if (result.y == 1 && m_controllerSelection > 0 && m_delayTimer->IsFinished())
 		{
+			audioManager::GetInstance().PlaySound("ButtonChange");
 			for (int k = 0; k < 4; k++)	m_wasPressed[k] = false;
 			m_controllerSelection--;
 			m_delayTimer->ResetTimer();
@@ -242,6 +243,7 @@ void menuScene::SelectionController()
 		}
 		if (result.y == -1 && m_controllerSelection < m_vButtons.size() - 1 && m_delayTimer->IsFinished())
 		{
+			audioManager::GetInstance().PlaySound("ButtonChange");
 			for (int k = 0; k < 4; k++)	m_wasPressed[k] = false;
 			m_controllerSelection++;
 			m_delayTimer->ResetTimer();
@@ -266,6 +268,7 @@ void menuScene::SelectionController()
 		if(m_wasPressed[i] && !inputManager::GetControllerButton(0, i))
 		{
 			m_vButtons[m_controllerSelection]->Clicked(true);
+			audioManager::GetInstance().PlaySound("ButtonPress");
 		}
 		
 	}
