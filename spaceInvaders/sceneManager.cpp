@@ -93,4 +93,5 @@ void sceneManager::Shutdown()
 
 	scoreManager::RemoveInstance();
 	audioManager::RemoveInstance();
+	std::cout << "Shutdown Completed" << std::endl;
 }

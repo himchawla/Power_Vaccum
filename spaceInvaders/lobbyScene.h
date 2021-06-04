@@ -49,9 +49,5 @@ private:
 	std::vector<player*>* m_vPlayers;
 	std::vector<button*> m_vButtons;
 	sf::Vector2f m_v2Offset = sf::Vector2f(400.0f, 200.0f);
-
-
-	uiImage* temp1;
-	uiImage* temp2;
 };
 #endif

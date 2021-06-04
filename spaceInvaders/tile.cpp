@@ -39,7 +39,11 @@ tile::tile(float x_pos, float y_pos)
 
 tile::~tile()
 {
-
+	if (m_TempRect != nullptr)
+	{
+		delete m_TempRect;
+		m_TempRect = 0;
+	}
 }
 
 

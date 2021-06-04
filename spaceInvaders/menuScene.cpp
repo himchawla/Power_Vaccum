@@ -23,6 +23,10 @@
 
 menuScene::menuScene()
 {
+	for (int i = 0; i < 4; i++)
+	{
+		m_wasPressed[i] = false;
+	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Menu/TempLogo.png", false);
@@ -32,6 +36,18 @@ menuScene::menuScene()
 
 menuScene::~menuScene()
 {
+	// Delete timers
+	if (m_delayTimer != nullptr)
+	{
+		delete m_delayTimer;
+		m_delayTimer = 0;
+	}
+	if (m_bigDelayTimer != nullptr)
+	{
+		delete m_bigDelayTimer;
+		m_bigDelayTimer = 0;
+	}
+
 	// Delete background 
 	if (m_texBackground != nullptr)
 	{
@@ -47,6 +63,15 @@ menuScene::~menuScene()
 	{
 		delete m_imgLogo;
 		m_imgLogo = 0;
+	}
+
+	// Delete buttons
+	std::vector<button*>::iterator b_it = m_vButtons.begin();
+	while (b_it != m_vButtons.end())
+	{
+		// Delete vector contents
+		delete* b_it;
+		b_it = m_vButtons.erase((b_it));
 	}
 }
 
@@ -138,7 +163,7 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 		}
 		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Quit Button
 		{
-			exit(0);
+			_window.close();
 		}
 	}
 

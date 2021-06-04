@@ -33,7 +33,7 @@ button::button(float x_pos, float y_pos, int _weight)
 		// error...
 	}
 
-	m_buttonText = new sf::Text;
+	m_buttonText = new sf::Text();
 
 	m_buttonText->setFont(m_arial);
 	m_buttonText->setCharacterSize(50);
@@ -42,7 +42,7 @@ button::button(float x_pos, float y_pos, int _weight)
 	m_buttonText->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
 	m_buttonText->setPosition(x_pos + 25, y_pos + 45);
 
-	m_TempRect = new sf::RectangleShape;
+	m_TempRect = new sf::RectangleShape();
 
 	m_TempRect->setSize(sf::Vector2f(m_v2ButtonSize));
 	m_TempRect->setFillColor(sf::Color::White);
@@ -56,12 +56,23 @@ button::button(float x_pos, float y_pos, int _weight)
 
 button::~button()
 {
-	m_buttonText = nullptr;
-	delete m_buttonText;
+	if (m_buttonText != nullptr)
+	{
+		delete m_buttonText;
+		m_buttonText = nullptr;
+	}
 
-	m_TempRect = nullptr;
-	delete m_TempRect;
+	if (m_TempRect != nullptr)
+	{
+		delete m_TempRect;
+		m_TempRect = nullptr;
+	}
 
+	if (m_buttonSprite != nullptr)
+	{
+		delete m_buttonSprite;
+		m_buttonSprite = nullptr;
+	}
 }
 
 void button::Update(float _dT)
@@ -130,6 +141,11 @@ sf::Text* button::GetButtonText()
 
 void button::AssignImage(std::string _imageLoc)
 {
+	if (m_buttonSprite != nullptr)
+	{
+		delete m_buttonSprite;
+		m_buttonSprite = nullptr;
+	}
 	m_buttonSprite = new uiImage(m_TempRect->getPosition(), _imageLoc, false);
 }
 

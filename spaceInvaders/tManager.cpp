@@ -27,11 +27,7 @@ tManager::tManager()
 	{
 		for (int j = 0; j < m_iHorizontal; j++) // Horizontal
 		{
-
 			m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset)));
-
-			
-
 		}
 	}
 }
@@ -55,6 +51,13 @@ bool tManager::isOnTile(sf::Vector2f _position, float _radius)
 
 tManager::~tManager()
 {
+	std::vector<tile*>::iterator t_it = m_vTilesList.begin();
+	while (t_it != m_vTilesList.end())
+	{
+		// Delete vector contents
+		delete* t_it;
+		t_it = m_vTilesList.erase((t_it));
+	}
 }
 
 void tManager::Update(sf::RenderWindow& _window, float _dT)

@@ -38,20 +38,12 @@ lobbyScene::lobbyScene()
 	m_playerStatus[1].transform.m_Position.x = 1715.0f;
 	m_playerStatus[1].transform.m_Position.y = 275.0f;
 
-
 	m_playerStatus[2].transform.m_Position.x = 560.0f;
 	m_playerStatus[2].transform.m_Position.y = 797.0f;
 	m_playerStatus[3].transform.m_Position.x = 1715.0f;
 	m_playerStatus[3].transform.m_Position.y = 797.0f;
 
-	
-
 	m_vPlayers = new std::vector<player*>();
-
-	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", true);
-	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", true);
-
-	
 }
 
 lobbyScene::~lobbyScene()
@@ -67,12 +59,22 @@ lobbyScene::~lobbyScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
-
-	// temp
-	if (temp1 != nullptr)
+	if (m_vPlayers != nullptr)
 	{
-		delete temp1;
-		temp1 = 0;
+		if (m_vPlayers->size() < 1)
+		{
+			delete m_vPlayers;
+			m_vPlayers = 0;
+		}
+	}
+
+	// Delete buttons
+	std::vector<button*>::iterator b_it = m_vButtons.begin();
+	while (b_it != m_vButtons.end())
+	{
+		// Delete vector contents
+		delete* b_it;
+		b_it = m_vButtons.erase((b_it));
 	}
 }
 
@@ -87,13 +89,6 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 	m_texBackground->loadFromFile("Assets/lobby.png");
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
-
-	// Set up demo images
-	temp1->GetSprite()->setColor(sf::Color::Red);
-	temp1->GetSprite()->setScale(sf::Vector2f(4.0f, 4.0f));
-
-	temp2->GetSprite()->setColor(sf::Color::Blue);
-	temp2->GetSprite()->setScale(sf::Vector2f(-4.0f, 4.0f));
 
 	// Create Buttons
 	for (int i = 0; i < 2; i++)
@@ -142,12 +137,6 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	temp1->Update(_dT);
-	temp2->Update(_dT);
-
-
-
-
 	for (int i = 0; i < 4; i++)
 	{
 		m_playerStatus[i].Update(_dT);
@@ -307,10 +296,6 @@ void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::DrawUI(sf::RenderWindow& _window)
 {
-	// Draw UI elements
-	_window.draw(*temp1->GetSprite());
-	_window.draw(*temp2->GetSprite());
-
 	// Draw UI elements
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{

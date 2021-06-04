@@ -30,6 +30,16 @@ endScene::endScene()
 
 endScene::~endScene()
 {
+	if (m_texBackground != nullptr)
+	{
+		delete m_texBackground;
+		m_texBackground = 0;
+	}
+	if (m_sprBackground != nullptr)
+	{
+		delete m_sprBackground;
+		m_sprBackground = 0;
+	}
 	scoreManager::GetInstance().ResetScores();
 }
 
@@ -82,8 +92,6 @@ void endScene::MainLoop(sf::RenderWindow& _window)
 	Update(_window, deltaTime);
 	Render(_window);
 }
-
-
 
 /***********************
 * Update: Updates objects in the game scene.

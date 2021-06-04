@@ -29,6 +29,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 	m_vBatteries = new std::vector<battery*>();
 	m_tileManager = new tManager();
 	m_vPlayers = _player;
+	m_batterySpawn = 0;
 
 	if (m_vPlayers == nullptr)
 	{
@@ -108,8 +109,11 @@ gameScene::~gameScene()
 		m_vPlayers = 0;
 	}
 
-	delete m_tileManager;
-	m_tileManager = 0;
+	if (m_tileManager != nullptr) // Delete tile manager
+	{
+		delete m_tileManager;
+		m_tileManager = 0;
+	}
 
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
@@ -124,6 +128,24 @@ gameScene::~gameScene()
 		m_vObjects = 0;
 	}
 
+	std::vector<battery*>::iterator b_it = m_vBatteries->begin();
+	while (b_it != m_vBatteries->end())
+	{
+		// Delete vector contents
+		delete* b_it;
+		b_it = m_vBatteries->erase((b_it));
+	}
+	if (m_vBatteries != nullptr) // Delete vector
+	{
+		delete m_vBatteries;
+		m_vBatteries = 0;
+	}
+
+	if (m_batterySpawn != nullptr)
+	{
+		delete m_batterySpawn;
+		m_batterySpawn = 0;
+	}
 
 	// Delete background 
 	if (m_texBackground != nullptr)

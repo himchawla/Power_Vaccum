@@ -29,8 +29,8 @@ gameObject::gameObject()
 	transform.m_Friction = sf::Vector2f(10.0f, 10.0f);
 	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
 	enabled = true;
-	m_Sprite = new sf::Sprite;
-	m_Texture = new sf::Texture;
+	m_Sprite = new sf::Sprite();
+	m_Texture = new sf::Texture();
 }
 
 gameObject::~gameObject()

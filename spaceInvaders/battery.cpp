@@ -2,7 +2,11 @@
 
 battery::~battery()
 {
-	delete m_destroyTimer;
+	if (m_destroyTimer != nullptr)
+	{
+		delete m_destroyTimer;
+		m_destroyTimer = 0;
+	}
 }
 
 
