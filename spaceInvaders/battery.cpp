@@ -2,7 +2,11 @@
 
 battery::~battery()
 {
-	delete m_destroyTimer;
+	if (m_destroyTimer != nullptr)
+	{
+		delete m_destroyTimer;
+		m_destroyTimer = 0;
+	}
 }
 
 
@@ -42,7 +46,7 @@ timer* battery::GetDestroyTimer()
 //Assigns Battery type
 battery::battery(int ch, sf::Vector2f _position)
 {
-	m_destroyTimer = new timer(20.0f, 0.0f);
+	m_destroyTimer = new timer(10.0f, 0.0f);
 
 	switch (ch)
 	{

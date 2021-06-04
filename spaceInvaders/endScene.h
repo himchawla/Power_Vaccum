@@ -18,6 +18,7 @@
 #include "scene.h"
 #include "uiImage.h"
 #include "Player.h"
+#include "timer.h"
  // This Include 
  // Static Variables 
  // Static Function Prototypes 
@@ -40,6 +41,6 @@ private:
 	sf::Sprite* m_sprBackground;
 	sf::Text m_txtWinner;
 	sf::Font m_fntWinner;
-
+	timer* m_leaveTimer;
 };
 #endif

@@ -6,14 +6,13 @@
 #include <iostream>
 
 
-class button
+class button : public uiImage
 {
 	public:
 		button();
 		
-		button(float x_pos, float y_pos, int _weight);
+		button(float x_pos, float y_pos, int _weight, std::string _path);
 		virtual ~button();
-		void Update(float _dT);
 
 		// Check If the Mouse is hovering over the Button
 		void isMouseHere(sf::RenderWindow& window);

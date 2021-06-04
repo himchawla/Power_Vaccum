@@ -29,8 +29,8 @@ gameObject::gameObject()
 	transform.m_Friction = sf::Vector2f(10.0f, 10.0f);
 	transform.m_Position = sf::Vector2f(100.0f, 100.0f);
 	enabled = true;
-	m_Sprite = new sf::Sprite;
-	m_Texture = new sf::Texture;
+	m_Sprite = new sf::Sprite();
+	m_Texture = new sf::Texture();
 }
 
 gameObject::~gameObject()
@@ -115,11 +115,11 @@ void gameObject::SetTexture(sf::Texture* _texture)
 * @parameter: address
 * @return: N/A
 ********************/
-void gameObject::SetSpriteFromFile(std::string _address)
+void gameObject::SetSpriteFromFile(std::string _address, sf::Vector2f _size)
 {
 	GetTexture()->loadFromFile(_address);
 	GetSprite()->setTexture(*GetTexture());
-	GetSprite()->setScale(64.0f / GetTexture()->getSize().x, 64.0f / GetTexture()->getSize().y);
+	GetSprite()->setScale(_size.x / GetTexture()->getSize().x, _size.y / GetTexture()->getSize().y);
 	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
 }
 
