@@ -30,6 +30,11 @@ endScene::endScene()
 
 endScene::~endScene()
 {
+	if (m_leaveTimer != nullptr)
+	{
+		delete m_leaveTimer;
+		m_leaveTimer = 0;
+	}
 	if (m_texBackground != nullptr)
 	{
 		delete m_texBackground;
@@ -66,6 +71,7 @@ void endScene::Initialise(sf::RenderWindow& _window)
 	m_txtWinner.setPosition(580, 200);
 	m_txtWinner.setOrigin(0.0f, 24.0f);
 
+	m_leaveTimer = new timer(0.0f, 5.0f);
 
 	scoreManager::GetInstance().EndPositioning();
 }
@@ -101,7 +107,8 @@ void endScene::MainLoop(sf::RenderWindow& _window)
 void endScene::Update(sf::RenderWindow& _window, float _dT)
 {
 	scoreManager::GetInstance().Update(_dT);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	m_leaveTimer->Update(_dT);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || m_leaveTimer->IsFinished())
 	{
 		sceneManager::SetScene(new menuScene());
 	}
