@@ -96,8 +96,8 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 	// Create Buttons
 	
 		
-	m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * 1, 1, "Assets/MainMenu"));
-	m_vButtons[0]->setButtonText("Main Menu", 45);
+	//m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * 1, 1, "Assets/MainMenu"));
+	//m_vButtons[0]->setButtonText("Main Menu", 45);
 		
 }
 
@@ -229,37 +229,43 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (m_canStart && m_numPlayers > 1)
 	{
+		audioManager::GetInstance().SetMusic("GameMusic.wav");
+		audioManager::GetInstance().GetMusic()->play();
+		audioManager::GetInstance().PlaySound("ButtonPress");
 		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
+		audioManager::GetInstance().SetMusic("GameMusic.wav");
+		audioManager::GetInstance().GetMusic()->play();
+		audioManager::GetInstance().PlaySound("ButtonPress");
 		sceneManager::SetScene(new gameScene(nullptr));
 	}
 
 
-	for (auto& m_vButton : m_vButtons)
-	{
-		m_vButton->Update(_dT);
-		m_vButton->isMouseHere(_window);
+	//for (auto& m_vButton : m_vButtons)
+	//{
+	//	m_vButton->Update(_dT);
+	//	m_vButton->isMouseHere(_window);
 
 
 
-		if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Start Button
-		{
-			if (m_canStart && m_numPlayers > 1)
-			{
-				sceneManager::SetScene(new gameScene(m_vPlayers));
-			}
-			else
-			{
-				sceneManager::SetScene(new gameScene(nullptr));
-			}
-		}
-		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Back to Main Menu Button
-		{
-			sceneManager::SetScene(new menuScene());
-		}
-	}
+	//	if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Start Button
+	//	{
+	//		if (m_canStart && m_numPlayers > 1)
+	//		{
+	//			sceneManager::SetScene(new gameScene(m_vPlayers));
+	//		}
+	//		else
+	//		{
+	//			sceneManager::SetScene(new gameScene(nullptr));
+	//		}
+	//	}
+	//	else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Back to Main Menu Button
+	//	{
+	//		sceneManager::SetScene(new menuScene());
+	//	}
+	//}
 	
 		
 }
@@ -282,6 +288,11 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 {
+	for (int i = 0; i < 4; i++)
+	{
+		m_playerStatus[i].Draw(_window);
+	}
+
 	m_startPos->Draw(_window);
 	for (auto i : *m_vPlayers)
 	{
@@ -289,10 +300,6 @@ void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 	}
 
 
-	for (int i = 0; i < 4; i++)
-	{
-		m_playerStatus[i].Draw(_window);
-	}
 }
 
 /***********************

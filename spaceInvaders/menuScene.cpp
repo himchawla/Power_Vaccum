@@ -87,7 +87,7 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	audioManager::GetInstance().SetMusic("GameMusic.wav");
+	audioManager::GetInstance().SetMusic("MenuMusic.wav");
 	audioManager::GetInstance().GetMusic()->play();
 
 	// Create Buttons

@@ -108,6 +108,8 @@ player::player(int _player)
 ********************/
 void player::death()
 {
+	audioManager::GetInstance().PlaySound("RoombaDeath");
+
 	std::vector<player*>::iterator it = m_vPlayers->begin();
 	while (it != m_vPlayers->end())
 	{
@@ -177,12 +179,10 @@ void player::LobbyUpdate(float _dT)
 	if(abs(transform.m_Position.x - m_startPos->transform.m_Position.x) < m_startPos->GetSprite()->getLocalBounds().width/2 && abs(transform.m_Position.y - m_startPos->transform.m_Position.y) < m_startPos->GetSprite()->getLocalBounds().height/2)
 	{
 			m_ready = true;
-			std::cout << "Player is ready";
 	}
 	else
 	{
 		m_ready = false;
-		std::cout << "Player is not ready";
 	}
 }
 
@@ -220,12 +220,19 @@ void player::Update(float _dT)
 			m_playerColor.b / 2.0f));
 	}
 
-	if (m_bNitroEnabled && !m_bPrevNitroState)
+	if (m_bNitroEnabled)
 	{
-		m_bPrevNitroState = true;
-
+		if (!m_bPrevNitroState && m_InputHandler->FaceButtonPressed())
+		{
+			m_bPrevNitroState = true;
+			audioManager::GetInstance().PlaySound("NitroStart");
+		}
+		else if(m_bPrevNitroState && !m_InputHandler->FaceButtonPressed())
+		{
+			m_bPrevNitroState = false;
+			audioManager::GetInstance().PlaySound("NitroEnd");
+		}
 	}
-
 
 	if (m_nitroBar != nullptr)
 	{
@@ -493,6 +500,8 @@ void player::BatteryCollision()
 		float collSpeed = Magnitude((*it)->transform.m_Velocity);
 		if (Distance <= MinDistance)
 		{
+			audioManager::GetInstance().PlaySound("BatteryPickup");
+
 			m_abilityTimer = (*it)->GetAbilityTimer();
 			m_ability = (*it)->m_ability;
 			delete (*it);
