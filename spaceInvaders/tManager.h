@@ -53,7 +53,9 @@ private:
 	float m_fOffset = 75;
 	int m_iVerticalTiles = 17;
 	int m_iHorizontal = 8;
-	int m_iTile = 0;
+	int m_iTile = 0; // Tiles Selected to Fall
+	int m_iTile1 = 0; // Tiles Selected to Fall
+	int m_iTile2 = 0; // Tiles Selected to Fall
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;
@@ -63,6 +65,7 @@ private:
 	const float m_cfFallDefault = 5.5f; // Default Time to fal
 	float m_fMaxFallTimer = 1.5f; // Minimum Time to Fall
 	int m_iTimesFallen = 0; // How Many Tiles have fallen.
+
 
 	// Shaking Animation.
 	float m_fShakeTimer = 0.0f;
