@@ -91,13 +91,30 @@ void tManager::DropTiles(float _dT)
 		}
 
 		m_iTile = rand() % 136;
+		m_iTile1 = rand() % 136;
+		m_iTile2 = rand() % 136;
 
-		while (m_vTilesList[m_iTile]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f))
+		while (m_vTilesList[m_iTile]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f) && 
+			m_iTile1 != m_iTile && m_iTile != m_iTile2)
 		{
 			m_iTile = rand() % 136;
 		}
 
+		while (m_vTilesList[m_iTile1]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f) &&
+			m_iTile1 != m_iTile && m_iTile1 != m_iTile2)
+		{
+			m_iTile1 = rand() % 136;
+		}
+
+		while (m_vTilesList[m_iTile2]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f) &&
+			m_iTile1 != m_iTile2 && m_iTile != m_iTile2)
+		{
+			m_iTile2 = rand() % 136;
+		}
+
 		m_vTilesList[m_iTile]->GetRect()->setFillColor(sf::Color::Red);
+		m_vTilesList[m_iTile1]->GetRect()->setFillColor(sf::Color::Red);
+		m_vTilesList[m_iTile2]->GetRect()->setFillColor(sf::Color::Red);
 		m_bFallAnimation = true;
 
 
@@ -116,10 +133,14 @@ void tManager::DropTiles(float _dT)
 		if (m_bLeft == true)
 		{
 			m_vTilesList[m_iTile]->GetRect()->move(-30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile1]->GetRect()->move(-30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile2]->GetRect()->move(-30.0f * _dT, 0.0f);
 		}
 		else
 		{
 			m_vTilesList[m_iTile]->GetRect()->move(30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile1]->GetRect()->move(30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile2]->GetRect()->move(30.0f * _dT, 0.0f);
 		}
 
 		if (m_iInterval >= 20)
@@ -129,6 +150,9 @@ void tManager::DropTiles(float _dT)
 			m_fShakeTimer = 0;
 			m_iInterval = 0;
 			RemoveTile(m_iTile);
+			RemoveTile(m_iTile1);
+			RemoveTile(m_iTile2);
+
 
 		}
 		

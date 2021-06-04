@@ -53,7 +53,9 @@ private:
 	float m_fOffset = 75;
 	int m_iVerticalTiles = 17;
 	int m_iHorizontal = 8;
-	int m_iTile = 0;
+	int m_iTile = 0; // Tiles Selected to Fall
+	int m_iTile1 = 0; // Tiles Selected to Fall
+	int m_iTile2 = 0; // Tiles Selected to Fall
 
 	// Independent Tile Manager Fall Timer
 	float m_fFallTimer = 0.0f;
