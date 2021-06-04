@@ -36,7 +36,7 @@ public:
 	bool GetControllerButton(int _button);
 
 	bool GetKeyboardButton(int _button);
-
+	bool FaceButtonPressed();
 	void SetUsingKeyboard(bool _isUsing);
 
 	static void NormalizeClamp(sf::Vector2f& _vec);
@@ -45,6 +45,7 @@ public:
 	static sf::Vector2f GetMovementVector(int _player);
 	static sf::Vector2i GetDPAD(int _player);
 	static bool GetControllerButton(int _button, int _player);
+	static bool FaceButtonPressed(int _player);
 	static bool GetKeyboardButton(int _button, int _player);
 	static void SetUsingKeyboard(int _player, bool _isUsing);
 private: 

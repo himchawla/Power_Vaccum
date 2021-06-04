@@ -34,7 +34,7 @@ public:
 	virtual void MainLoop(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 private:
-
+	gameObject *m_startPos;
 	gameObject m_playerStatus[4];
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);

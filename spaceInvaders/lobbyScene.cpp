@@ -24,6 +24,9 @@
 
 lobbyScene::lobbyScene()
 {
+	m_startPos = new gameObject();
+	m_startPos->SetSpriteFromFile("Assets/ReadyUpZone.png", sf::Vector2<float>(512.0f, 512.0f));
+	m_startPos->transform.m_Position = sf::Vector2f(960.0f, 540.0f);
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 
@@ -91,24 +94,13 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setPosition(0, 0);
 
 	// Create Buttons
-	for (int i = 0; i < 2; i++)
-	{
+	
 		
-		if (i == 0)
-		{
-			m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i, "Assets/Start"));
-		}
-		else if (i == 1)
-		{
-			m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i, "Assets/MainMenu"));
-			m_vButtons[i]->setButtonText("Main Menu", 45);
-		}
-		else
-		{
-			m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i, ""));
-		}
-	}
+	m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * 1, 1, "Assets/MainMenu"));
+	m_vButtons[0]->setButtonText("Main Menu", 45);
+		
 }
+
 
 /***********************
 * MainLoop: Loop which calls update and render functions.
@@ -142,10 +134,7 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	for(int i = 0; i < 32; i++)
-	{
-		inputManager::GetControllerButton(i, 0);
-	}
+	m_startPos->Update(_dT);
 	for(auto& _button:m_vButtons)
 	{
 		_button->Update(_dT);
@@ -154,7 +143,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	for (int i = 0; i < 4; i++)
 	{
 		m_playerStatus[i].Update(_dT);
-		if (inputManager::GetControllerButton(3, i) && !m_hasJoined[i])
+		if (inputManager::FaceButtonPressed(i) && !m_hasJoined[i])
 		{
 			m_numPlayers++;
 			if (m_numPlayers > 1 && !m_canStart)
@@ -164,7 +153,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 			m_hasJoined[i] = true;
 			std::cout << "Player " << i << " has joined the game";
 			player* newPlayer = new player(i);
-
+			newPlayer->SetStartPos(m_startPos);
 			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");
 			m_playerStatus[m_numPlayers - 1].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
 
@@ -186,7 +175,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				break;
 			}
 			
-			reinterpret_cast<gameObject*>(newPlayer)->Update(_dT);
+			newPlayer->gameObject::Update(_dT);
 
 			newPlayer->SetPlayerVector(m_vPlayers);
 			m_vPlayers->push_back(newPlayer);
@@ -201,6 +190,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	
 	for (auto i : *m_vPlayers)
 	{
+		i->LobbyUpdate(_dT);
 		i->Update(_dT);
 	}
 
@@ -292,10 +282,12 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 {
+	m_startPos->Draw(_window);
 	for (auto i : *m_vPlayers)
 	{
 		i->Draw(_window);
 	}
+
 
 	for (int i = 0; i < 4; i++)
 	{
