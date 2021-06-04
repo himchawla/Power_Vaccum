@@ -142,9 +142,9 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	for(int i =0;i<32;i++)
+	for(int i = 0; i < 32; i++)
 	{
-		inputManager::GetControllerButton(i, i);
+		inputManager::GetControllerButton(i, 0);
 	}
 	for(auto& _button:m_vButtons)
 	{
