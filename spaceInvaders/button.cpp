@@ -1,7 +1,7 @@
 #include "button.h"
 
 
-button::button()
+button::button():uiImage(sf::Vector2f(0,0), "", false)
 {
 	if (!m_arial.loadFromFile("Assets/arial.ttf"))
 	{
@@ -21,12 +21,7 @@ button::button()
 	
 }
 
-
-
-
-
-// Weight is how we determine which button is associated with what.
-button::button(float x_pos, float y_pos, int _weight)
+button::button(float x_pos, float y_pos, int _weight, std::string _path):uiImage(sf::Vector2f(x_pos, y_pos), _path + ".png", false)
 {
 	if (!m_arial.loadFromFile("Assets/arial.ttf"))
 	{
@@ -51,7 +46,11 @@ button::button(float x_pos, float y_pos, int _weight)
 	m_TempRect->setPosition(x_pos, y_pos);
 	m_TempRect->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
 	m_iWeight = _weight;
+
 }
+
+
+
 
 
 button::~button()
@@ -75,11 +74,6 @@ button::~button()
 	}
 }
 
-void button::Update(float _dT)
-{
-	if(m_buttonSprite != nullptr)
-		m_buttonSprite->Update(_dT);
-}
 
 void button::isMouseHere(sf::RenderWindow& window)
 {
@@ -102,27 +96,25 @@ void button::isMouseHere(sf::RenderWindow& window)
 		(fMouseY < fButtonHeightY && fMouseY > fButtonPosY))
 	{
 		m_bIsHovering = true;
-		m_TempRect->setFillColor(sf::Color::Red);
+		GetSprite()->setColor(sf::Color(128, 128, 128));
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			isSelected(true);
+			GetSprite()->setColor(sf::Color::Green);
 			m_TempRect->setFillColor(sf::Color::Blue);
 		}
 		
 		else if (m_bIsSelected == true)
 		{
-			
-			m_TempRect->setFillColor(sf::Color::Blue);
+			GetSprite()->setColor(sf::Color::Green);
 			m_bIsClicked = true;
-
 		}
 	}
 	else
 	{
 		m_bIsHovering = false;
 		isSelected(false);
-		m_TempRect->setFillColor(sf::Color::White);
+		GetSprite()->setColor(sf::Color::White);
 	}
 
 
@@ -161,7 +153,8 @@ bool button::isHovering()
 
 void button::SetColor(const sf::Color& _color)
 {
-	m_TempRect->setFillColor(_color);
+	GetSprite()->setColor(_color);
+
 }
 
 sf::RectangleShape* button::GetRect()

@@ -29,7 +29,7 @@ menuScene::menuScene()
 	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
-	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Menu/TempLogo.png", false);
+	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Start.png", false);
 	m_delayTimer = new timer(0.3f, 0.0f);
 	m_bigDelayTimer = new timer(1.0f, 0.0f);
 }
@@ -93,16 +93,10 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	// Create Buttons
 	for (int i = 0; i < 2; i++)
 	{
-		m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i));
-		if (i == 0)
-		{
-			m_vButtons[i]->AssignImage("Assets/Start.png");
-			m_vButtons[i]->setButtonText("Start", 50);
-		}
-		else if (i == 1)
-		{
-			m_vButtons[i]->setButtonText("Quit", 50);
-		}
+		if(i == 0)
+			m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i, "Assets/Start"));
+		else if(i == 1)
+			m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i, "Assets/Quit"));
 	}
 
 
@@ -204,9 +198,9 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 	// Draw UI elements
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
-		_window.draw(*m_vButtons[i]->GetRect());
-		_window.draw(*m_vButtons[i]->GetButtonText());
-		
+		//_window.draw(*m_vButtons[i]->GetRect());
+		//_window.draw(*m_vButtons[i]->GetButtonText());
+		m_vButtons[i]->Draw(_window);
 		/*if (m_vButtons[i]->m_buttonSprite != nullptr)
 			m_vButtons[i]->m_buttonSprite->Draw(_window);*/
 
@@ -235,7 +229,7 @@ void menuScene::SelectionController()
 		{
 			m_vButtons[j]->SetColor(sf::Color::White);
 		}
-		m_vButtons[m_controllerSelection]->SetColor(sf::Color::Red);
+		m_vButtons[m_controllerSelection]->SetColor(sf::Color(128,128,128));
 
 
 
@@ -263,7 +257,7 @@ void menuScene::SelectionController()
 		{
 			if (m_wasPressed[k])
 			{
-				m_vButtons[m_controllerSelection]->SetColor(sf::Color::Blue);
+				m_vButtons[m_controllerSelection]->SetColor(sf::Color::Green);
 				break;;
 			}
 		}

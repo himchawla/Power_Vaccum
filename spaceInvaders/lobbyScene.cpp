@@ -93,15 +93,19 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 	// Create Buttons
 	for (int i = 0; i < 2; i++)
 	{
-		m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i));
+		
 		if (i == 0)
 		{
-			m_vButtons[i]->AssignImage("Assets/Start.png");
-			m_vButtons[i]->setButtonText("Start Game!", 50);
+			m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i, "Assets/Start"));
 		}
 		else if (i == 1)
 		{
+			m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i, "Assets/MainMenu"));
 			m_vButtons[i]->setButtonText("Main Menu", 45);
+		}
+		else
+		{
+			m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i, ""));
 		}
 	}
 }
@@ -130,6 +134,7 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 }
 
 
+
 /***********************
 * Update: Updates objects in the game scene.
 * @author: William de Beer
@@ -137,6 +142,15 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
+	for(int i =0;i<32;i++)
+	{
+		inputManager::GetControllerButton(i, i);
+	}
+	for(auto& _button:m_vButtons)
+	{
+		_button->Update(_dT);
+	}
+	
 	for (int i = 0; i < 4; i++)
 	{
 		m_playerStatus[i].Update(_dT);
@@ -300,12 +314,7 @@ void lobbyScene::DrawUI(sf::RenderWindow& _window)
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
 
-		_window.draw(*m_vButtons[i]->GetRect());
-		_window.draw(*m_vButtons[i]->GetButtonText());
-
-
-		if (m_vButtons[i]->m_buttonSprite = nullptr)
-			m_vButtons[i]->m_buttonSprite->Draw(_window);
-
+		m_vButtons[i]->Draw(_window);
+		
 	}
 }
