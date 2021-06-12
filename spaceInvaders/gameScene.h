@@ -51,6 +51,7 @@ private:
 	sf::Sprite* m_sprBackground;
 	tManager* m_tileManager;
 	std::vector<battery*>* m_vBatteries;
+	timer* m_startTimer;
 	timer* m_batterySpawn;
 	int m_numPlayers;
 };

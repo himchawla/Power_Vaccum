@@ -30,6 +30,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 	m_tileManager = new tManager();
 	m_vPlayers = _player;
 	m_batterySpawn = 0;
+	m_startTimer = new timer(3, 0);
 
 	if (m_vPlayers == nullptr)
 	{
@@ -90,6 +91,13 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 
 	
 	}
+
+	// Initialise update to ensure players a place correctly.
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(0);
+	}
+
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 }
@@ -145,6 +153,11 @@ gameScene::~gameScene()
 	{
 		delete m_batterySpawn;
 		m_batterySpawn = 0;
+	}
+	if (m_startTimer != nullptr)
+	{
+		delete m_startTimer;
+		m_startTimer = 0;
 	}
 
 	// Delete background 
@@ -225,44 +238,51 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
-	// Update players
-	for (auto i : *m_vPlayers)
+	if (m_startTimer != nullptr) // Start delay timer.
 	{
-		i->Update(_dT);
-	}
-	if (m_vPlayers->size() == 1)
-	{
-		int winningIndex = m_vPlayers->front()->GetIndex();
-		scoreManager::GetInstance().IncrementScore(winningIndex);
-
-		if (scoreManager::GetInstance().HighestScore() == 3)
+		m_startTimer->Update(_dT);
+		if (m_startTimer->IsFinished())
 		{
-			sceneManager::SetScene(new endScene());
-		}
-		else
-		{
-			//Load End Scene Here
-			sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+			delete m_startTimer;
+			m_startTimer = 0;
 		}
 	}
+	else
+	{
+		// Update players
+		for (auto i : *m_vPlayers)
+		{
+			i->Update(_dT);
+		}
+		if (m_vPlayers->size() == 1)
+		{
+			int winningIndex = m_vPlayers->front()->GetIndex();
+			scoreManager::GetInstance().IncrementScore(winningIndex);
 
-	m_batterySpawn->Update(_dT);
-
-	if (m_batterySpawn->IsFinished()) {
-		SummonBattery();
+			if (scoreManager::GetInstance().HighestScore() == 3)
+			{
+				sceneManager::SetScene(new endScene());
+			}
+			else
+			{
+				//Load End Scene Here
+				sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+			}
+		}
+		// Battery spawning
+		m_batterySpawn->Update(_dT);
+		if (m_batterySpawn->IsFinished()) {
+			SummonBattery();
+		}
 	}
-
-
 	for (auto i : *m_vBatteries)
 	{
 		i->Update(_dT);
 	}
 
-	scoreManager::GetInstance().Update(_dT);
 	m_tileManager->Update(_window, _dT);
 
-	
-
+	scoreManager::GetInstance().Update(_dT);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
