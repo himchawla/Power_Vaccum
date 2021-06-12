@@ -328,6 +328,18 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		p_it->Draw(_window);
 		
 	}
+	
+	// Draw VFX
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawVFX(_window);
+	}
+
+	// Draw resource bars
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawNitroResource(_window);
+	}
 
 	for (auto b_it : *m_vBatteries)
 	{
@@ -346,11 +358,6 @@ void gameScene::DrawUI(sf::RenderWindow& _window)
 {
 	scoreManager::GetInstance().DrawUI(_window);
 
-	// Draw resource bars
-	for (auto p_it : *m_vPlayers)
-	{
-		p_it->DrawNitroResource(_window);
-	}
 }
 
 /***********************

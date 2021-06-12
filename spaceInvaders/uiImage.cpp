@@ -29,10 +29,10 @@ uiImage::uiImage(sf::Vector2f _pos, std::string _texLoc, bool _isBar)
 
 	// Configure sprite
 	GetSprite()->setTexture(*GetTexture());
-	if (!m_bIsBar)
+	//if (!m_bIsBar)
 		GetSprite()->setOrigin((sf::Vector2f)GetTexture()->getSize() / 2.0f);
-	else
-		GetSprite()->setOrigin(0.0f, (float)GetTexture()->getSize().y / 2.0f);
+	/*else
+		GetSprite()->setOrigin(0.0f, (float)GetTexture()->getSize().y / 2.0f);*/
 
 	transform.m_Mass = 0.0f;
 	transform.m_Force = sf::Vector2f(0.0f, 0.0f);
@@ -78,8 +78,8 @@ void uiImage::SetPercentageDrawn(float _percentage)
 
 	int left = 0;
 	int top = 0;
-	int width = (int)(xSize * _percentage / 100.0f);
-	int height = (int)(ySize);
+	int width = (int)(xSize);
+	int height = (int)(ySize * _percentage / 100.0f);
 
 	GetSprite()->setTextureRect(sf::IntRect(
 		left,

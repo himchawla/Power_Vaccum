@@ -47,6 +47,7 @@ public:
 	void DelayedDeathUpdate();
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
+	void DrawVFX(sf::RenderWindow& _window);
 	void DrawNitroResource(sf::RenderWindow& _window);
 
 	int GetIndex() { return m_iPlayerIndex; };
@@ -90,6 +91,8 @@ private:
 	bool m_bPrevNitroState;
 
 	sf::Color m_playerColor;
+	sf::Color m_barColor;
+	sf::Color m_turtleColor;
 
 	// Leaking battery variables
 	bool m_bExphit; // Explosion hit player.
@@ -99,6 +102,9 @@ private:
 	float m_fExpRange = 200.0f;
 	timer* m_DeathTimer;
 	sf::CircleShape m_circleIndicator;
+
+	// Turtle battery
+	uiImage* m_turtleVFX;
 };
 
 #endif
