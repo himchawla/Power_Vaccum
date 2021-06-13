@@ -59,7 +59,9 @@
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="nitroManager.cpp" />
-    <ClCompile Include="text.cpp" />
+    <ClCompile Include="text.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="endScene.h">
@@ -117,7 +119,9 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="nitroManager.h" />
-    <ClInclude Include="text.h" />
+    <ClInclude Include="text.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

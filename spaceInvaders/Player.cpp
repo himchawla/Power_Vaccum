@@ -603,7 +603,7 @@ void player::BatteryImplementation(float _dt)
 		{
 			m_TextureName = Magnetic;
 		}//Magnetic Pull
-		/*for (auto it : *m_vPlayers)
+		for (auto it : *m_vPlayers)
 		{
 			if (it != this)
 			{
@@ -612,7 +612,7 @@ void player::BatteryImplementation(float _dt)
 					it->AddPowerForrce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
 				
 			}
-		}*/
+		}
 	}
 		break;
 	case battery::leaking:

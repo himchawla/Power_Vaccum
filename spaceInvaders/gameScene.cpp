@@ -249,7 +249,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	if (m_startTimer != nullptr) // Start delay timer.
 	{
 		m_startTimer->Update(_dT);
-		if (m_countdownText != nullptr)	m_countdownText->SetString((std::to_string((int)m_startTimer->GetTime())));
+		if (m_countdownText != nullptr)	m_countdownText->SetString((std::to_string((int)m_startTimer->GetTime() + 1)));
 		if (m_startTimer->IsFinished())
 		{
 			delete m_startTimer;
