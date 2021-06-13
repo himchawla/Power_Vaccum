@@ -36,7 +36,7 @@ public:
 	int WinningIndex();
 	sf::Color WinningColor();
 	void ResetScores();
-
+	void GetLastVictor();
 	void GamePositioning();
 	void EndPositioning();
 private:
@@ -49,5 +49,6 @@ private:
 
 	float m_xOffset = 150.0f;
 	float m_yOffset = 100.0f;
+	int m_lastVictor;
 };
 #endif

@@ -32,6 +32,8 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 	m_batterySpawn = 0;
 	m_startTimer = new timer(3, 0);
 
+	m_countdownText = new text(sf::Vector2<float>(960.0f, 520.0f));
+	
 	if (m_vPlayers == nullptr)
 	{
 		m_numPlayers = _numPlayers;
@@ -121,6 +123,12 @@ gameScene::~gameScene()
 	{
 		delete m_tileManager;
 		m_tileManager = 0;
+	}
+
+	if(m_countdownText!= nullptr)
+	{
+		delete m_countdownText;
+		m_countdownText = nullptr;
 	}
 
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
@@ -241,6 +249,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	if (m_startTimer != nullptr) // Start delay timer.
 	{
 		m_startTimer->Update(_dT);
+		if (m_countdownText != nullptr)	m_countdownText->SetString((std::to_string((int)m_startTimer->GetTime())));
 		if (m_startTimer->IsFinished())
 		{
 			delete m_startTimer;
@@ -310,6 +319,7 @@ void gameScene::DrawBackground(sf::RenderWindow& _window)
 void gameScene::DrawObjects(sf::RenderWindow& _window)
 {
 	// Draw objects
+
 	for (auto it : *m_vObjects)
 	{
 		it->Draw(_window);
@@ -334,6 +344,12 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		b_it->Draw(_window);
 	}
 
+	if (m_startTimer != nullptr && !m_startTimer->IsFinished())
+	{
+		text(m_countdownText->GetText()->getPosition() - sf::Vector2f(330.0f, 50.0f),"Game Starting in", "Assets/arial.ttf", 150, scoreManager::GetInstance().WinningColor()).Render(_window);
+		m_countdownText->GetText()->setFillColor(scoreManager::GetInstance().WinningColor());
+		m_countdownText->Render(_window);
+	}
 	
 }
 

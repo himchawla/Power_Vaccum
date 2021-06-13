@@ -23,6 +23,7 @@
 #include "timer.h"
 
 #include"battery.h"
+#include "Text.h"
 
 #include "uiImage.h"
 
@@ -45,6 +46,7 @@ private:
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
 
+	text* m_countdownText;
 	std::vector<player*>* m_vPlayers;
 	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;

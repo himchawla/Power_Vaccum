@@ -91,6 +91,7 @@ void scoreManager::IncrementScore(int _playerIndex)
 	{
 		m_iPlayerScores[_playerIndex]++;
 		m_ScoreUI[_playerIndex]->SetScore(m_iPlayerScores[_playerIndex]);
+		m_lastVictor = _playerIndex;
 	}
 	else
 	{
@@ -148,12 +149,26 @@ int scoreManager::WinningIndex()
 		if (m_iPlayerScores[i] > m_iPlayerScores[winningIndex])
 			winningIndex = i;
 	}
-	return winningIndex;
+	bool flag = false;
+	for(auto it:m_iPlayerScores)
+	{
+		if (it > 0)
+		{
+			flag = true;
+			break;
+		}
+	}
+	if (flag)
+		return winningIndex;
+	else
+		return -1;
 }
 
 sf::Color scoreManager::WinningColor()
 {
-	return m_ScoreUI[WinningIndex()]->GetSprite()->getColor();
+	if(WinningIndex() >= 0)
+		return m_ScoreUI[WinningIndex()]->GetSprite()->getColor();
+	return sf::Color::Black;
 }
 
 /***********************

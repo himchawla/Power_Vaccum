@@ -100,8 +100,9 @@ void button::isMouseHere(sf::RenderWindow& window)
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
+			m_bIsSelected = true;
 			GetSprite()->setColor(sf::Color::Green);
-			m_TempRect->setFillColor(sf::Color::Blue);
+			//m_TempRect->setFillColor(sf::Color::Blue);
 		}
 		
 		else if (m_bIsSelected == true)
