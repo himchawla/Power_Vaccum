@@ -252,7 +252,7 @@ void player::Update(float _dT)
 
 	if (m_bNitroEnabled)
 	{
-		if (!m_bPrevNitroState && m_InputHandler->FaceButtonPressed())
+		if (!m_bPrevNitroState && m_InputHandler->FaceButtonPressed() && m_ability != Turtle)
 		{
 			m_bPrevNitroState = true;
 			audioManager::GetInstance().PlaySound("NitroStart");
