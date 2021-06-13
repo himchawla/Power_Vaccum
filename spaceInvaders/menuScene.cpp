@@ -66,7 +66,7 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	audioManager::GetInstance().GetMusic()->play();
 
 	// Create Buttons
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		m_vButtons.push_back(new button(550 + m_v2Offset.x, 500 + m_v2Offset.y * i, i));
 		if (i == 0)
@@ -75,10 +75,6 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 			m_vButtons[i]->setButtonText("Start", 50);
 		}
 		else if (i == 1)
-		{
-			m_vButtons[i]->setButtonText("Credits", 50);
-		}
-		else if (i == 2)
 		{
 			m_vButtons[i]->setButtonText("Quit", 50);
 		}
@@ -140,11 +136,7 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 		{
 			sceneManager::SetScene(new lobbyScene());
 		}
-		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Credits Button
-		{
-			std::cout << "Display Credits here" << std::endl;
-		}
-		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 2) // Quit Button
+		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Quit Button
 		{
 			exit(0);
 		}
@@ -187,14 +179,11 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 	// Draw UI elements
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
-		if (i != 1)
-		{
-			_window.draw(*m_vButtons[i]->GetRect());
-			_window.draw(*m_vButtons[i]->GetButtonText());
-		}
+		_window.draw(*m_vButtons[i]->GetRect());
+		_window.draw(*m_vButtons[i]->GetButtonText());
 		
-		if (m_vButtons[i]->m_buttonSprite = nullptr)
-			m_vButtons[i]->m_buttonSprite->Draw(_window);
+		/*if (m_vButtons[i]->m_buttonSprite != nullptr)
+			m_vButtons[i]->m_buttonSprite->Draw(_window);*/
 
 	}
 
