@@ -151,7 +151,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				m_canStart = true;
 			}
 			m_hasJoined[i] = true;
-			std::cout << "Player " << i << " has joined the game";
+			//std::cout << "Player " << i << " has joined the game";
 			player* newPlayer = new player(i);
 			newPlayer->SetStartPos(m_startPos);
 			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");

@@ -49,10 +49,36 @@ private:
 	std::vector<tile*> m_vTilesList;
 
 	// Adjusting numbers, made variables to make it easier to track.
-	sf::Vector2f m_v2FirstOffset = sf::Vector2f(300, 200);
+	sf::Vector2f m_v2FirstOffset = sf::Vector2f(375, 200);
 	float m_fOffset = 75;
+
+
+
+
+	// Rectangle Formation
 	int m_iVerticalTiles = 17;
-	int m_iHorizontal = 8;
+	int m_iHorizontal = 9;
+
+	// Circle Formation
+	int m_iShortVertical = 9;
+	int m_iMedVertical = 13;
+	int m_iHighVertical = 17;
+
+	// Star Formation
+	int m_iTopVertical = 7;
+	int m_iConnectVertical = 9;
+	int m_iMiddleVertical = 18;
+	int m_iFeetVertical = 10;
+
+	// Boat Formation
+	int m_iCapVertical = 4;
+	int m_iNestVertical = 14;
+	int m_iHullVertical = 17;
+	int m_iSplitVertical = 13;
+	int m_iEdgeVertical = 7;
+
+
+
 	int m_iTile = 0; // Tiles Selected to Fall
 	int m_iTile1 = 0; // Tiles Selected to Fall
 	int m_iTile2 = 0; // Tiles Selected to Fall
@@ -73,6 +99,14 @@ private:
 	bool m_bLeft = false;
 	int m_iInterval = 0;
 
+	enum eFormShape {
+		DEFAULT = 1,
+		CIRCLE = 2,
+		STAR = 3,
+		BOAT = 4,
+	
+	};
+	eFormShape formShape = eFormShape::DEFAULT;
 	
 
 	bool m_bFallAnimation = false;

@@ -201,7 +201,7 @@ bool inputManager::GetControllerButton(int _button, int _player)
 {
 	if (sf::Joystick::isButtonPressed(_player, _button))
 	{
-		std::cout << "Player " << _player << " pressed button " << _button << "!" << std::endl;
+		//std::cout << "Player " << _player << " pressed button " << _button << "!" << std::endl;
 		return true;
 	}
 	else
