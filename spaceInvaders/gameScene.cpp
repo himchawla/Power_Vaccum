@@ -46,10 +46,10 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 			switch (m_vPlayers->size())
 			{
 			case 0:
-				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 375.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
 				break;
 			case 1:
-				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 375.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
 				break;
 			case 2:
 				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
@@ -72,13 +72,13 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 			switch (numPlayers)
 			{
 			case 1:
-				p_it->transform.m_Position = (sf::Vector2f(420.0f, 375.0f));
+				p_it->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
 				break;
 			case 2:
-				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 375.0f));
+				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
 				break;
 			case 3:
-				p_it->transform.m_Position = (sf::Vector2f(420.0f, 597.0f));
+				p_it->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
 				break;
 			case 4:
 				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));

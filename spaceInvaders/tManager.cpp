@@ -78,47 +78,114 @@ tManager::tManager()
 		{
 			for (int i = 0; i < m_iHorizontal; i++)
 			{
-				if (i == 0)
+				if (i == 0 || i == 8)
+				{
+					for (int j = 0; j < m_iShortVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 4, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i == 1 || i == 2 || i == 6 || i == 7)
+				{
+					for (int j = 0; j < m_iMedVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 2, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else
+				{
+					for (int j = 0; j < m_iHighVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset), m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+			}
+
+			/*for (int i = 0; i < m_iHorizontal; i++)
+			{
+				if (i < 2)
 				{
 
 					for (int j = 0; j < m_iTopVertical; j++)
 					{
-						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 5, m_v2FirstOffset.y + (i * m_fOffset)));
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 6, m_v2FirstOffset.y + (i * m_fOffset)));
 					}
 
 				}
-				else if (i == 1)
+				else if (i == 2)
 				{
 					for (int j = 0; j < m_iConnectVertical; j++)
 					{
 						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 4, m_v2FirstOffset.y + (i * m_fOffset)));
 					}
 				}
-				else if (i >= 2 && i < 6)
+				else if (i == 3)
 				{
-					for (int j = 0; j < m_iMiddleVertical; j++)
+					for (int j = 0; j < m_iPeakVertical; j++)
 					{
-						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) - m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset), m_v2FirstOffset.y + (i * m_fOffset)));
 					}
+				}
+				else if (i == 4)
+				{
+					for (int j = 0; j < m_iFallingActionVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i == 5 || i == 6)
+				{
+					if (i == 5)
+					{
+						for (int j = 0; j < m_iLegConnectVertical; j++)
+						{
+							m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 2, m_v2FirstOffset.y + (i * m_fOffset)));
+						}
+					}
+					else
+					{
+						for (int j = 0; j < m_iLegConnectVertical - 2; j++)
+						{
+							m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 3, m_v2FirstOffset.y + (i * m_fOffset)));
+						}
+					}
+
+					
 				}
 				else
 				{
 					for (int j = 0; j < m_iFeetVertical; j++)
 					{
 
-						if (j < 5)
+						if (i == 7)
 						{
-							m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+							if (j < 5)
+							{
+								m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 2, m_v2FirstOffset.y + (i * m_fOffset)));
+							}
+							else
+							{
+								m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 5, m_v2FirstOffset.y + (i * m_fOffset)));
+							}
 						}
 						else
 						{
-							m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 5, m_v2FirstOffset.y + (i * m_fOffset)));
+							if (j < 5)
+							{
+								m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+							}
+							else
+							{
+								m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 7, m_v2FirstOffset.y + (i * m_fOffset)));
+							}
 						}
+
+						
 
 						
 					}
 				}
-			}
+			}*/
 
 			break;
 		}
