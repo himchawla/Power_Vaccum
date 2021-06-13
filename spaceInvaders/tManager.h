@@ -65,9 +65,11 @@ private:
 	int m_iHighVertical = 17;
 
 	// Star Formation
-	int m_iTopVertical = 7;
+	int m_iTopVertical = 5;
 	int m_iConnectVertical = 9;
-	int m_iMiddleVertical = 18;
+	int m_iPeakVertical = 17;
+	int m_iFallingActionVertical = 15;
+	int m_iLegConnectVertical = 13;
 	int m_iFeetVertical = 10;
 
 	// Boat Formation
