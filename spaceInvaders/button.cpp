@@ -1,7 +1,7 @@
 #include "button.h"
 
 
-button::button()
+button::button():uiImage(sf::Vector2f(0,0), "", false)
 {
 	if (!m_arial.loadFromFile("Assets/arial.ttf"))
 	{
@@ -21,19 +21,14 @@ button::button()
 	
 }
 
-
-
-
-
-// Weight is how we determine which button is associated with what.
-button::button(float x_pos, float y_pos, int _weight)
+button::button(float x_pos, float y_pos, int _weight, std::string _path):uiImage(sf::Vector2f(x_pos, y_pos), _path + ".png", false)
 {
 	if (!m_arial.loadFromFile("Assets/arial.ttf"))
 	{
 		// error...
 	}
 
-	m_buttonText = new sf::Text;
+	m_buttonText = new sf::Text();
 
 	m_buttonText->setFont(m_arial);
 	m_buttonText->setCharacterSize(50);
@@ -42,7 +37,7 @@ button::button(float x_pos, float y_pos, int _weight)
 	m_buttonText->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
 	m_buttonText->setPosition(x_pos + 25, y_pos + 45);
 
-	m_TempRect = new sf::RectangleShape;
+	m_TempRect = new sf::RectangleShape();
 
 	m_TempRect->setSize(sf::Vector2f(m_v2ButtonSize));
 	m_TempRect->setFillColor(sf::Color::White);
@@ -51,24 +46,34 @@ button::button(float x_pos, float y_pos, int _weight)
 	m_TempRect->setPosition(x_pos, y_pos);
 	m_TempRect->setOrigin(m_v2ButtonSize.x * 0.5f, m_v2ButtonSize.y * 0.5f);
 	m_iWeight = _weight;
+
 }
+
+
+
 
 
 button::~button()
 {
-	m_buttonText = nullptr;
-	delete m_buttonText;
+	if (m_buttonText != nullptr)
+	{
+		delete m_buttonText;
+		m_buttonText = nullptr;
+	}
 
-	m_TempRect = nullptr;
-	delete m_TempRect;
+	if (m_TempRect != nullptr)
+	{
+		delete m_TempRect;
+		m_TempRect = nullptr;
+	}
 
+	if (m_buttonSprite != nullptr)
+	{
+		delete m_buttonSprite;
+		m_buttonSprite = nullptr;
+	}
 }
 
-void button::Update(float _dT)
-{
-	if(m_buttonSprite != nullptr)
-		m_buttonSprite->Update(_dT);
-}
 
 void button::isMouseHere(sf::RenderWindow& window)
 {
@@ -91,27 +96,25 @@ void button::isMouseHere(sf::RenderWindow& window)
 		(fMouseY < fButtonHeightY && fMouseY > fButtonPosY))
 	{
 		m_bIsHovering = true;
-		m_TempRect->setFillColor(sf::Color::Red);
+		GetSprite()->setColor(sf::Color(128, 128, 128));
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			isSelected(true);
+			GetSprite()->setColor(sf::Color::Green);
 			m_TempRect->setFillColor(sf::Color::Blue);
 		}
 		
 		else if (m_bIsSelected == true)
 		{
-			
-			m_TempRect->setFillColor(sf::Color::Blue);
+			GetSprite()->setColor(sf::Color::Green);
 			m_bIsClicked = true;
-
 		}
 	}
 	else
 	{
 		m_bIsHovering = false;
 		isSelected(false);
-		m_TempRect->setFillColor(sf::Color::White);
+		GetSprite()->setColor(sf::Color::White);
 	}
 
 
@@ -130,6 +133,11 @@ sf::Text* button::GetButtonText()
 
 void button::AssignImage(std::string _imageLoc)
 {
+	if (m_buttonSprite != nullptr)
+	{
+		delete m_buttonSprite;
+		m_buttonSprite = nullptr;
+	}
 	m_buttonSprite = new uiImage(m_TempRect->getPosition(), _imageLoc, false);
 }
 
@@ -145,7 +153,8 @@ bool button::isHovering()
 
 void button::SetColor(const sf::Color& _color)
 {
-	m_TempRect->setFillColor(_color);
+	GetSprite()->setColor(_color);
+
 }
 
 sf::RectangleShape* button::GetRect()

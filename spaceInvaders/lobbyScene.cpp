@@ -24,6 +24,9 @@
 
 lobbyScene::lobbyScene()
 {
+	m_startPos = new gameObject();
+	m_startPos->SetSpriteFromFile("Assets/ReadyUpZone.png", sf::Vector2<float>(512.0f, 512.0f));
+	m_startPos->transform.m_Position = sf::Vector2f(960.0f, 540.0f);
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 
@@ -38,20 +41,12 @@ lobbyScene::lobbyScene()
 	m_playerStatus[1].transform.m_Position.x = 1715.0f;
 	m_playerStatus[1].transform.m_Position.y = 275.0f;
 
-
 	m_playerStatus[2].transform.m_Position.x = 560.0f;
 	m_playerStatus[2].transform.m_Position.y = 797.0f;
 	m_playerStatus[3].transform.m_Position.x = 1715.0f;
 	m_playerStatus[3].transform.m_Position.y = 797.0f;
 
-	
-
 	m_vPlayers = new std::vector<player*>();
-
-	temp1 = new uiImage(sf::Vector2f(100, 100), "Assets/TempBar.png", true);
-	temp2 = new uiImage(sf::Vector2f(800, 100), "Assets/TempBar.png", true);
-
-	
 }
 
 lobbyScene::~lobbyScene()
@@ -67,12 +62,22 @@ lobbyScene::~lobbyScene()
 		delete m_sprBackground;
 		m_sprBackground = 0;
 	}
-
-	// temp
-	if (temp1 != nullptr)
+	if (m_vPlayers != nullptr)
 	{
-		delete temp1;
-		temp1 = 0;
+		if (m_vPlayers->size() < 1)
+		{
+			delete m_vPlayers;
+			m_vPlayers = 0;
+		}
+	}
+
+	// Delete buttons
+	std::vector<button*>::iterator b_it = m_vButtons.begin();
+	while (b_it != m_vButtons.end())
+	{
+		// Delete vector contents
+		delete* b_it;
+		b_it = m_vButtons.erase((b_it));
 	}
 }
 
@@ -88,28 +93,14 @@ void lobbyScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	// Set up demo images
-	temp1->GetSprite()->setColor(sf::Color::Red);
-	temp1->GetSprite()->setScale(sf::Vector2f(4.0f, 4.0f));
-
-	temp2->GetSprite()->setColor(sf::Color::Blue);
-	temp2->GetSprite()->setScale(sf::Vector2f(-4.0f, 4.0f));
-
 	// Create Buttons
-	for (int i = 0; i < 2; i++)
-	{
-		m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * i, i));
-		if (i == 0)
-		{
-			m_vButtons[i]->AssignImage("Assets/Start.png");
-			m_vButtons[i]->setButtonText("Start Game!", 50);
-		}
-		else if (i == 1)
-		{
-			m_vButtons[i]->setButtonText("Main Menu", 45);
-		}
-	}
+	
+		
+	//m_vButtons.push_back(new button(550 + m_v2Offset.x, 700 + m_v2Offset.y * 1, 1, "Assets/MainMenu"));
+	//m_vButtons[0]->setButtonText("Main Menu", 45);
+		
 }
+
 
 /***********************
 * MainLoop: Loop which calls update and render functions.
@@ -135,6 +126,7 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 }
 
 
+
 /***********************
 * Update: Updates objects in the game scene.
 * @author: William de Beer
@@ -142,16 +134,16 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 {
-	temp1->Update(_dT);
-	temp2->Update(_dT);
-
-
-
-
+	m_startPos->Update(_dT);
+	for(auto& _button:m_vButtons)
+	{
+		_button->Update(_dT);
+	}
+	
 	for (int i = 0; i < 4; i++)
 	{
 		m_playerStatus[i].Update(_dT);
-		if (inputManager::GetControllerButton(3, i) && !m_hasJoined[i])
+		if (inputManager::FaceButtonPressed(i) && !m_hasJoined[i])
 		{
 			m_numPlayers++;
 			if (m_numPlayers > 1 && !m_canStart)
@@ -159,9 +151,9 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				m_canStart = true;
 			}
 			m_hasJoined[i] = true;
-			std::cout << "Player " << i << " has joined the game";
+			//std::cout << "Player " << i << " has joined the game";
 			player* newPlayer = new player(i);
-
+			newPlayer->SetStartPos(m_startPos);
 			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");
 			m_playerStatus[m_numPlayers - 1].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
 
@@ -183,7 +175,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				break;
 			}
 			
-			reinterpret_cast<gameObject*>(newPlayer)->Update(_dT);
+			newPlayer->gameObject::Update(_dT);
 
 			newPlayer->SetPlayerVector(m_vPlayers);
 			m_vPlayers->push_back(newPlayer);
@@ -198,6 +190,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 	
 	for (auto i : *m_vPlayers)
 	{
+		i->LobbyUpdate(_dT);
 		i->Update(_dT);
 	}
 
@@ -236,37 +229,43 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (m_canStart && m_numPlayers > 1)
 	{
+		audioManager::GetInstance().SetMusic("GameMusic.wav");
+		audioManager::GetInstance().GetMusic()->play();
+		audioManager::GetInstance().PlaySound("ButtonPress");
 		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
+		audioManager::GetInstance().SetMusic("GameMusic.wav");
+		audioManager::GetInstance().GetMusic()->play();
+		audioManager::GetInstance().PlaySound("ButtonPress");
 		sceneManager::SetScene(new gameScene(nullptr));
 	}
 
 
-	for (auto& m_vButton : m_vButtons)
-	{
-		m_vButton->Update(_dT);
-		m_vButton->isMouseHere(_window);
+	//for (auto& m_vButton : m_vButtons)
+	//{
+	//	m_vButton->Update(_dT);
+	//	m_vButton->isMouseHere(_window);
 
 
 
-		if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Start Button
-		{
-			if (m_canStart && m_numPlayers > 1)
-			{
-				sceneManager::SetScene(new gameScene(m_vPlayers));
-			}
-			else
-			{
-				sceneManager::SetScene(new gameScene(nullptr));
-			}
-		}
-		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Back to Main Menu Button
-		{
-			sceneManager::SetScene(new menuScene());
-		}
-	}
+	//	if (m_vButton->Clicked() == true && m_vButton->getWeight() == 0) // Start Button
+	//	{
+	//		if (m_canStart && m_numPlayers > 1)
+	//		{
+	//			sceneManager::SetScene(new gameScene(m_vPlayers));
+	//		}
+	//		else
+	//		{
+	//			sceneManager::SetScene(new gameScene(nullptr));
+	//		}
+	//	}
+	//	else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Back to Main Menu Button
+	//	{
+	//		sceneManager::SetScene(new menuScene());
+	//	}
+	//}
 	
 		
 }
@@ -289,15 +288,18 @@ void lobbyScene::DrawBackground(sf::RenderWindow& _window)
 ********************/
 void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 {
+	for (int i = 0; i < 4; i++)
+	{
+		m_playerStatus[i].Draw(_window);
+	}
+
+	m_startPos->Draw(_window);
 	for (auto i : *m_vPlayers)
 	{
 		i->Draw(_window);
 	}
 
-	for (int i = 0; i < 4; i++)
-	{
-		m_playerStatus[i].Draw(_window);
-	}
+
 }
 
 /***********************
@@ -308,19 +310,10 @@ void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 void lobbyScene::DrawUI(sf::RenderWindow& _window)
 {
 	// Draw UI elements
-	_window.draw(*temp1->GetSprite());
-	_window.draw(*temp2->GetSprite());
-
-	// Draw UI elements
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
 
-		_window.draw(*m_vButtons[i]->GetRect());
-		_window.draw(*m_vButtons[i]->GetButtonText());
-
-
-		if (m_vButtons[i]->m_buttonSprite = nullptr)
-			m_vButtons[i]->m_buttonSprite->Draw(_window);
-
+		m_vButtons[i]->Draw(_window);
+		
 	}
 }

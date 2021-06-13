@@ -50,9 +50,13 @@ player::player(int _player)
 	m_abilityTimer = 0.0f;
 
 	m_NitroResource = 100.0f;
-	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/ResourceBar.png", true);
+	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/Players/ResourceBar.png", true);
+	m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.25f, -0.25f));
 	m_bNitroEnabled = true;
+	m_bPrevNitroState = false;
 
+	m_turtleVFX = new uiImage(sf::Vector2f(0, 0), "Assets/Players/TurtleEffect.png", true);
+	m_turtleVFX->GetSprite()->setScale(sf::Vector2f(0.6f, 0.6f));
 
 	sf::Vector2f offset(25.0f, 50.0f);
 
@@ -61,30 +65,37 @@ player::player(int _player)
 	{
 	case 0:
 		m_playerColor = sf::Color::Red;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
+		m_barColor = sf::Color::Red;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
 		break;
 	case 1:
 		m_playerColor = sf::Color::Cyan;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
+		m_barColor = sf::Color::Cyan;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
 		break;
 	case 2:
 		m_playerColor = sf::Color::Green;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
+		m_barColor = sf::Color::Green;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
 		break;
 	case 3:
 		m_playerColor = sf::Color::Yellow;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
+		m_barColor = sf::Color::Yellow;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
 		break;
 	default:
 		break;
 	}
+	m_turtleColor = m_playerColor;
+	m_turtleColor.a = 128.0f;
 
 	GetSprite()->setColor(m_playerColor);
-	m_nitroBar->GetSprite()->setColor(m_playerColor);
+	m_nitroBar->GetSprite()->setColor(m_barColor);
+	m_turtleVFX->GetSprite()->setColor(m_turtleColor);
 
 	// Leaking battery variables
 	m_bExphit = false;
@@ -107,6 +118,8 @@ player::player(int _player)
 ********************/
 void player::death()
 {
+	audioManager::GetInstance().PlaySound("RoombaDeath");
+
 	std::vector<player*>::iterator it = m_vPlayers->begin();
 	while (it != m_vPlayers->end())
 	{
@@ -137,6 +150,12 @@ player::~player()
 		delete m_nitroBar;
 		m_nitroBar = 0;
 	}
+	if (m_turtleVFX != nullptr)
+	{
+		delete m_turtleVFX;
+		m_turtleVFX = 0;
+	}
+	
 }
 
 
@@ -171,6 +190,25 @@ void player::Nitro(sf::Vector2f dir)
 	transform.m_Velocity += dir;
 }
 
+void player::LobbyUpdate(float _dT)
+{
+	if(abs(transform.m_Position.x - m_startPos->transform.m_Position.x) < m_startPos->GetSprite()->getLocalBounds().width/2 && abs(transform.m_Position.y - m_startPos->transform.m_Position.y) < m_startPos->GetSprite()->getLocalBounds().height/2)
+	{
+			m_ready = true;
+	}
+	else
+	{
+		m_ready = false;
+	}
+}
+
+
+void player::SetStartPos(gameObject* _startPos)
+{
+	m_startPos = _startPos;
+}
+
+
 /***********************
 * Update: Updates Player Position.
 * @author: Himanshu Chawla
@@ -187,20 +225,29 @@ void player::Update(float _dT)
 	{
 		m_NitroResource = 100;
 		m_bNitroEnabled = true;
-		m_nitroBar->GetSprite()->setColor(m_playerColor);
+		m_nitroBar->GetSprite()->setColor(m_barColor);
 	}
 	if (m_NitroResource < 5) // If nitro is too low
 	{
 		m_bNitroEnabled = false;
-		m_nitroBar->GetSprite()->setColor(sf::Color(m_playerColor.r / 2.0f,
+		
+		m_nitroBar->GetSprite()->setColor(sf::Color(m_barColor.r / 2.0f,
 			m_playerColor.g / 2.0f,
 			m_playerColor.b / 2.0f));
 	}
 
-	if (m_nitroBar != nullptr)
+	if (m_bNitroEnabled)
 	{
-		m_nitroBar->Update(_dT);
-		m_nitroBar->SetPercentageDrawn(m_NitroResource);
+		if (!m_bPrevNitroState && m_InputHandler->FaceButtonPressed())
+		{
+			m_bPrevNitroState = true;
+			audioManager::GetInstance().PlaySound("NitroStart");
+		}
+		else if(m_bPrevNitroState && !m_InputHandler->FaceButtonPressed())
+		{
+			m_bPrevNitroState = false;
+			audioManager::GetInstance().PlaySound("NitroEnd");
+		}
 	}
 
 	if (Magnitude(m_externVel) < 0.01f)
@@ -224,12 +271,7 @@ void player::Update(float _dT)
 		return;
 	}
 	
-	if (m_InputHandler->GetControllerButton(7) && m_delay < 0.0f)
-	{
-		m_ready = !m_ready;
-		std::cout << "Player is " << m_ready;
-		m_delay = 1.0f;
-	}
+	
 
 	//for (int i = 0; i < 9; i++)
 	//{
@@ -327,7 +369,7 @@ void player::Update(float _dT)
 	{
 		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
 		
-		if (m_InputHandler->GetControllerButton(0) && m_bNitroEnabled)		//checks input of nitro button
+		if (m_InputHandler->FaceButtonPressed() && m_bNitroEnabled)		//checks input of nitro button
 		{
 			std::cout << m_NitroResource << std::endl;		//debug the nitro
 			m_NitroResource -= 66.0f * _dT;					//uses nitro resource
@@ -348,7 +390,20 @@ void player::Update(float _dT)
 	//Update sprite position
 	GetSprite()->setPosition(transform.m_Position);
 	m_circleIndicator.setPosition(transform.m_Position);
-//	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+
+	// Update resource bar visuals.
+	m_nitroBar->transform.m_Position = GetSprite()->getPosition();
+
+	// Update VFX visuals.
+	m_turtleVFX->transform.m_Position = GetSprite()->getPosition();
+	m_turtleVFX->GetSprite()->setRotation(m_turtleVFX->GetSprite()->getRotation() + _dT * 20.0f);
+	m_turtleVFX->Update(_dT);
+
+	if (m_nitroBar != nullptr)
+	{
+		m_nitroBar->Update(_dT);
+		m_nitroBar->SetPercentageDrawn(m_NitroResource);
+	}
 
 	if (m_DeathTimer != nullptr)
 	{
@@ -468,6 +523,8 @@ void player::BatteryCollision()
 		float collSpeed = Magnitude((*it)->transform.m_Velocity);
 		if (Distance <= MinDistance)
 		{
+			audioManager::GetInstance().PlaySound("BatteryPickup");
+
 			m_abilityTimer = (*it)->GetAbilityTimer();
 			m_ability = (*it)->m_ability;
 			delete (*it);
@@ -481,7 +538,7 @@ void player::BatteryCollision()
 	it = m_vBatteries->begin();
 	while (it != m_vBatteries->end())
 	{
-		if (!(*it)->IsEnabled())
+		if (!(*it)->IsEnabled() || (*it)->GetDestroyTimer()->IsFinished())
 		{
 			delete (*it);
 			it = m_vBatteries->erase(it);
@@ -543,12 +600,16 @@ void player::BatteryImplementation(float _dt)
 		break;
 	case battery::leaking:
 	{
-		float alpha = (1.0f - (m_abilityTimer / 5.0f)) * 170.0f;
+		float lerp = m_abilityTimer / 5.0f;
+		float alpha = (1.0f - lerp) * 170.0f;
+		float red = (1.0f - lerp) * 255.0f;
+		float green = lerp * 255.0f;
+
 		if (alpha > 170.0f)
 		{
 			alpha = 170.0f;
 		}
-		m_circleIndicator.setFillColor(sf::Color(255, 170, 0, alpha));
+		m_circleIndicator.setFillColor(sf::Color(red, green, 0, alpha));
 		m_circleIndicator.setOutlineColor(sf::Color(170, 170, 170, alpha));
 		if (m_abilityTimer < 0.0f)
 		{
@@ -587,7 +648,7 @@ void player::LeakingBattery()
 			float distance = Magnitude(transform.m_Position - it->transform.m_Position);
 			if (distance < m_fExpRange)
 			{
-				it->AddForce(((it->transform.m_Position - transform.m_Position) / distance) * 10.0f);
+				it->AddForce(((it->transform.m_Position - transform.m_Position) / distance) * 80.0f);
 				it->m_disableControl = true;
 				it->m_disableTimer = 0.8f;
 				it->m_bExphit = true;
@@ -639,6 +700,14 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 	}
 }
 
+void player::DrawVFX(sf::RenderWindow& _window)
+{
+	if (m_ability == battery::eAbility::turtle)
+	{
+		m_turtleVFX->Draw(_window);
+	}
+}
+
 /***********************
 * DrawNitroResource: Draw nitro resource bar.
 * @author: William de Beer
@@ -646,6 +715,6 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 ********************/
 void player::DrawNitroResource(sf::RenderWindow& _window)
 {
-	if (m_nitroBar != nullptr)
+	if (m_nitroBar != nullptr && !m_bWillDie && !m_bExphit)
 		m_nitroBar->Draw(_window);
 }

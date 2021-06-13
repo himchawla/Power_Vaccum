@@ -23,15 +23,31 @@
 
 menuScene::menuScene()
 {
+	for (int i = 0; i < 4; i++)
+	{
+		m_wasPressed[i] = false;
+	}
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
-	m_imgLogo = new uiImage(sf::Vector2f(960, 200), "Assets/Menu/TempLogo.png", false);
+	m_imgLogo = new uiImage(sf::Vector2f(400, 200), "Assets/Menu/Logo.png", false);
 	m_delayTimer = new timer(0.3f, 0.0f);
 	m_bigDelayTimer = new timer(1.0f, 0.0f);
 }
 
 menuScene::~menuScene()
 {
+	// Delete timers
+	if (m_delayTimer != nullptr)
+	{
+		delete m_delayTimer;
+		m_delayTimer = 0;
+	}
+	if (m_bigDelayTimer != nullptr)
+	{
+		delete m_bigDelayTimer;
+		m_bigDelayTimer = 0;
+	}
+
 	// Delete background 
 	if (m_texBackground != nullptr)
 	{
@@ -48,6 +64,15 @@ menuScene::~menuScene()
 		delete m_imgLogo;
 		m_imgLogo = 0;
 	}
+
+	// Delete buttons
+	std::vector<button*>::iterator b_it = m_vButtons.begin();
+	while (b_it != m_vButtons.end())
+	{
+		// Delete vector contents
+		delete* b_it;
+		b_it = m_vButtons.erase((b_it));
+	}
 }
 
 /***********************
@@ -62,22 +87,16 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	audioManager::GetInstance().SetMusic("GameMusic.wav");
+	audioManager::GetInstance().SetMusic("MenuMusic.wav");
 	audioManager::GetInstance().GetMusic()->play();
 
 	// Create Buttons
 	for (int i = 0; i < 2; i++)
 	{
-		m_vButtons.push_back(new button(550 + m_v2Offset.x, 500 + m_v2Offset.y * i, i));
-		if (i == 0)
-		{
-			m_vButtons[i]->AssignImage("Assets/Start.png");
-			m_vButtons[i]->setButtonText("Start", 50);
-		}
-		else if (i == 1)
-		{
-			m_vButtons[i]->setButtonText("Quit", 50);
-		}
+		if(i == 0)
+			m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i, "Assets/Start"));
+		else if(i == 1)
+			m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i, "Assets/Quit"));
 	}
 
 
@@ -138,7 +157,7 @@ void menuScene::Update(sf::RenderWindow& _window, float _dT)
 		}
 		else if (m_vButton->Clicked() == true && m_vButton->getWeight() == 1) // Quit Button
 		{
-			exit(0);
+			_window.close();
 		}
 	}
 
@@ -179,9 +198,9 @@ void menuScene::DrawUI(sf::RenderWindow& _window)
 	// Draw UI elements
 	for (int i = 0; i < m_vButtons.size(); i++)
 	{
-		_window.draw(*m_vButtons[i]->GetRect());
-		_window.draw(*m_vButtons[i]->GetButtonText());
-		
+		//_window.draw(*m_vButtons[i]->GetRect());
+		//_window.draw(*m_vButtons[i]->GetButtonText());
+		m_vButtons[i]->Draw(_window);
 		/*if (m_vButtons[i]->m_buttonSprite != nullptr)
 			m_vButtons[i]->m_buttonSprite->Draw(_window);*/
 
@@ -210,12 +229,13 @@ void menuScene::SelectionController()
 		{
 			m_vButtons[j]->SetColor(sf::Color::White);
 		}
-		m_vButtons[m_controllerSelection]->SetColor(sf::Color::Red);
+		m_vButtons[m_controllerSelection]->SetColor(sf::Color(128,128,128));
 
 
 
 		if (result.y == 1 && m_controllerSelection > 0 && m_delayTimer->IsFinished())
 		{
+			audioManager::GetInstance().PlaySound("ButtonChange");
 			for (int k = 0; k < 4; k++)	m_wasPressed[k] = false;
 			m_controllerSelection--;
 			m_delayTimer->ResetTimer();
@@ -223,13 +243,14 @@ void menuScene::SelectionController()
 		}
 		if (result.y == -1 && m_controllerSelection < m_vButtons.size() - 1 && m_delayTimer->IsFinished())
 		{
+			audioManager::GetInstance().PlaySound("ButtonChange");
 			for (int k = 0; k < 4; k++)	m_wasPressed[k] = false;
 			m_controllerSelection++;
 			m_delayTimer->ResetTimer();
 			m_bigDelayTimer->ResetTimer();
 		}
 
-		if(inputManager::GetControllerButton(0, i) && m_bigDelayTimer->IsFinished())
+		if(inputManager::FaceButtonPressed(i) && m_bigDelayTimer->IsFinished())
 		{
 			m_wasPressed[i] = true;
 			
@@ -238,15 +259,16 @@ void menuScene::SelectionController()
 		{
 			if (m_wasPressed[k])
 			{
-				m_vButtons[m_controllerSelection]->SetColor(sf::Color::Blue);
+				m_vButtons[m_controllerSelection]->SetColor(sf::Color::Green);
 				break;;
 			}
 		}
 
 		
-		if(m_wasPressed[i] && !inputManager::GetControllerButton(0, i))
+		if(m_wasPressed[i] && !inputManager::FaceButtonPressed(i))
 		{
 			m_vButtons[m_controllerSelection]->Clicked(true);
+			audioManager::GetInstance().PlaySound("ButtonPress");
 		}
 		
 	}

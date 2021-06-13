@@ -29,6 +29,8 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 	m_vBatteries = new std::vector<battery*>();
 	m_tileManager = new tManager();
 	m_vPlayers = _player;
+	m_batterySpawn = 0;
+	m_startTimer = new timer(3, 0);
 
 	if (m_vPlayers == nullptr)
 	{
@@ -44,13 +46,13 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 			switch (m_vPlayers->size())
 			{
 			case 0:
-				newPlayer->transform.m_Position = (sf::Vector2f(420.0f, 375.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 375.0f));
 				break;
 			case 1:
 				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 375.0f));
 				break;
 			case 2:
-				newPlayer->transform.m_Position = (sf::Vector2f(420.0f, 597.0f));
+				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
 				break;
 			case 3:
 				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
@@ -89,6 +91,13 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 
 	
 	}
+
+	// Initialise update to ensure players a place correctly.
+	for (auto i : *m_vPlayers)
+	{
+		i->Update(0);
+	}
+
 	m_texBackground = new sf::Texture();
 	m_sprBackground = new sf::Sprite();
 }
@@ -108,8 +117,11 @@ gameScene::~gameScene()
 		m_vPlayers = 0;
 	}
 
-	delete m_tileManager;
-	m_tileManager = 0;
+	if (m_tileManager != nullptr) // Delete tile manager
+	{
+		delete m_tileManager;
+		m_tileManager = 0;
+	}
 
 	std::vector<gameObject*>::iterator it = m_vObjects->begin();
 	while (it != m_vObjects->end())
@@ -124,6 +136,29 @@ gameScene::~gameScene()
 		m_vObjects = 0;
 	}
 
+	std::vector<battery*>::iterator b_it = m_vBatteries->begin();
+	while (b_it != m_vBatteries->end())
+	{
+		// Delete vector contents
+		delete* b_it;
+		b_it = m_vBatteries->erase((b_it));
+	}
+	if (m_vBatteries != nullptr) // Delete vector
+	{
+		delete m_vBatteries;
+		m_vBatteries = 0;
+	}
+
+	if (m_batterySpawn != nullptr)
+	{
+		delete m_batterySpawn;
+		m_batterySpawn = 0;
+	}
+	if (m_startTimer != nullptr)
+	{
+		delete m_startTimer;
+		m_startTimer = 0;
+	}
 
 	// Delete background 
 	if (m_texBackground != nullptr)
@@ -203,44 +238,51 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		i->Update(_dT);
 	}
 
-	// Update players
-	for (auto i : *m_vPlayers)
+	if (m_startTimer != nullptr) // Start delay timer.
 	{
-		i->Update(_dT);
-	}
-	if (m_vPlayers->size() == 1)
-	{
-		int winningIndex = m_vPlayers->front()->GetIndex();
-		scoreManager::GetInstance().IncrementScore(winningIndex);
-
-		if (scoreManager::GetInstance().HighestScore() == 3)
+		m_startTimer->Update(_dT);
+		if (m_startTimer->IsFinished())
 		{
-			sceneManager::SetScene(new endScene());
-		}
-		else
-		{
-			//Load End Scene Here
-			sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+			delete m_startTimer;
+			m_startTimer = 0;
 		}
 	}
+	else
+	{
+		// Update players
+		for (auto i : *m_vPlayers)
+		{
+			i->Update(_dT);
+		}
+		if (m_vPlayers->size() == 1)
+		{
+			int winningIndex = m_vPlayers->front()->GetIndex();
+			scoreManager::GetInstance().IncrementScore(winningIndex);
 
-	m_batterySpawn->Update(_dT);
-
-	if (m_batterySpawn->IsFinished()) {
-		SummonBattery();
+			if (scoreManager::GetInstance().HighestScore() == 3)
+			{
+				sceneManager::SetScene(new endScene());
+			}
+			else
+			{
+				//Load End Scene Here
+				sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+			}
+		}
+		// Battery spawning
+		m_batterySpawn->Update(_dT);
+		if (m_batterySpawn->IsFinished()) {
+			SummonBattery();
+		}
 	}
-
-
 	for (auto i : *m_vBatteries)
 	{
 		i->Update(_dT);
 	}
 
-	scoreManager::GetInstance().Update(_dT);
 	m_tileManager->Update(_window, _dT);
 
-	
-
+	scoreManager::GetInstance().Update(_dT);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
@@ -286,6 +328,18 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 		p_it->Draw(_window);
 		
 	}
+	
+	// Draw VFX
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawVFX(_window);
+	}
+
+	// Draw resource bars
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawNitroResource(_window);
+	}
 
 	for (auto b_it : *m_vBatteries)
 	{
@@ -304,11 +358,6 @@ void gameScene::DrawUI(sf::RenderWindow& _window)
 {
 	scoreManager::GetInstance().DrawUI(_window);
 
-	// Draw resource bars
-	for (auto p_it : *m_vPlayers)
-	{
-		p_it->DrawNitroResource(_window);
-	}
 }
 
 /***********************
@@ -327,9 +376,27 @@ void gameScene::SummonBattery()
 
 		if (m_tileManager->GetTile(randomTile)->GetBattery() == nullptr)
 		{
-			battery* bat = new battery(rand() % 3 + 1,
-				m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
 
+			battery* bat = nullptr;
+
+			int ch = rand() % 3;
+			if(ch == 0)
+			{
+				bat = new battery(1,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+			}
+			else if(ch == 1)
+			{
+				bat = new battery(2,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			}
+			else if(ch == 2)
+			{
+				bat = new battery(3,
+					m_tileManager->GetTile(randomTile)->GetRect()->getPosition());
+
+			}
 			m_tileManager->GetTile(randomTile)->SetBattery(bat);
 			m_vBatteries->push_back(bat);
 		}
@@ -338,5 +405,5 @@ void gameScene::SummonBattery()
 	{
 		delete m_batterySpawn;
 	}
-	m_batterySpawn = new timer(0.0f, 10.0f);
+	m_batterySpawn = new timer(0.0f, 6.0f);
 }

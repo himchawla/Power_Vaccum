@@ -33,6 +33,7 @@ public:
 	void AddForce(sf::Vector2f _dir);
 	void AddPowerForrce(sf::Vector2f dir);
 	void Nitro(sf::Vector2f dir);
+	void LobbyUpdate(float _dT);
 	void Update(float _dT);
 	void SetPlayerVector(std::vector<player*>* _player);
 	void SetBatteryVector(std::vector<battery*>* _player);
@@ -46,13 +47,13 @@ public:
 	void DelayedDeathUpdate();
 	bool GetWillDie() { return m_bWillDie; };
 	void DrawCircleIndicator(sf::RenderWindow& _window);
+	void DrawVFX(sf::RenderWindow& _window);
 	void DrawNitroResource(sf::RenderWindow& _window);
 
 	int GetIndex() { return m_iPlayerIndex; };
 
 	battery::eAbility m_ability;
-
-
+	void SetStartPos(gameObject* _startPos);
 private:
 	enum eTextureName
 	{
@@ -60,6 +61,7 @@ private:
 		Turtle,
 		None
 	};
+	gameObject* m_startPos;
 	eTextureName m_TextureName = None;
 
 	tManager* m_tileManager;
@@ -86,8 +88,11 @@ private:
 	float m_NitroResource;
 	uiImage* m_nitroBar;
 	bool m_bNitroEnabled;
+	bool m_bPrevNitroState;
 
 	sf::Color m_playerColor;
+	sf::Color m_barColor;
+	sf::Color m_turtleColor;
 
 	// Leaking battery variables
 	bool m_bExphit; // Explosion hit player.
@@ -97,6 +102,9 @@ private:
 	float m_fExpRange = 200.0f;
 	timer* m_DeathTimer;
 	sf::CircleShape m_circleIndicator;
+
+	// Turtle battery
+	uiImage* m_turtleVFX;
 };
 
 #endif

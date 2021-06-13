@@ -23,17 +23,169 @@
 
 tManager::tManager()
 {
-	for (int i = 0; i < m_iVerticalTiles; i++) // Vertical
+	int iTemp = rand() % 4 + 1;
+	std::cout << iTemp << std::endl;
+
+	switch (iTemp)
 	{
-		for (int j = 0; j < m_iHorizontal; j++) // Horizontal
+		case  eFormShape::DEFAULT:
 		{
 
-			m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset)));
+			for (int i = 0; i < m_iVerticalTiles; i++) // Vertical
+			{
+				for (int j = 0; j < m_iHorizontal; j++) // Horizontal
+				{
+					m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset)));
+				}
+			}
+			break;
+		}
 
-			
+		case  eFormShape::CIRCLE:
+		{
+			for (int i = 0; i < m_iHorizontal; i++)
+			{
+				if (i == 0 || i == 8)
+				{
+					for (int j = 0; j < m_iShortVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 4, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i == 1 || i == 2 || i == 6 || i == 7)
+				{
+					for (int j = 0; j < m_iMedVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 2, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else
+				{
+					for (int j = 0; j < m_iHighVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset), m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+			}
 
+
+
+
+			break;
+		}
+
+		case  eFormShape::STAR:
+		{
+			for (int i = 0; i < m_iHorizontal; i++)
+			{
+				if (i == 0)
+				{
+
+					for (int j = 0; j < m_iTopVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 5, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+
+				}
+				else if (i == 1)
+				{
+					for (int j = 0; j < m_iConnectVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 4, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i >= 2 && i < 6)
+				{
+					for (int j = 0; j < m_iMiddleVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) - m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else
+				{
+					for (int j = 0; j < m_iFeetVertical; j++)
+					{
+
+						if (j < 5)
+						{
+							m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+						}
+						else
+						{
+							m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 5, m_v2FirstOffset.y + (i * m_fOffset)));
+						}
+
+						
+					}
+				}
+			}
+
+			break;
+		}
+
+		case  eFormShape::BOAT:
+		{
+			for (int i = 0; i < m_iHorizontal; i++)
+			{
+				if (i == 0)
+				{
+
+					for (int j = 0; j < m_iCapVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 6, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+
+				}
+				else if (i == 1)
+				{
+					for (int j = 0; j < m_iNestVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 2, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i >= 2 && i < 5)
+				{
+					for (int j = 0; j < m_iHullVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset), m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i == 5)
+				{
+					for (int j = 0; j < m_iNestVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else if (i == 6)
+				{
+					for (int j = 0; j < m_iSplitVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 1, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+				else
+				{
+					for (int j = 0; j < m_iEdgeVertical; j++)
+					{
+						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 3, m_v2FirstOffset.y + (i * m_fOffset)));
+					}
+				}
+			}
+
+			break;
+		}
+
+		default:
+		{
+			// Do NOthing
+
+			break;
 		}
 	}
+
+
+	
 }
 
 bool tManager::isOnTile(sf::Vector2f _position, float _radius)
@@ -55,6 +207,13 @@ bool tManager::isOnTile(sf::Vector2f _position, float _radius)
 
 tManager::~tManager()
 {
+	std::vector<tile*>::iterator t_it = m_vTilesList.begin();
+	while (t_it != m_vTilesList.end())
+	{
+		// Delete vector contents
+		delete* t_it;
+		t_it = m_vTilesList.erase((t_it));
+	}
 }
 
 void tManager::Update(sf::RenderWindow& _window, float _dT)
@@ -87,14 +246,31 @@ void tManager::DropTiles(float _dT)
 			m_fTimeToFall = m_fMaxFallTimer;
 		}
 
-		m_iTile = rand() % 136;
+		m_iTile = rand() % m_vTilesList.size();
+		m_iTile1 = rand() % m_vTilesList.size();
+		m_iTile2 = rand() % m_vTilesList.size();
 
-		while (m_vTilesList[m_iTile]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f))
+		while (m_vTilesList[m_iTile]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f) && 
+			m_iTile1 != m_iTile && m_iTile != m_iTile2)
 		{
-			m_iTile = rand() % 136;
+			m_iTile = rand() % m_vTilesList.size();
+		}
+
+		while (m_vTilesList[m_iTile1]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f) &&
+			m_iTile1 != m_iTile && m_iTile1 != m_iTile2)
+		{
+			m_iTile1 = rand() % m_vTilesList.size();
+		}
+
+		while (m_vTilesList[m_iTile2]->GetRect()->getSize() == sf::Vector2f(0.0f, 0.0f) &&
+			m_iTile1 != m_iTile2 && m_iTile != m_iTile2)
+		{
+			m_iTile2 = rand() % m_vTilesList.size();
 		}
 
 		m_vTilesList[m_iTile]->GetRect()->setFillColor(sf::Color::Red);
+		m_vTilesList[m_iTile1]->GetRect()->setFillColor(sf::Color::Red);
+		m_vTilesList[m_iTile2]->GetRect()->setFillColor(sf::Color::Red);
 		m_bFallAnimation = true;
 
 
@@ -113,10 +289,14 @@ void tManager::DropTiles(float _dT)
 		if (m_bLeft == true)
 		{
 			m_vTilesList[m_iTile]->GetRect()->move(-30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile1]->GetRect()->move(-30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile2]->GetRect()->move(-30.0f * _dT, 0.0f);
 		}
 		else
 		{
 			m_vTilesList[m_iTile]->GetRect()->move(30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile1]->GetRect()->move(30.0f * _dT, 0.0f);
+			m_vTilesList[m_iTile2]->GetRect()->move(30.0f * _dT, 0.0f);
 		}
 
 		if (m_iInterval >= 20)
@@ -126,6 +306,9 @@ void tManager::DropTiles(float _dT)
 			m_fShakeTimer = 0;
 			m_iInterval = 0;
 			RemoveTile(m_iTile);
+			RemoveTile(m_iTile1);
+			RemoveTile(m_iTile2);
+
 
 		}
 		

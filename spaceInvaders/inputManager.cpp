@@ -201,7 +201,7 @@ bool inputManager::GetControllerButton(int _button, int _player)
 {
 	if (sf::Joystick::isButtonPressed(_player, _button))
 	{
-		std::cout << "Player " << _player << " pressed button " << _button << "!" << std::endl;
+		//std::cout << "Player " << _player << " pressed button " << _button << "!" << std::endl;
 		return true;
 	}
 	else
@@ -211,6 +211,17 @@ bool inputManager::GetControllerButton(int _button, int _player)
 
 }
 
+bool inputManager::FaceButtonPressed(int _player)
+{
+	for(int i =0;i<4;i++)
+	{
+		if(GetControllerButton(i, _player))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 /***********************
 * SetUsingKeyboard: Sets boolean indicating whether it is using the keyboard.
@@ -235,6 +246,16 @@ bool inputManager::GetKeyboardButton(int _button)
 		return false;
 	}
 	return GetKeyboardButton(_button, m_iPlayerIndex);
+}
+
+bool inputManager::FaceButtonPressed()
+{
+	if (m_iPlayerIndex == -1)
+	{
+		std::cout << "Error: Input manager recieved no player index." << std::endl;
+		return false;
+	}
+	return FaceButtonPressed(m_iPlayerIndex);
 }
 
 bool inputManager::GetKeyboardButton(int _button, int _player)
