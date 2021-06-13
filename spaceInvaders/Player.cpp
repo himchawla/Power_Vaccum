@@ -58,6 +58,11 @@ player::player(int _player)
 	m_turtleVFX = new uiImage(sf::Vector2f(0, 0), "Assets/Players/TurtleEffect.png", true);
 	m_turtleVFX->GetSprite()->setScale(sf::Vector2f(0.6f, 0.6f));
 
+
+	m_magneticVFX = new uiImage(sf::Vector2f(0, 0), "Assets/Players/magneticEffect.png", true);
+	m_magneticVFX->GetSprite()->setScale(sf::Vector2f(1.6f, 1.6f));
+	m_magneticVFX->SetSpriteFromFile("Assets/Players/magneticEffect.png", sf::Vector2f(256.0f, 256.0f));
+	m_magneticVFX->GetSprite()->setScale(1.0f, 1.0f);
 	sf::Vector2f offset(25.0f, 50.0f);
 
 	// Set sprite colour
@@ -96,7 +101,11 @@ player::player(int _player)
 	GetSprite()->setColor(m_playerColor);
 	m_nitroBar->GetSprite()->setColor(m_barColor);
 	m_turtleVFX->GetSprite()->setColor(m_turtleColor);
+	m_turtleVFX->GetSprite()->setScale(0.6f, 0.6f);
 
+
+	m_magneticVFX->GetSprite()->setColor(sf::Color(m_playerColor.r, m_playerColor.b, m_playerColor.g, 128.0f));
+	//m_magneticVFX->GetSprite()->setScale(0.7f, 0.7f);
 	// Leaking battery variables
 	m_bExphit = false;
 	m_bWillDie = false;
@@ -155,7 +164,12 @@ player::~player()
 		delete m_turtleVFX;
 		m_turtleVFX = 0;
 	}
-	
+
+	if(m_magneticVFX != nullptr)
+	{
+		delete m_magneticVFX;
+		m_magneticVFX = 0;
+	}
 }
 
 
@@ -399,6 +413,11 @@ void player::Update(float _dT)
 	m_turtleVFX->GetSprite()->setRotation(m_turtleVFX->GetSprite()->getRotation() + _dT * 20.0f);
 	m_turtleVFX->Update(_dT);
 
+	m_magneticVFX->transform.m_Position = GetSprite()->getPosition();
+	m_magneticVFX->GetSprite()->setRotation(m_magneticVFX->GetSprite()->getRotation() + _dT * 16.0f);
+
+	m_magneticVFX->Update(_dT);
+
 	if (m_nitroBar != nullptr)
 	{
 		m_nitroBar->Update(_dT);
@@ -573,7 +592,6 @@ void player::BatteryImplementation(float _dt)
 	{
 		if (m_TextureName != eTextureName::Turtle)
 		{
-			SetSpriteFromFile("Assets/Players/Roomba_Turtle.png");
 			m_TextureName = Turtle;
 		}
 		m_speed = 2.5f;
@@ -583,19 +601,18 @@ void player::BatteryImplementation(float _dt)
 	{
 		if (m_TextureName != eTextureName::Magnetic)
 		{
-			SetSpriteFromFile("Assets/Players/Roomba_Magnetic.png");
 			m_TextureName = Magnetic;
 		}//Magnetic Pull
-		for (auto it : *m_vPlayers)
+		/*for (auto it : *m_vPlayers)
 		{
 			if (it != this)
 			{
 				float mag = Magnitude(transform.m_Position - it->transform.m_Position);
-				//if(abs(transform.m_Position.x - it->transform.m_Position.x) < 500.0f && abs(transform.m_Position.y - it->transform.m_Position.y) < 500.0f)
+				if(abs(transform.m_Position.x - it->transform.m_Position.x) < 500.0f && abs(transform.m_Position.y - it->transform.m_Position.y) < 500.0f)
 					it->AddPowerForrce((transform.m_Position - it->transform.m_Position)/mag * 6.2f);
 				
 			}
-		}
+		}*/
 	}
 		break;
 	case battery::leaking:
@@ -705,6 +722,11 @@ void player::DrawVFX(sf::RenderWindow& _window)
 	if (m_ability == battery::eAbility::turtle)
 	{
 		m_turtleVFX->Draw(_window);
+	}
+
+	if(m_ability == battery::eAbility::magnetic)
+	{
+		m_magneticVFX->Draw(_window);
 	}
 }
 

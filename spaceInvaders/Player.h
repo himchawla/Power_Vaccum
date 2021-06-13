@@ -105,6 +105,8 @@ private:
 
 	// Turtle battery
 	uiImage* m_turtleVFX;
+	uiImage* m_magneticVFX;
+	
 };
 
 #endif

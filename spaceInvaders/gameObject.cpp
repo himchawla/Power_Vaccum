@@ -123,6 +123,12 @@ void gameObject::SetSpriteFromFile(std::string _address, sf::Vector2f _size)
 	GetSprite()->setOrigin(GetTexture()->getSize().x * 0.5f, GetTexture()->getSize().y * 0.5f);
 }
 
+void gameObject::SetSpriteFromFile_NoMod(std::string _address, sf::Vector2f _size)
+{
+	GetTexture()->loadFromFile(_address);
+	GetSprite()->setTexture(*GetTexture());
+
+}
 void gameObject::Destroy()
 {
 	enabled = false;

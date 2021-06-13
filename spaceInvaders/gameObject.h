@@ -60,6 +60,7 @@ public:
 	void SetTexture(sf::Texture* _texture);
 
 	void SetSpriteFromFile(std::string _address, sf::Vector2f _size = sf::Vector2f(64.0f,64.0f));
+	void SetSpriteFromFile_NoMod(std::string _address, sf::Vector2f _size);
 
 	void Destroy();
 
