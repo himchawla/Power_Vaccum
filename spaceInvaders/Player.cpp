@@ -366,35 +366,51 @@ void player::Update(float _dT)
 	}
 
 	//Clamp Acceleration
+
 	float mag = sqrt(pow(m_externVel.x, 2) + pow(m_externVel.y, 2));
-	if (mag > 600.0f)
+	if (m_bNitroEnabled)
 	{
-		m_externVel = (m_externVel / mag) * 600.0f;
-	}
-
-	//Clamp magnetic Speed
-	mag = sqrt(pow(m_forceVel.x, 2) + pow(m_forceVel.y, 2));
-	if (mag > 300.0f)
-	{
-		m_forceVel = (m_forceVel / mag) * 300.0f;
-	}
-
-	if (!m_disableControl)
-	{
-		transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
-		
-		if (m_InputHandler->FaceButtonPressed() && m_bNitroEnabled)		//checks input of nitro button
+		if (!m_bPrevNitroState && m_InputHandler->FaceButtonPressed() && m_ability != Turtle)
 		{
-			std::cout << m_NitroResource << std::endl;		//debug the nitro
-			m_NitroResource -= 66.0f * _dT;					//uses nitro resource
-			Nitro(transform.m_Velocity);					//boosts speed
+
+			std::cout << mag << '\n';
+			if (mag > 900.0f)
+			{
+				m_externVel = (m_externVel / mag) * 900.0f;
+			}
+		}
+		else
+		{
+			if (mag > 600.0f)
+			{
+				m_externVel = (m_externVel / mag) * 600.0f;
+			}
+
+		}
+		//Clamp magnetic Speed
+		mag = sqrt(pow(m_forceVel.x, 2) + pow(m_forceVel.y, 2));
+		if (mag > 300.0f)
+		{
+			m_forceVel = (m_forceVel / mag) * 300.0f;
 		}
 
-	}
-	else
-	{
- 		transform.m_Velocity = (m_externVel + m_forceVel);
+		if (!m_disableControl)
+		{
+			transform.m_Velocity = m_InputHandler->GetMovementVector() * m_speed + (m_externVel + m_forceVel);
 
+			if (m_InputHandler->FaceButtonPressed() && m_bNitroEnabled && m_ability != battery::turtle)		//checks input of nitro button
+			{
+				std::cout << m_NitroResource << std::endl;		//debug the nitro
+				m_NitroResource -= 66.0f * _dT;					//uses nitro resource
+				Nitro(transform.m_Velocity);					//boosts speed
+			}
+
+		}
+		else
+		{
+			transform.m_Velocity = (m_externVel + m_forceVel);
+
+		}
 	}
 	//Clamp Velocity
 
