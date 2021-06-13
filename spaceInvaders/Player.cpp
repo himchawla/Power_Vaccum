@@ -50,10 +50,13 @@ player::player(int _player)
 	m_abilityTimer = 0.0f;
 
 	m_NitroResource = 100.0f;
-	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/ResourceBar.png", true);
+	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/Players/ResourceBar.png", true);
+	m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.25f, -0.25f));
 	m_bNitroEnabled = true;
 	m_bPrevNitroState = false;
 
+	m_turtleVFX = new uiImage(sf::Vector2f(0, 0), "Assets/Players/TurtleEffect.png", true);
+	m_turtleVFX->GetSprite()->setScale(sf::Vector2f(0.6f, 0.6f));
 
 	sf::Vector2f offset(25.0f, 50.0f);
 
@@ -62,30 +65,37 @@ player::player(int _player)
 	{
 	case 0:
 		m_playerColor = sf::Color::Red;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
+		m_barColor = sf::Color::Red;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
 		break;
 	case 1:
 		m_playerColor = sf::Color::Cyan;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
+		m_barColor = sf::Color::Cyan;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
 		break;
 	case 2:
 		m_playerColor = sf::Color::Green;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
+		m_barColor = sf::Color::Green;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
 		break;
 	case 3:
 		m_playerColor = sf::Color::Yellow;
-		m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
-		m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
+		m_barColor = sf::Color::Yellow;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
 		break;
 	default:
 		break;
 	}
+	m_turtleColor = m_playerColor;
+	m_turtleColor.a = 128.0f;
 
 	GetSprite()->setColor(m_playerColor);
-	m_nitroBar->GetSprite()->setColor(m_playerColor);
+	m_nitroBar->GetSprite()->setColor(m_barColor);
+	m_turtleVFX->GetSprite()->setColor(m_turtleColor);
 
 	// Leaking battery variables
 	m_bExphit = false;
@@ -140,6 +150,12 @@ player::~player()
 		delete m_nitroBar;
 		m_nitroBar = 0;
 	}
+	if (m_turtleVFX != nullptr)
+	{
+		delete m_turtleVFX;
+		m_turtleVFX = 0;
+	}
+	
 }
 
 
@@ -209,13 +225,13 @@ void player::Update(float _dT)
 	{
 		m_NitroResource = 100;
 		m_bNitroEnabled = true;
-		m_nitroBar->GetSprite()->setColor(m_playerColor);
+		m_nitroBar->GetSprite()->setColor(m_barColor);
 	}
 	if (m_NitroResource < 5) // If nitro is too low
 	{
 		m_bNitroEnabled = false;
 		
-		m_nitroBar->GetSprite()->setColor(sf::Color(m_playerColor.r / 2.0f,
+		m_nitroBar->GetSprite()->setColor(sf::Color(m_barColor.r / 2.0f,
 			m_playerColor.g / 2.0f,
 			m_playerColor.b / 2.0f));
 	}
@@ -232,12 +248,6 @@ void player::Update(float _dT)
 			m_bPrevNitroState = false;
 			audioManager::GetInstance().PlaySound("NitroEnd");
 		}
-	}
-
-	if (m_nitroBar != nullptr)
-	{
-		m_nitroBar->Update(_dT);
-		m_nitroBar->SetPercentageDrawn(m_NitroResource);
 	}
 
 	if (Magnitude(m_externVel) < 0.01f)
@@ -380,7 +390,20 @@ void player::Update(float _dT)
 	//Update sprite position
 	GetSprite()->setPosition(transform.m_Position);
 	m_circleIndicator.setPosition(transform.m_Position);
-//	transform.m_Velocity = sf::Vector2f(0.0f, 0.0f);
+
+	// Update resource bar visuals.
+	m_nitroBar->transform.m_Position = GetSprite()->getPosition();
+
+	// Update VFX visuals.
+	m_turtleVFX->transform.m_Position = GetSprite()->getPosition();
+	m_turtleVFX->GetSprite()->setRotation(m_turtleVFX->GetSprite()->getRotation() + _dT * 20.0f);
+	m_turtleVFX->Update(_dT);
+
+	if (m_nitroBar != nullptr)
+	{
+		m_nitroBar->Update(_dT);
+		m_nitroBar->SetPercentageDrawn(m_NitroResource);
+	}
 
 	if (m_DeathTimer != nullptr)
 	{
@@ -677,6 +700,14 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 	}
 }
 
+void player::DrawVFX(sf::RenderWindow& _window)
+{
+	if (m_ability == battery::eAbility::turtle)
+	{
+		m_turtleVFX->Draw(_window);
+	}
+}
+
 /***********************
 * DrawNitroResource: Draw nitro resource bar.
 * @author: William de Beer
@@ -684,6 +715,6 @@ void player::DrawCircleIndicator(sf::RenderWindow& _window)
 ********************/
 void player::DrawNitroResource(sf::RenderWindow& _window)
 {
-	if (m_nitroBar != nullptr)
+	if (m_nitroBar != nullptr && !m_bWillDie && !m_bExphit)
 		m_nitroBar->Draw(_window);
 }
