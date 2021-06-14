@@ -48,7 +48,7 @@ private:
 
 	text* m_countdownText;
 	std::vector<player*>* m_vPlayers;
-	std::vector<player*> m_vBackupPlayers;
+	std::vector<player*>* m_vBackupPlayers;
 	std::vector<gameObject*>* m_vObjects;
 	sf::Texture* m_texBackground;
 	sf::Sprite* m_sprBackground;
