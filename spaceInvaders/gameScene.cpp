@@ -29,6 +29,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 	m_vBatteries = new std::vector<battery*>();
 	m_tileManager = new tManager();
 	m_vPlayers = _player;
+	m_vBackupPlayers = _player;
 	m_batterySpawn = 0;
 	m_startTimer = new timer(3, 0);
 
@@ -275,7 +276,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 			else
 			{
 				//Load End Scene Here
-				sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+				sceneManager::SetScene(new gameScene(m_vBackupPlayers, m_numPlayers));
 			}
 		}
 		// Battery spawning
