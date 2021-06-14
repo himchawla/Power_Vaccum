@@ -17,6 +17,7 @@ public:
 
 	battery();
 	timer* GetDestroyTimer();
+	timer* GetPickupTimer();
 	battery(int ch, sf::Vector2f _position);
 	~battery();
 
@@ -24,8 +25,10 @@ public:
 
 	float GetAbilityTimer();
 
+ 	bool m_checkPickup;
 private:
 	timer *m_destroyTimer;
 	float m_abilityTimer;
+	timer* m_pickupTimer;
 };
 

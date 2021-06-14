@@ -85,13 +85,14 @@ void audioManager::Initialise()
 	m_Music->setVolume(30.0f);
 
 	// Initialise sounds
-	CreateSound("RoombaCollision", "RoombaCollision.wav");
-	CreateSound("NitroStart", "RoombaCollision.wav");
-	CreateSound("NitroEnd", "RoombaCollision.wav");
-	CreateSound("RoombaDeath", "RoombaCollision.wav");
-	CreateSound("BatteryPickup", "RoombaCollision.wav");
-	CreateSound("ButtonPress", "RoombaCollision.wav");
-	CreateSound("ButtonChange", "RoombaCollision.wav");
+	CreateSound("RoombaCollision", "Collision.wav");				//This is for when the roombas collide
+	CreateSound("NitroStart", "NitroStart.wav");					//This is for when the nitro starts
+	CreateSound("NitroEnd", "NitroEnd.wav");						//This is for when the nitro ends
+	CreateSound("RoombaDeath", "Death.wav");						//This is for when the roomba dies
+	CreateSound("BatteryPickup", "Pickup.wav");						//This is for when you pickup a powerup
+	CreateSound("ButtonPress", "RoombaCollision.wav");				//This is for when a button is pressed
+	CreateSound("ButtonChange", "RoombaCollision.wav");				//This is for when a button is changed
+	CreateSound("Explosion", "Explosion.wav");						//This is for when the leaking battery explodes
 }
 
 /***********************

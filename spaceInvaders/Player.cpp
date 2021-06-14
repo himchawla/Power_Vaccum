@@ -553,20 +553,21 @@ void player::BatteryCollision()
 
 		sf::Vector2f DistanceCalc = (*it)->transform.m_Position - transform.m_Position;
 		float Distance = sqrt(pow(DistanceCalc.x, 2) + pow(DistanceCalc.y, 2));
+
 		
+		if ((*it)->m_checkPickup == true) {										//This checks if the battery is allowed to be picked up after spawning in
+			float collSpeed = Magnitude((*it)->transform.m_Velocity);
+			if (Distance <= MinDistance)
+			{
+				audioManager::GetInstance().PlaySound("BatteryPickup");
 
-		float collSpeed = Magnitude((*it)->transform.m_Velocity);
-		if (Distance <= MinDistance)
-		{
-			audioManager::GetInstance().PlaySound("BatteryPickup");
-
-			m_abilityTimer = (*it)->GetAbilityTimer();
-			m_ability = (*it)->m_ability;
-			delete (*it);
-			m_vBatteries->erase(it);
-			break;
+				m_abilityTimer = (*it)->GetAbilityTimer();
+				m_ability = (*it)->m_ability;
+				delete (*it);
+				m_vBatteries->erase(it);
+				break;
+			}
 		}
-
 		it++;
 	}
 
@@ -699,7 +700,7 @@ void player::LeakingBattery()
 	m_powerForce = sf::Vector2f(0.0f, 0.0f);
 	m_externVel = sf::Vector2f(0.0f, 0.0f);
 	m_forceVel = sf::Vector2f(0.0f, 0.0f);
-
+	audioManager::GetInstance().PlaySound("Explosion");
 	m_bWillDie = true;
 }
 
