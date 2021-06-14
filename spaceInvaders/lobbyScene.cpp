@@ -229,14 +229,14 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (m_canStart && m_numPlayers > 1)
 	{
-		audioManager::GetInstance().SetMusic("GameMusic.wav");
+		audioManager::GetInstance().SetMusic("Venus2.wav");
 		audioManager::GetInstance().GetMusic()->play();
 		audioManager::GetInstance().PlaySound("ButtonPress");
 		sceneManager::SetScene(new gameScene(m_vPlayers));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		audioManager::GetInstance().SetMusic("GameMusic.wav");
+		audioManager::GetInstance().SetMusic("Venus2.wav");
 		audioManager::GetInstance().GetMusic()->play();
 		audioManager::GetInstance().PlaySound("ButtonPress");
 		sceneManager::SetScene(new gameScene(nullptr));

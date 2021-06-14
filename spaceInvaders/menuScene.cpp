@@ -87,7 +87,7 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 	m_sprBackground->setTexture(*m_texBackground);
 	m_sprBackground->setPosition(0, 0);
 
-	audioManager::GetInstance().SetMusic("MenuMusic.wav");
+	audioManager::GetInstance().SetMusic("Mars.wav");
 	audioManager::GetInstance().GetMusic()->play();
 
 	// Create Buttons
@@ -98,7 +98,6 @@ void menuScene::Initialise(sf::RenderWindow& _window)
 		else if(i == 1)
 			m_vButtons.push_back(new button(m_v2Offset.x, 500 + m_v2Offset.y * i, i, "Assets/Quit"));
 	}
-
 
 }
 
