@@ -95,7 +95,6 @@ private:
 	bool m_bPrevNitroState;
 
 	sf::Color m_playerColor;
-	sf::Color m_barColor;
 	sf::Color m_turtleColor;
 
 	// Leaking battery variables

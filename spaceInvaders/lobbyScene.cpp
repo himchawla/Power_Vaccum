@@ -306,13 +306,18 @@ void lobbyScene::DrawObjects(sf::RenderWindow& _window)
 	{
 		m_playerStatus[i].Draw(_window);
 	}
-
+	// Draw players
 	m_startPos->Draw(_window);
 	for (auto i : *m_vPlayers)
 	{
 		i->Draw(_window);
 	}
 
+	// Draw resource bars
+	for (auto p_it : *m_vPlayers)
+	{
+		p_it->DrawNitroResource(_window);
+	}
 
 }
 
