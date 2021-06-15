@@ -166,9 +166,26 @@ int scoreManager::WinningIndex()
 
 sf::Color scoreManager::WinningColor()
 {
-	if(WinningIndex() >= 0)
-		return m_ScoreUI[WinningIndex()]->GetSprite()->getColor();
-	return sf::Color::Black;
+	//// Set sprite colour
+	switch (WinningIndex())
+	{
+	case 0:
+		return sf::Color::Red;
+		break;
+	case 1:
+		return sf::Color::Cyan;
+		break;
+	case 2:
+		return sf::Color::Green;
+		break;
+	case 3:
+		return sf::Color::Yellow;
+		break;
+	default:
+		return  sf::Color::Black;
+		break;
+	}
+
 }
 
 /***********************
