@@ -185,6 +185,8 @@ void player::Death()
 	{
 		if (*it == this)
 		{
+
+			(*it)->m_ability = battery::none;
 			(*it)->Destroy();
 			break;
 		}
