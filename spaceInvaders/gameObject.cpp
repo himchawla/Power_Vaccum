@@ -52,6 +52,11 @@ bool gameObject::IsEnabled()
 	return enabled;
 }
 
+void gameObject::SetEnabled(bool _enabled)
+{
+	enabled = _enabled;
+}
+
 /***********************
 * Update: Calculates the physics for the gameObject
 * @author: Himanshu Chawla

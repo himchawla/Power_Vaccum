@@ -152,7 +152,21 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 			}
 			m_hasJoined[i] = true;
 			//std::cout << "Player " << i << " has joined the game";
-			player* newPlayer = new player(i);
+			player* newPlayer;
+			switch (m_numPlayers)
+			{
+			case 1:
+				newPlayer = new player(i, sf::Color::Red);	break;
+			case 2:
+				newPlayer = new player(i, sf::Color::Cyan);	break;
+			case 3:
+				newPlayer = new player(i, sf::Color::Green);	break;
+			case 4:
+				newPlayer = new player(i, sf::Color::Yellow);	break;
+
+			default:
+				newPlayer = new player(i, sf::Color::Black);
+			}
 			newPlayer->SetStartPos(m_startPos);
 			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");
 			m_playerStatus[m_numPlayers - 1].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
