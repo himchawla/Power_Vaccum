@@ -71,6 +71,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 		int numPlayers = 1;
 		for (auto p_it : *m_vPlayers)
 		{
+			p_it->Respawn();
 			switch (numPlayers)
 			{
 			case 1:
@@ -88,6 +89,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 			numPlayers++;
 			p_it->SetTileManager(m_tileManager);
 			p_it->SetBatteryVector(m_vBatteries);
+
 		}
 		m_numPlayers = numPlayers - 1;
 
@@ -106,18 +108,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 
 gameScene::~gameScene()
 {
-	std::vector<player*>::iterator p_it = m_vPlayers->begin();
-	while (p_it != m_vPlayers->end())
-	{
-		// Delete vector contents
-		delete* p_it;
-		p_it = m_vPlayers->erase((p_it));
-	}
-	if (m_vPlayers != nullptr) // Delete vector
-	{
-		delete m_vPlayers;
-		m_vPlayers = 0;
-	}
+	
 
 	if (m_tileManager != nullptr) // Delete tile manager
 	{
@@ -258,14 +249,19 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 	}
 	else
 	{
+		int numAlive = 0;
+		player* tempWinningPlayer = nullptr;
 		// Update players
 		for (auto i : *m_vPlayers)
 		{
 			i->Update(_dT);
+			if (i->IsEnabled())	numAlive++;
+			tempWinningPlayer = i;
 		}
-		if (m_vPlayers->size() == 1)
+		if (numAlive == 1)
 		{
-			int winningIndex = m_vPlayers->front()->GetIndex();
+			int winningIndex = 0;
+			if(tempWinningPlayer !=nullptr)	winningIndex = tempWinningPlayer->GetIndex();
 			scoreManager::GetInstance().IncrementScore(winningIndex);
 
 			if (scoreManager::GetInstance().HighestScore() == 3)
@@ -275,7 +271,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 			else
 			{
 				//Load End Scene Here
-				sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+				sceneManager::SetScene(new gameScene(m_vPlayers, m_numPlayers));
 			}
 		}
 		// Battery spawning

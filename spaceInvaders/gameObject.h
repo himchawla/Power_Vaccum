@@ -48,7 +48,8 @@ public:
 	Transform transform;
 
 	bool IsEnabled();
-
+	void SetEnabled(bool _enabled);
+	
 	void Update(float _dT);
 
 	void Draw(sf::RenderWindow& _window);
