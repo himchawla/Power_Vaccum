@@ -255,8 +255,11 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		for (auto i : *m_vPlayers)
 		{
 			i->Update(_dT);
-			if (i->IsEnabled())	numAlive++;
-			tempWinningPlayer = i;
+			if (i->IsEnabled())
+			{
+				numAlive++;
+				tempWinningPlayer = i;
+			}
 		}
 		if (numAlive == 1)
 		{
