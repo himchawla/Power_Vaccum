@@ -152,15 +152,35 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 			}
 			m_hasJoined[i] = true;
 			//std::cout << "Player " << i << " has joined the game";
-			player* newPlayer = new player(i);
+			sf::Color playerColor;
+			switch (m_numPlayers)
+			{
+			case 1:
+				playerColor = sf::Color::Red;
+				
+				break;
+			case 2:
+				playerColor = sf::Color::Cyan;
+				break;
+			case 3:
+				playerColor = sf::Color::Green;
+				break;
+			case 4:
+				playerColor = sf::Color::Blue;
+				break;
+			}
+			player* newPlayer = new player(i, playerColor);
 			newPlayer->SetStartPos(m_startPos);
+			m_playerIndexes.push_back(newPlayer->GetIndex());
 			m_playerStatus[m_numPlayers - 1].SetSpriteFromFile("Assets/Ready_NO.png");
 			m_playerStatus[m_numPlayers - 1].GetSprite()->setScale(sf::Vector2f(0.5f, 0.5f));
 
+			newPlayer->SetScoreIndex(m_numPlayers - 1);
 			switch (m_numPlayers)
 			{
 			case 1:
 				newPlayer->transform.m_Position = (sf::Vector2f(320.0f, 275.0f));
+				
 				break;
 			case 2:
 				newPlayer->transform.m_Position = (sf::Vector2f(1475.0f, 275.0f));
@@ -232,14 +252,14 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 		audioManager::GetInstance().SetMusic("Venus2.wav");
 		audioManager::GetInstance().GetMusic()->play();
 		audioManager::GetInstance().PlaySound("ButtonPress");
-		sceneManager::SetScene(new gameScene(m_vPlayers));
+		sceneManager::SetScene(new gameScene(m_vPlayers, m_playerIndexes, m_vPlayers->size()));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		audioManager::GetInstance().SetMusic("Venus2.wav");
 		audioManager::GetInstance().GetMusic()->play();
 		audioManager::GetInstance().PlaySound("ButtonPress");
-		sceneManager::SetScene(new gameScene(nullptr));
+		sceneManager::SetScene(new gameScene(nullptr, {0,1,2,3}, 4));
 	}
 
 

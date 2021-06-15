@@ -38,8 +38,9 @@ void player::SetTileManager(tManager* _tileManager)
 	m_tileManager = _tileManager;
 }
 
-player::player(int _player)
+player::player(int _player, sf::Color _playerColor)
 {
+	
 	m_iPlayerIndex = _player;
 	m_DeathTimer = 0;
 	m_vPlayers = 0;
@@ -66,6 +67,7 @@ player::player(int _player)
 	sf::Vector2f offset(25.0f, 50.0f);
 
 	// Set sprite colour
+	
 	switch (_player)
 	{
 	case 0:
@@ -94,6 +96,12 @@ player::player(int _player)
 		break;
 	default:
 		break;
+	}
+
+	if(_playerColor != sf::Color::Black)
+	{
+		m_playerColor = _playerColor;
+		m_barColor = _playerColor;
 	}
 	m_turtleColor = m_playerColor;
 	m_turtleColor.a = 128.0f;
@@ -461,6 +469,14 @@ bool player::IsReady()
 void player::SetReady(bool _ready)
 {
 	m_ready = _ready;
+}
+
+void player::setColor(const sf::Color& _playerColor)
+{
+	m_playerColor = _playerColor;
+	GetSprite()->setColor(_playerColor);
+	m_barColor = _playerColor;
+
 }
 
 void player::OnTile(bool _isOnTile)

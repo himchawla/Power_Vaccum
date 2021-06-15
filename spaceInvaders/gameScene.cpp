@@ -23,7 +23,7 @@
 
 bool isDebug = false;
 
-gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
+gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndexes, int _numPlayers)
 {
 	m_vObjects = new std::vector<gameObject*>();
 	m_vBatteries = new std::vector<battery*>();
@@ -31,7 +31,7 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 	m_vPlayers = _player;
 	m_batterySpawn = 0;
 	m_startTimer = new timer(3, 0);
-
+	m_playerIndexes = _playerIndexes;
 	m_countdownText = new text(sf::Vector2<float>(960.0f, 520.0f));
 	
 	if (m_vPlayers == nullptr)
@@ -41,23 +41,34 @@ gameScene::gameScene(std::vector<player*>* _player, int _numPlayers)
 		
 		m_vPlayers = new std::vector<player*>();
 
-		for (int i = 0; i < _numPlayers; i++)
+		for (auto i: _playerIndexes)
 		{
-			player* newPlayer = new player(i);
+			sf::Color playerColor;
+			
+			player* newPlayer = new player(i, playerColor);
 
+			newPlayer->SetScoreIndex(m_vPlayers->size());
 			switch (m_vPlayers->size())
 			{
 			case 0:
 				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
+				newPlayer->setColor(sf::Color::Red);
+				
 				break;
 			case 1:
 				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
+				newPlayer->setColor(sf::Color::Cyan);
 				break;
 			case 2:
 				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+				newPlayer->setColor(sf::Color::Green);
 				break;
 			case 3:
 				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
+				newPlayer->setColor(sf::Color::Yellow);
+				break;
+			default:
+				break;
 			}
 			newPlayer->SetPlayerVector(m_vPlayers);
 			newPlayer->SetBatteryVector(m_vBatteries);
@@ -265,7 +276,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 		}
 		if (m_vPlayers->size() == 1)
 		{
-			int winningIndex = m_vPlayers->front()->GetIndex();
+			int winningIndex = m_vPlayers->front()->GetScoreIndex();
 			scoreManager::GetInstance().IncrementScore(winningIndex);
 
 			if (scoreManager::GetInstance().HighestScore() == 3)
@@ -275,7 +286,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 			else
 			{
 				//Load End Scene Here
-				sceneManager::SetScene(new gameScene(nullptr, m_numPlayers));
+				sceneManager::SetScene(new gameScene(nullptr, m_playerIndexes, m_numPlayers));
 			}
 		}
 		// Battery spawning
@@ -295,7 +306,7 @@ void gameScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		sceneManager::SetScene(new gameScene(nullptr));
+		sceneManager::SetScene(new gameScene(nullptr, m_playerIndexes));
 	}
 }
 
