@@ -535,7 +535,7 @@ void player::PlayerCollision()
 	float selfSpeed = Magnitude(transform.m_Velocity);		//sets the speed of the player
 	for (auto i : *m_vPlayers)								//logs the opposing player
 	{
-		if (i != this && !i->GetWillDie())										//checks if the player is not the opposing
+		if (i != this && !i->GetWillDie() && i->IsEnabled())										//checks if the player is not the opposing
 		{
 			float MinDistance = GetTexture()->getSize().x * GetSprite()->getScale().x;		//calculates the minimum distance needed for collision between the two units
 
@@ -797,6 +797,6 @@ void player::DrawVFX(sf::RenderWindow& _window)
 ********************/
 void player::DrawNitroResource(sf::RenderWindow& _window)
 {
-	if (m_nitroBar != nullptr && !m_bWillDie && !m_bExphit)
+	if (m_nitroBar != nullptr && !m_bWillDie && !m_bExphit && IsEnabled())
 		m_nitroBar->Draw(_window);
 }
