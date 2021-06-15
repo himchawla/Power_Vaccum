@@ -26,12 +26,9 @@ class player :
 	public gameObject
 {
 public:
-	
-	void SetTileManager(tManager* _tileManager);
 	player(int _player);
-	player(int _player, sf::Color _color);
-	void Death();
-	void Respawn();
+	void SetTileManager(tManager* _tileManager);
+	void death();
 	~player();
 	void AddForce(sf::Vector2f _dir);
 	void AddPowerForrce(sf::Vector2f dir);
@@ -44,8 +41,7 @@ public:
 	bool IsReady();
 	void SetReady(bool _ready);
 
-	float GetNitro() { return m_NitroResource; }
-	
+	float GetNitro() { return m_NitroResource; };
 	void OnTile(bool _isOnTile);
 	void LeakingBattery();
 	void DelayedDeathUpdate();

@@ -37,6 +37,7 @@ void player::SetTileManager(tManager* _tileManager)
 {
 	m_tileManager = _tileManager;
 }
+
 player::player(int _player)
 {
 	m_iPlayerIndex = _player;
@@ -65,92 +66,40 @@ player::player(int _player)
 	sf::Vector2f offset(25.0f, 50.0f);
 
 	// Set sprite colour
-		switch (_player)
-		{
-		case 0:
-			m_playerColor = sf::Color::Red;
-			m_barColor = sf::Color::Red;
-			//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
-			//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
-			break;
-		case 1:
-			m_playerColor = sf::Color::Cyan;
-			m_barColor = sf::Color::Cyan;
-			//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
-			//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
-			break;
-		case 2:
-			m_playerColor = sf::Color::Green;
-			m_barColor = sf::Color::Green;
-			//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
-			//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
-			break;
-		case 3:
-			m_playerColor = sf::Color::Yellow;
-			m_barColor = sf::Color::Yellow;
-			//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
-			//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
-			break;
-		default:
-			break;
-		}
+	switch (_player)
+	{
+	case 0:
+		m_playerColor = sf::Color::Red;
+		m_barColor = sf::Color::Red;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
+		break;
+	case 1:
+		m_playerColor = sf::Color::Cyan;
+		m_barColor = sf::Color::Cyan;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
+		break;
+	case 2:
+		m_playerColor = sf::Color::Green;
+		m_barColor = sf::Color::Green;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
+		break;
+	case 3:
+		m_playerColor = sf::Color::Yellow;
+		m_barColor = sf::Color::Yellow;
+		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
+		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
+		break;
+	default:
+		break;
+	}
 	m_turtleColor = m_playerColor;
 	m_turtleColor.a = 128.0f;
 
 	GetSprite()->setColor(m_playerColor);
 	m_nitroBar->GetSprite()->setColor(m_barColor);
-	m_turtleVFX->GetSprite()->setColor(m_turtleColor);
-	m_turtleVFX->GetSprite()->setScale(0.6f, 0.6f);
-
-
-	m_magneticVFX->GetSprite()->setColor(sf::Color(m_playerColor.r, m_playerColor.b, m_playerColor.g, 128.0f));
-	//m_magneticVFX->GetSprite()->setScale(0.7f, 0.7f);
-	// Leaking battery variables
-	m_bExphit = false;
-	m_bWillDie = false;
-	m_fDeathTimer = 0.0f;
-	m_fDeathDelay = 2.0f;
-
-	m_circleIndicator = sf::CircleShape(m_fExpRange);
-	m_circleIndicator.setOrigin(sf::Vector2f(m_fExpRange, m_fExpRange));
-	m_circleIndicator.setFillColor(sf::Color(200, 170, 130, 0));
-	m_circleIndicator.setOutlineColor(sf::Color(255, 255, 255, 0));
-	m_circleIndicator.setOutlineThickness(5.0f);
-
-}
-player::player(int _player, sf::Color _color)
-{
-	m_iPlayerIndex = _player;
-	m_DeathTimer = 0;
-	m_vPlayers = 0;
-	m_InputHandler = new inputManager(_player);
-	transform.m_Mass = 1.0f;
-	SetSpriteFromFile("Assets/Players/Roomba.png");
-	m_ability = battery::eAbility::none;
-	m_abilityTimer = 0.0f;
-
-	m_NitroResource = 100.0f;
-	m_nitroBar = new uiImage(sf::Vector2f(0, 0), "Assets/Players/ResourceBar.png", true);
-	m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.25f, -0.25f));
-	m_bNitroEnabled = true;
-	m_bPrevNitroState = false;
-
-	m_turtleVFX = new uiImage(sf::Vector2f(0, 0), "Assets/Players/TurtleEffect.png", true);
-	m_turtleVFX->GetSprite()->setScale(sf::Vector2f(0.6f, 0.6f));
-
-
-	m_magneticVFX = new uiImage(sf::Vector2f(0, 0), "Assets/Players/magneticEffect.png", true);
-	m_magneticVFX->GetSprite()->setScale(sf::Vector2f(1.6f, 1.6f));
-	m_magneticVFX->SetSpriteFromFile("Assets/Players/magneticEffect.png", sf::Vector2f(256.0f, 256.0f));
-	m_magneticVFX->GetSprite()->setScale(1.0f, 1.0f);
-	sf::Vector2f offset(25.0f, 50.0f);
-
-	m_playerColor = _color;
-	m_turtleColor = m_playerColor;
-	m_turtleColor.a = 128.0f;
-
-	GetSprite()->setColor(m_playerColor);
-	m_nitroBar->GetSprite()->setColor(m_playerColor);
 	m_turtleVFX->GetSprite()->setColor(m_turtleColor);
 	m_turtleVFX->GetSprite()->setScale(0.6f, 0.6f);
 
@@ -176,7 +125,7 @@ player::player(int _player, sf::Color _color)
 * @author: Himanshu Chawla
 * @parameter: N/A
 ********************/
-void player::Death()
+void player::death()
 {
 	audioManager::GetInstance().PlaySound("RoombaDeath");
 
@@ -185,18 +134,12 @@ void player::Death()
 	{
 		if (*it == this)
 		{
-			(*it)->Destroy();
+  			m_vPlayers->erase(it);
+			delete this;
 			break;
 		}
 		it++;
 	}
-}
-
-void player::Respawn()
-{
-	SetEnabled(true);
-	m_ability = battery::none;
-	m_externVel = sf::Vector2f(0.0f, 0.0f);
 }
 
 player::~player()
@@ -287,8 +230,6 @@ void player::SetStartPos(gameObject* _startPos)
 ********************/
 void player::Update(float _dT)
 {
-
-	if (!IsEnabled())	return;
 	m_delay -= _dT;
 	m_disableTimer -= _dT;
 
@@ -340,7 +281,7 @@ void player::Update(float _dT)
 	
 	if (m_tileManager != nullptr && !m_tileManager->isOnTile(this->transform.m_Position, 0.0f))
 	{
-		Death();
+		death();
 		return;
 	}
 	
@@ -758,7 +699,7 @@ void player::DelayedDeathUpdate()
 		return;
 	if (m_bWillDie && m_DeathTimer->IsFinished())
 	{
-		Death();
+		death();
 		std::cout << "Player has died" << std::endl;
 	}
 }
