@@ -26,12 +26,9 @@ class player :
 	public gameObject
 {
 public:
-	
+	player(int _player, sf::Color _playerColor = sf::Color::Black);
 	void SetTileManager(tManager* _tileManager);
-	player(int _player);
-	player(int _player, sf::Color _color);
-	void Death();
-	void Respawn();
+	void death();
 	~player();
 	void AddForce(sf::Vector2f _dir);
 	void AddPowerForrce(sf::Vector2f dir);
@@ -45,7 +42,7 @@ public:
 	void SetReady(bool _ready);
 
 	float GetNitro() { return m_NitroResource; }
-	
+	void setColor(const sf::Color& _playerColor);
 	void OnTile(bool _isOnTile);
 	void LeakingBattery();
 	void DelayedDeathUpdate();
@@ -55,7 +52,8 @@ public:
 	void DrawNitroResource(sf::RenderWindow& _window);
 
 	int GetIndex() { return m_iPlayerIndex; };
-
+	int GetScoreIndex() { return m_scoreIndex; }
+	void SetScoreIndex(int _index) { m_scoreIndex = _index; }
 	battery::eAbility m_ability;
 	void SetStartPos(gameObject* _startPos);
 private:
@@ -71,7 +69,7 @@ private:
 	tManager* m_tileManager;
 
 	int m_iPlayerIndex;
-
+	int m_scoreIndex;
 	bool m_ready;
 	float m_delay = 0.0f;
 	float m_disableTimer = 0.0f;

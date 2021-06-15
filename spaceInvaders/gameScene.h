@@ -35,7 +35,7 @@ class gameScene : public scene
 {
 public:
 	
-	gameScene(std::vector<player*>* _player, int _numPlayers = 4);
+	gameScene(std::vector<player*>* _player, std::vector<int> _playerIndexes, int _numPlayers = 4);
 	virtual ~gameScene();
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
@@ -56,5 +56,6 @@ private:
 	timer* m_startTimer;
 	timer* m_batterySpawn;
 	int m_numPlayers;
+	std::vector<int> m_playerIndexes;
 };
 #endif
