@@ -24,6 +24,8 @@
 
 lobbyScene::lobbyScene()
 {
+	m_countdownText = new text(sf::Vector2<float>(960.0f, 420.0f));
+	m_startTimer = new timer(5, 0);
 	m_startPos = new gameObject();
 	m_startPos->SetSpriteFromFile("Assets/ReadyUpZone.png", sf::Vector2<float>(512.0f, 512.0f));
 	m_startPos->transform.m_Position = sf::Vector2f(960.0f, 540.0f);
@@ -51,6 +53,11 @@ lobbyScene::lobbyScene()
 
 lobbyScene::~lobbyScene()
 {
+	if(m_countdownText!= nullptr)
+	{
+		delete m_countdownText;
+		m_countdownText = 0;
+	}
 	// Delete background 
 	if (m_texBackground != nullptr)
 	{
@@ -249,18 +256,31 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 	if (m_canStart && m_numPlayers > 1)
 	{
-		audioManager::GetInstance().SetMusic("Venus2.wav");
-		audioManager::GetInstance().GetMusic()->play();
-		audioManager::GetInstance().PlaySound("ButtonPress");
-		sceneManager::SetScene(new gameScene(m_vPlayers, m_playerIndexes, m_vPlayers->size()));
+		
+		if (m_startTimer != nullptr) // Start delay timer.
+		{
+			audioManager::GetInstance().SetMusic("Venus2.wav");
+			audioManager::GetInstance().GetMusic()->play();
+			audioManager::GetInstance().PlaySound("ButtonPress");
+			
+			m_startTimer->Update(_dT);
+			if (m_countdownText != nullptr)	m_countdownText->SetString((std::to_string((int)m_startTimer->GetTime() + 1)));
+			if (m_startTimer->IsFinished())
+			{
+				delete m_startTimer;
+				m_startTimer = 0;
+				sceneManager::SetScene(new gameScene(m_vPlayers, m_playerIndexes, m_vPlayers->size()));
+			}
+		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		audioManager::GetInstance().SetMusic("Venus2.wav");
 		audioManager::GetInstance().GetMusic()->play();
 		audioManager::GetInstance().PlaySound("ButtonPress");
-		sceneManager::SetScene(new gameScene(nullptr, {0,1,2,3}, 4));
+		sceneManager::SetScene(new gameScene(nullptr, { 0,1,2,3 }, 4));
 	}
+	else m_startTimer->ResetTimer();
 
 
 	//for (auto& m_vButton : m_vButtons)
@@ -341,4 +361,6 @@ void lobbyScene::DrawUI(sf::RenderWindow& _window)
 		m_vButtons[i]->Draw(_window);
 		
 	}
+	if(m_canStart && m_numPlayers > 1)
+	m_countdownText->Render(_window);   
 }

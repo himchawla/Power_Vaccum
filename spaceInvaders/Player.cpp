@@ -72,25 +72,25 @@ player::player(int _player, sf::Color _playerColor)
 	{
 	case 0:
 		m_playerColor = sf::Color::Red;
-		m_barColor = sf::Color::Red;
+		//m_barColor = sf::Color::Red;
 		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
 		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, offset.y);
 		break;
 	case 1:
 		m_playerColor = sf::Color::Cyan;
-		m_barColor = sf::Color::Cyan;
+		//m_barColor = sf::Color::Cyan;
 		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
 		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, offset.y);
 		break;
 	case 2:
 		m_playerColor = sf::Color::Green;
-		m_barColor = sf::Color::Green;
+		//m_barColor = sf::Color::Green;
 		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(0.5f, 0.3f));
 		//m_nitroBar->transform.m_Position = sf::Vector2f(offset.x, 1080 - offset.y);
 		break;
 	case 3:
 		m_playerColor = sf::Color::Yellow;
-		m_barColor = sf::Color::Yellow;
+		//m_barColor = sf::Color::Yellow;
 		//m_nitroBar->GetSprite()->setScale(sf::Vector2f(-0.5f, 0.3f));
 		//m_nitroBar->transform.m_Position = sf::Vector2f(1920 - offset.x, 1080 - offset.y);
 		break;
@@ -101,13 +101,13 @@ player::player(int _player, sf::Color _playerColor)
 	if(_playerColor != sf::Color::Black)
 	{
 		m_playerColor = _playerColor;
-		m_barColor = _playerColor;
+		//m_barColor = _playerColor;
 	}
 	m_turtleColor = m_playerColor;
 	m_turtleColor.a = 128.0f;
 
 	GetSprite()->setColor(m_playerColor);
-	m_nitroBar->GetSprite()->setColor(m_barColor);
+	m_nitroBar->GetSprite()->setColor(m_playerColor);
 	m_turtleVFX->GetSprite()->setColor(m_turtleColor);
 	m_turtleVFX->GetSprite()->setScale(0.6f, 0.6f);
 
@@ -247,13 +247,13 @@ void player::Update(float _dT)
 	{
 		m_NitroResource = 100;
 		m_bNitroEnabled = true;
-		m_nitroBar->GetSprite()->setColor(m_barColor);
+		m_nitroBar->GetSprite()->setColor(m_playerColor);
 	}
 	if (m_NitroResource < 5) // If nitro is too low
 	{
 		m_bNitroEnabled = false;
 		
-		m_nitroBar->GetSprite()->setColor(sf::Color(m_barColor.r / 2.0f,
+		m_nitroBar->GetSprite()->setColor(sf::Color(m_playerColor.r / 2.0f,
 			m_playerColor.g / 2.0f,
 			m_playerColor.b / 2.0f));
 	}
@@ -475,7 +475,7 @@ void player::setColor(const sf::Color& _playerColor)
 {
 	m_playerColor = _playerColor;
 	GetSprite()->setColor(_playerColor);
-	m_barColor = _playerColor;
+	
 
 }
 

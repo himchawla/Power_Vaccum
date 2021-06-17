@@ -17,6 +17,7 @@
  // Local Includes 
 #include "scene.h"
 #include "uiImage.h"
+#include "text.h"
 #include "Player.h"
 #include "menuScene.h"
 #include "button.h"
@@ -39,7 +40,9 @@ private:
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
 	virtual void DrawObjects(sf::RenderWindow& _window);
-	
+	timer* m_startTimer;
+	text* m_countdownText;
+
 	bool m_hasJoined[4];
 	int m_numPlayers = 0;
 	bool m_canStart;

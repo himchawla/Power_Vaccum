@@ -49,6 +49,7 @@ void text::SetSize(int _charSize)
 ********************/
 void text::Render(sf::RenderWindow& _window)
 {
+	
 	_window.draw(*m_text);
 }
 
