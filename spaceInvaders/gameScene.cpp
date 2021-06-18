@@ -55,7 +55,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 300.0f));
 					newPlayer->setColor(sf::Color::Red);
 
 				}
@@ -82,7 +82,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 300.0f));
 					newPlayer->setColor(sf::Color::Cyan);
 				}
 				else if (CheckFormation(2)) // CIRCLE
@@ -108,7 +108,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 747.0f));
 					newPlayer->setColor(sf::Color::Green);
 				}
 				else if (CheckFormation(2)) // CIRCLE
@@ -133,7 +133,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 747.0f));
 					newPlayer->setColor(sf::Color::Yellow);
 				}
 				else if (CheckFormation(2)) // CIRCLE
@@ -175,7 +175,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					p_it->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 300.0f));
 				}
 				else if (CheckFormation(2)) // CIRCLE
 				{
@@ -195,27 +195,29 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					p_it->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 300.0f));
 				}
 				else if (CheckFormation(2)) // CIRCLE
 				{
-					p_it->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 350.0f));
 				}
 				else if (CheckFormation(3)) // STAR
 				{
-					p_it->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+					p_it->transform.m_Position = (sf::Vector2f(1425.0f, 450.0f));
 				}
 				else if (CheckFormation(4)) // BOAT
 				{
-					p_it->transform.m_Position = (sf::Vector2f(525.0f, 450.0f));
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
 				}
+
+				
 
 				break;
 			case 3:
 
 				if (CheckFormation(1)) // DEFAULT
 				{
-					p_it->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 747.0f));
 				}
 				else if (CheckFormation(2)) // CIRCLE
 				{
@@ -234,7 +236,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 			case 4:
 				if (CheckFormation(1)) // DEFAULT
 				{
-					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 747.0f));
 				}
 				else if (CheckFormation(2)) // CIRCLE
 				{
