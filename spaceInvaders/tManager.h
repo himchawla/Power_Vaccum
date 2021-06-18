@@ -30,6 +30,14 @@ class tManager
 {
 public:
 	tManager();
+	enum eFormShape {
+		DEFAULT = 1,
+		CIRCLE = 2,
+		STAR = 3,
+		BOAT = 4,
+
+	};
+
 	bool isOnTile(sf::Vector2f _position, float _radius);
 	virtual ~tManager();
 
@@ -39,6 +47,7 @@ public:
 	tile* GetTile(int _i);
 	void AddTile(float _xPos, float _yPos);
 	void RemoveTile(int _i);
+	eFormShape getFormation();
 
 	std::vector<tile*> GetTileVector();
 
@@ -101,13 +110,7 @@ private:
 	bool m_bLeft = false;
 	int m_iInterval = 0;
 
-	enum eFormShape {
-		DEFAULT = 1,
-		CIRCLE = 2,
-		STAR = 3,
-		BOAT = 4,
 	
-	};
 	eFormShape formShape = eFormShape::DEFAULT;
 	
 

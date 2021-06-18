@@ -38,6 +38,9 @@ tManager::tManager()
 					m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (i * m_fOffset), m_v2FirstOffset.y + (j * m_fOffset)));
 				}
 			}
+
+			formShape = eFormShape::DEFAULT;
+
 			break;
 		}
 
@@ -68,6 +71,7 @@ tManager::tManager()
 				}
 			}
 
+			formShape = eFormShape::CIRCLE;
 
 
 
@@ -187,6 +191,8 @@ tManager::tManager()
 				}
 			}*/
 
+			formShape = eFormShape::CIRCLE;
+
 			break;
 		}
 
@@ -239,6 +245,8 @@ tManager::tManager()
 					}
 				}
 			}
+
+			formShape = eFormShape::BOAT;
 
 			break;
 		}
@@ -402,6 +410,11 @@ void tManager::RemoveTile(int _i)
 	m_vTilesList[_i]->GetRect()->setSize(sf::Vector2f(0.0f, 0.0f));
 
 
+}
+
+tManager::eFormShape tManager::getFormation()
+{
+	return (formShape);
 }
 
 std::vector<tile*> tManager::GetTileVector()

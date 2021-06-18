@@ -15,6 +15,7 @@
  // Local Includes 
 #include "sceneManager.h"
 #include "endScene.h"
+#include <iostream>
  // This Include 
 #include "gameScene.h"
  // Static Variables 
@@ -51,21 +52,106 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 			switch (m_vPlayers->size())
 			{
 			case 0:
-				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
-				newPlayer->setColor(sf::Color::Red);
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
+					newPlayer->setColor(sf::Color::Red);
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 350.0f));
+					newPlayer->setColor(sf::Color::Red);
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 350.0f));
+					newPlayer->setColor(sf::Color::Red);
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(925.0f, 250.0f));
+					newPlayer->setColor(sf::Color::Red);
+				}
+				
 				
 				break;
+
 			case 1:
-				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
-				newPlayer->setColor(sf::Color::Cyan);
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
+					newPlayer->setColor(sf::Color::Cyan);
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 350.0f));
+					newPlayer->setColor(sf::Color::Cyan);
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 350.0f));
+					newPlayer->setColor(sf::Color::Cyan);
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
+					newPlayer->setColor(sf::Color::Cyan);
+				}
+
+
+				
 				break;
 			case 2:
-				newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
-				newPlayer->setColor(sf::Color::Green);
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+					newPlayer->setColor(sf::Color::Green);
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+					newPlayer->setColor(sf::Color::Green);
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+					newPlayer->setColor(sf::Color::Green);
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(525.0f, 450.0f));
+					newPlayer->setColor(sf::Color::Green);
+				}
+
+				
 				break;
 			case 3:
-				newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
-				newPlayer->setColor(sf::Color::Yellow);
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
+					newPlayer->setColor(sf::Color::Yellow);
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 647.0f));
+					newPlayer->setColor(sf::Color::Yellow);
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 647.0f));
+					newPlayer->setColor(sf::Color::Yellow);
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					newPlayer->transform.m_Position = (sf::Vector2f(925.0f, 697.0f));
+					newPlayer->setColor(sf::Color::Yellow);
+				}
+
+				
 				break;
 			default:
 				break;
@@ -85,16 +171,83 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 			switch (numPlayers)
 			{
 			case 1:
-				p_it->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 350.0f));
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 350.0f));
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(925.0f, 250.0f));
+				}
+				
 				break;
 			case 2:
-				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 450.0f));
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(525.0f, 450.0f));
+				}
+
 				break;
 			case 3:
-				p_it->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+
+				if (CheckFormation(1)) // DEFAULT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 597.0f));
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					p_it->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(525.0f, 450.0f));
+				}
+
 				break;
 			case 4:
-				p_it->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
+				if (CheckFormation(1)) // DEFAULT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 597.0f));
+				}
+				else if (CheckFormation(2)) // CIRCLE
+				{
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 647.0f));
+				}
+				else if (CheckFormation(3)) // STAR
+				{
+					p_it->transform.m_Position = (sf::Vector2f(1375.0f, 647.0f));
+				}
+				else if (CheckFormation(4)) // BOAT
+				{
+					p_it->transform.m_Position = (sf::Vector2f(925.0f, 697.0f));
+				}
+
 			}
 			numPlayers++;
 			p_it->SetTileManager(m_tileManager);
@@ -192,6 +345,26 @@ gameScene::~gameScene()
 	}
 
 }
+
+/***********************
+* CheckFormation: Function optimization to check which 
+			      Tile Formation is currently chosen by the Tile Manager
+* @author: Gervince Michael Go
+* @parameter: Reference to an Int to indicate which formation is being compared.
+********************/
+bool gameScene::CheckFormation(int _Type)
+{
+	if (_Type == m_tileManager->getFormation())
+	{
+		
+		return true;
+	}
+
+
+	return false;
+}
+
+
 
 /***********************
 * Initialise: Initialise scene.
