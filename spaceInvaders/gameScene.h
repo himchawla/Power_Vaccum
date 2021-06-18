@@ -40,11 +40,13 @@ public:
 	virtual void Initialise(sf::RenderWindow& _window);
 	virtual void MainLoop(sf::RenderWindow& _window);
 	virtual void SummonBattery();
+
 private:
 	virtual void Update(sf::RenderWindow& _window, float _dT);
 	virtual void DrawBackground(sf::RenderWindow& _window);
 	virtual void DrawObjects(sf::RenderWindow& _window);
 	virtual void DrawUI(sf::RenderWindow& _window);
+	virtual bool CheckFormation(int _Type);
 
 	text* m_countdownText;
 	std::vector<player*>* m_vPlayers;
