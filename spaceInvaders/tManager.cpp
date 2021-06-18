@@ -24,7 +24,6 @@
 tManager::tManager()
 {
 	int iTemp = rand() % 4 + 1;
-	std::cout << iTemp << std::endl;
 
 	switch (iTemp)
 	{
@@ -80,32 +79,8 @@ tManager::tManager()
 
 		case  eFormShape::STAR:
 		{
-			for (int i = 0; i < m_iHorizontal; i++)
-			{
-				if (i == 0 || i == 8)
-				{
-					for (int j = 0; j < m_iShortVertical; j++)
-					{
-						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 4, m_v2FirstOffset.y + (i * m_fOffset)));
-					}
-				}
-				else if (i == 1 || i == 2 || i == 6 || i == 7)
-				{
-					for (int j = 0; j < m_iMedVertical; j++)
-					{
-						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 2, m_v2FirstOffset.y + (i * m_fOffset)));
-					}
-				}
-				else
-				{
-					for (int j = 0; j < m_iHighVertical; j++)
-					{
-						m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset), m_v2FirstOffset.y + (i * m_fOffset)));
-					}
-				}
-			}
 
-			/*for (int i = 0; i < m_iHorizontal; i++)
+			for (int i = 0; i < m_iHorizontal; i++)
 			{
 				if (i < 2)
 				{
@@ -180,7 +155,7 @@ tManager::tManager()
 							}
 							else
 							{
-								m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 7, m_v2FirstOffset.y + (i * m_fOffset)));
+								m_vTilesList.push_back(new tile(m_v2FirstOffset.x + (j * m_fOffset) + m_fOffset * 6, m_v2FirstOffset.y + (i * m_fOffset)));
 							}
 						}
 
@@ -189,9 +164,9 @@ tManager::tManager()
 						
 					}
 				}
-			}*/
+			}
 
-			formShape = eFormShape::CIRCLE;
+			formShape = eFormShape::STAR;
 
 			break;
 		}

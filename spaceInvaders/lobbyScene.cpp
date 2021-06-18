@@ -259,14 +259,24 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 		
 		if (m_startTimer != nullptr) // Start delay timer.
 		{
-			audioManager::GetInstance().SetMusic("Venus2.wav");
-			audioManager::GetInstance().GetMusic()->play();
-			audioManager::GetInstance().PlaySound("ButtonPress");
+
+			if ((int)(m_startTimer->GetTime() - 0.4f) == 4)
+			{
+				audioManager::GetInstance().PlaySound("ButtonPress");
+			}
+
+			
+			
+
 			
 			m_startTimer->Update(_dT);
 			if (m_countdownText != nullptr)	m_countdownText->SetString((std::to_string((int)m_startTimer->GetTime() + 1)));
 			if (m_startTimer->IsFinished())
 			{
+				audioManager::GetInstance().SetMusic("Venus2.wav");
+				audioManager::GetInstance().GetMusic()->play();
+				
+
 				delete m_startTimer;
 				m_startTimer = 0;
 				sceneManager::SetScene(new gameScene(m_vPlayers, m_playerIndexes, m_vPlayers->size()));
