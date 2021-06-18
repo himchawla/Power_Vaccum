@@ -279,9 +279,6 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 
 				delete m_startTimer;
 				m_startTimer = 0;
-				audioManager::GetInstance().SetMusic("Venus2.wav");
-				audioManager::GetInstance().GetMusic()->play();
-				audioManager::GetInstance().PlaySound("ButtonPress");
 				sceneManager::SetScene(new gameScene(m_vPlayers, m_playerIndexes, m_vPlayers->size()));
 			}
 		}
