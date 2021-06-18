@@ -475,7 +475,11 @@ void player::setColor(const sf::Color& _playerColor)
 {
 	m_playerColor = _playerColor;
 	GetSprite()->setColor(_playerColor);
-	
+
+	m_nitroBar->GetSprite()->setColor(m_playerColor);
+	m_turtleVFX->GetSprite()->setColor(sf::Color(m_playerColor.r, m_playerColor.b, m_playerColor.g, 128.0f));
+
+	m_magneticVFX->GetSprite()->setColor(sf::Color(m_playerColor.r, m_playerColor.b, m_playerColor.g, 128.0f));
 
 }
 

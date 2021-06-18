@@ -74,6 +74,7 @@ void endScene::Initialise(sf::RenderWindow& _window)
 	m_leaveTimer = new timer(0.0f, 5.0f);
 
 	scoreManager::GetInstance().EndPositioning();
+	
 }
 
 /***********************

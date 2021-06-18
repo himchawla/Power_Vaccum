@@ -44,6 +44,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 		for (auto i: _playerIndexes)
 		{
 			sf::Color playerColor;
+
 			
 			player* newPlayer = new player(i, playerColor);
 
@@ -369,7 +370,8 @@ void gameScene::DrawObjects(sf::RenderWindow& _window)
 
 	if (m_startTimer != nullptr && !m_startTimer->IsFinished())
 	{
-		text(m_countdownText->GetText()->getPosition() - sf::Vector2f(330.0f, 50.0f),"Game Starting in", "Assets/arial.ttf", 150, scoreManager::GetInstance().WinningColor()).Render(_window);
+		text(m_countdownText->GetText()->getPosition() - sf::Vector2f(330.0f, 50.0f), "Game Starting in",
+		     "Assets/arial.ttf", 150, scoreManager::GetInstance().WinningColor()).Render(_window);
 		m_countdownText->GetText()->setFillColor(scoreManager::GetInstance().WinningColor());
 		m_countdownText->Render(_window);
 	}

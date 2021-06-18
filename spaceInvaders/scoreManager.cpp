@@ -138,7 +138,7 @@ int scoreManager::HighestScore()
 
 /***********************
 * WinningIndex: Returns the highest scoring player's index.
-* @author: William de Beer
+* @author: William de Beer | Himanshu Chawla
 * @return: Player index
 ********************/
 int scoreManager::WinningIndex()
@@ -164,10 +164,15 @@ int scoreManager::WinningIndex()
 		return -1;
 }
 
+/***********************
+* Winning Color: Returns the color of the last winner
+* @author: William de Beer |  Himanshu Chawla
+* @return: Color of the last winner
+********************/
 sf::Color scoreManager::WinningColor()
 {
 	//// Set sprite colour
-	switch (WinningIndex())
+	switch (m_lastVictor)
 	{
 	case 0:
 		return sf::Color::Red;
@@ -196,6 +201,7 @@ sf::Color scoreManager::WinningColor()
 ********************/
 void scoreManager::ResetScores()
 {
+	m_lastVictor = -1;
 	for (int i = 0; i < 4; i++)
 	{
 		m_iPlayerScores[i] = 0;

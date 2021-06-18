@@ -44,11 +44,12 @@ private:
 	void Initialise();
 	static scoreManager* sm_Instance;
 
+	int m_winningIndex;
 	uiScore* m_ScoreUI[4];
 	int m_iPlayerScores[4];
 
 	float m_xOffset = 150.0f;
 	float m_yOffset = 100.0f;
-	int m_lastVictor;
+	int m_lastVictor = -1;
 };
 #endif
