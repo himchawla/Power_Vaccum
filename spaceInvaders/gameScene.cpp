@@ -57,6 +57,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 				{
 					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 450.0f));
 					newPlayer->setColor(sf::Color::Red);
+
 				}
 				else if (CheckFormation(2)) // CIRCLE
 				{
@@ -65,7 +66,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 				}
 				else if (CheckFormation(3)) // STAR
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 350.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(525.0f, 450.0f));
 					newPlayer->setColor(sf::Color::Red);
 				}
 				else if (CheckFormation(4)) // BOAT
@@ -91,7 +92,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 				}
 				else if (CheckFormation(3)) // STAR
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 350.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(1425.0f, 450.0f));
 					newPlayer->setColor(sf::Color::Cyan);
 				}
 				else if (CheckFormation(4)) // BOAT
@@ -117,7 +118,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 				}
 				else if (CheckFormation(3)) // STAR
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(575.0f, 647.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(675.0f, 750.0f));
 					newPlayer->setColor(sf::Color::Green);
 				}
 				else if (CheckFormation(4)) // BOAT
@@ -142,7 +143,7 @@ gameScene::gameScene(std::vector<player*>* _player,std::vector<int> _playerIndex
 				}
 				else if (CheckFormation(3)) // STAR
 				{
-					newPlayer->transform.m_Position = (sf::Vector2f(1375.0f, 647.0f));
+					newPlayer->transform.m_Position = (sf::Vector2f(1275.0f, 750.0f));
 					newPlayer->setColor(sf::Color::Yellow);
 				}
 				else if (CheckFormation(4)) // BOAT
