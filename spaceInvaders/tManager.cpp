@@ -7,7 +7,7 @@
 //  (c) 2021 Media Design School 
 // 
 //  File Name   :   tManager.h
-//  Description :   [WIP] Tile Manager controller for all Tiles that will fall.
+//  Description :   Tile Manager controller for all Tiles that will fall, adjusts their speed and formation.
 //  Author      :   Gervince Michael Go
 //  Mail        :   Gervince.Go@mds.ac.nz
 // 
@@ -20,6 +20,9 @@
  // Static Function Prototypes 
  // Implementation 
 
+
+// Randomly  chooses a formation and creates the tiles according to
+// the amount required. 4 Different Formations are seperated via  enum.
 
 tManager::tManager()
 {
@@ -238,6 +241,8 @@ tManager::tManager()
 	
 }
 
+// Checks if a player is the tile. Is called during the game as long as
+// There is more than one player  still returning true.
 bool tManager::isOnTile(sf::Vector2f _position, float _radius)
 {
 	for (auto i : m_vTilesList)
@@ -255,6 +260,7 @@ bool tManager::isOnTile(sf::Vector2f _position, float _radius)
 	return false;
 }
 
+
 tManager::~tManager()
 {
 	std::vector<tile*>::iterator t_it = m_vTilesList.begin();
@@ -266,6 +272,8 @@ tManager::~tManager()
 	}
 }
 
+
+// Updates the Tiles position on screen.
 void tManager::Update(sf::RenderWindow& _window, float _dT)
 {
 
@@ -277,6 +285,9 @@ void tManager::Update(sf::RenderWindow& _window, float _dT)
 	DropTiles(_dT);
 }
 
+// Drops the tiles. After  a certain amount of time 3 tiles are chosen
+// to drop. An animation is played  for roughly 1.1 seconds and thereafter their size
+// are set to 0,0 to visually indicate they are gone without compromising the vector.
 void tManager::DropTiles(float _dT)
 {
 	if (m_bFallAnimation != true)
