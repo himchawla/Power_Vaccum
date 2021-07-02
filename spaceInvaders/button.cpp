@@ -1,6 +1,22 @@
+// 
+//  Bachelor of Software Engineering 
+//  Media Design School 
+//  Auckland 
+//  New Zealand 
+// 
+//  (c) 2021 Media Design School 
+// 
+//  File Name   :   Button.cpp
+//  Description :   The Button Class is 
+// used as the interactable features within Scenes to allow the players to move through scenes or quit the game.
+//  Author      :   Gervince Go
+//  Mail        :   Gervince.Go@mds.ac.nz
+// 
+ // Library Includes 
 #include "button.h"
 
 
+// Loads Button Sprite to be drawn on Screen. Uses Basic Image and is considered Default.
 button::button():uiImage(sf::Vector2f(0,0), "", false)
 {
 	if (!m_arial.loadFromFile("Assets/arial.ttf"))
@@ -21,6 +37,7 @@ button::button():uiImage(sf::Vector2f(0,0), "", false)
 	
 }
 
+// This allows a specific image to be chosen and this constructor is the one mainly used.
 button::button(float x_pos, float y_pos, int _weight, std::string _path):uiImage(sf::Vector2f(x_pos, y_pos), _path + ".png", false)
 {
 	if (!m_arial.loadFromFile("Assets/arial.ttf"))
@@ -75,6 +92,8 @@ button::~button()
 }
 
 
+// Checks if the cursor is within selection limits of the button. This highlights the button when colliding with the cursor's position.
+// It also determines when the button is clicked or selected via controller.
 void button::isMouseHere(sf::RenderWindow& window)
 {
 	float fMouseX = sf::Mouse::getPosition(window).x;
@@ -121,6 +140,7 @@ void button::isMouseHere(sf::RenderWindow& window)
 
 }
 
+// Sets the Button's Text to anything.
 void button::setButtonText(std::string _textString, int _characterSize)
 {
 	m_buttonText->setCharacterSize(_characterSize);
