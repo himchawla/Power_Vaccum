@@ -1,11 +1,26 @@
 #pragma once
+// 
+//  Bachelor of Software Engineering 
+//  Media Design School 
+//  Auckland 
+//  New Zealand 
+// 
+//  (c) 2021 Media Design School 
+// 
+//  File Name   :   Button.h
+//  Description :   The Button Class is 
+// used as the interactable features within Scenes to allow the players to move through scenes or quit the game.
+//  Author      :   Gervince Go
+//  Mail        :   Gervince.Go@mds.ac.nz
+// 
+ // Library Includes 
 #include "gameObject.h"
 #include "uiImage.h"
 #include "timer.h"
 #include "inputManager.h"
+ // Library Includes 
 #include <iostream>
-
-
+ // Implementation
 class button : public uiImage
 {
 	public:
