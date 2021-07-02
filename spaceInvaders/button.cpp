@@ -9,7 +9,7 @@
 //  File Name   :   Button.cpp
 //  Description :   The Button Class is 
 // used as the interactable features within Scenes to allow the players to move through scenes or quit the game.
-//  Author      :   Gervince Go
+//  Author      :   Gervince Go 
 //  Mail        :   Gervince.Go@mds.ac.nz
 // 
  // Library Includes 
@@ -37,6 +37,10 @@ button::button():uiImage(sf::Vector2f(0,0), "", false)
 	
 }
 
+/***********************
+* button: Constructor, calls ui Image constructor
+* @author: Himanshu Chawla
+********************/
 // This allows a specific image to be chosen and this constructor is the one mainly used.
 button::button(float x_pos, float y_pos, int _weight, std::string _path):uiImage(sf::Vector2f(x_pos, y_pos), _path + ".png", false)
 {

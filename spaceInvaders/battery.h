@@ -6,11 +6,11 @@
 // 
 //  (c) 2021 Media Design School 
 // 
-//  File Name   :   Button.h
+//  File Name   :   Battery.h
 //  Description :   The Button Class is 
 // used as the interactable features within Scenes to allow the players to move through scenes or quit the game.
-//  Author      :   Gervince Go
-//  Mail        :   Gervince.Go@mds.ac.nz
+//  Author      :   Himanshu Chawla | Neel
+//  Mail        :   Himanshu.Chawla@mds.ac.nz
 // 
 #pragma once
 #include "gameObject.h"

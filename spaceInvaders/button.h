@@ -10,7 +10,7 @@
 //  File Name   :   Button.h
 //  Description :   The Button Class is 
 // used as the interactable features within Scenes to allow the players to move through scenes or quit the game.
-//  Author      :   Gervince Go
+//  Author      :   Gervince Go 
 //  Mail        :   Gervince.Go@mds.ac.nz
 // 
  // Library Includes 
@@ -25,7 +25,9 @@ class button : public uiImage
 {
 	public:
 		button();
-		
+
+	
+
 		button(float x_pos, float y_pos, int _weight, std::string _path);
 		virtual ~button();
 

@@ -136,7 +136,7 @@ void lobbyScene::MainLoop(sf::RenderWindow& _window)
 
 /***********************
 * Update: Updates objects in the game scene.
-* @author: William de Beer
+* @author: William de Beer | Himanshu Chawla
 * @parameter: Reference to render window, Delta time.
 ********************/
 void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
@@ -173,7 +173,7 @@ void lobbyScene::Update(sf::RenderWindow& _window, float _dT)
 				playerColor = sf::Color::Green;
 				break;
 			case 4:
-				playerColor = sf::Color::Blue;
+				playerColor = sf::Color::Yellow;
 				break;
 			}
 			player* newPlayer = new player(i, playerColor);
